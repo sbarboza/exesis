@@ -1,21 +1,23 @@
 package exesis.controle;
 
+import exesis.entidade.Aluno;
+import exesis.entidade.EntidadeDominio;
+import exesis.entidade.Professor;
+import exesis.strategy.IStrategy;
+import exesis.strategy.ValidarNullAluno;
+import exesis.strategy.ValidarNullProfessor;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import exesis.aplicacao.Resultado;
-import exesis.dao.IDAO;
-import exesis.entidade.EntidadeDominio;
-import exesis.strategy.IStrategy;
 
 public class Fachada implements IFachada {
 	private Map<String, IDAO> daos;
 	private Map<String, Map<String, List<IStrategy>>> rns;
 	
 	public Fachada(){
-		daos = HashMap<String, IDAO>();
-		
-		// Listas de estratégias
+		daos = new HashMap<String, IDAO>();
+		// Listas de estratÃ©gias
 		List<IStrategy> salvarAluno = new ArrayList<IStrategy>();
 		salvarAluno.add(new ValidarNullAluno());
 		
@@ -28,12 +30,9 @@ public class Fachada implements IFachada {
 		rnsSalvar.put(Professor.class.getCanonicalName(), salvarProfessor);
 		
 		
-		// Mapas de operações
+		// Mapas de operaÃ§Ãµes
 		rns.put("SALVAR", rnsSalvar);
-		
-		
-		
-		
+
 	}
 	
 	public Resultado salvar(EntidadeDominio entidade) {
