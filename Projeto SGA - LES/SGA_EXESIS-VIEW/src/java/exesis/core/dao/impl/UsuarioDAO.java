@@ -46,7 +46,6 @@ public class UsuarioDAO extends AbstractDAOPostGreSQL{
                 java.sql.Timestamp data = new java.sql.Timestamp(usuario.getDtCadastro().getTime());
                 pst.setTimestamp(5, data);
                 pst.executeUpdate();
-                System.out.println(pst.toString());
                 connection.commit();
                 ResultSet rs = pst.getGeneratedKeys();
                 if(rs != null && rs.next())
@@ -74,7 +73,6 @@ public class UsuarioDAO extends AbstractDAOPostGreSQL{
     @Override
     public Resultado alterar(EntidadeDominio entidade){
         Resultado resultado = Resultado.getResultado();
-        System.out.println("ALTERAR - USUARIO");
         PreparedStatement pst=null;
         StringBuilder sql= new StringBuilder();
         Usuario usuario = (Usuario) entidade;
@@ -87,12 +85,11 @@ public class UsuarioDAO extends AbstractDAOPostGreSQL{
                 sql.append(" = ");
                 sql.append(usuario.getId());
                 sql.append(";");
+                System.out.println(sql.toString());
                 pst = connection.prepareStatement(sql.toString());
                 pst.setString(1, usuario.getLogin());
-                pst.setString(2, usuario.getSenha());
-                pst.setString(3, usuario.getEmail());
+                pst.setString(2, usuario.getEmail());
                 pst.executeUpdate();
-                System.out.println(sql.toString());
                 System.out.println(pst.toString());
                 connection.commit();
         } catch (SQLException e) {
@@ -116,23 +113,41 @@ public class UsuarioDAO extends AbstractDAOPostGreSQL{
 
     @Override
     public Resultado consultar(EntidadeDominio entidade) {
-        System.out.println("PROFESSOR");
         Resultado resultado = Resultado.getResultado();
+        Usuario usuario = (Usuario) entidade;
         PreparedStatement pst = null;
+        boolean where = false;
         StringBuilder sql = new StringBuilder();
         try {
                 openConnection();
                 sql.append("SELECT * FROM ");
-                sql.append(table);                
-                sql.append(" WHERE ");
-                sql.append(" idUsuario = ");
-                sql.append(entidade.getId());
+                sql.append(table);
+                if(usuario.getId() >= 0){
+                    sql.append(where? " OR " : " WHERE ");
+                    sql.append(idTable);
+                    sql.append(" = ");
+                    sql.append(usuario.getId());
+                    where =true;
+                }
+                if(usuario.getEmail() != null && usuario.getEmail().trim().length() != 0){
+                    sql.append(where? " OR " : " WHERE ");
+                    sql.append(" email like '%");
+                    sql.append(usuario.getEmail());
+                    sql.append("%'");
+                    where = true;
+                }
+                if(usuario.getLogin() != null && usuario.getLogin().trim().length() != 0){
+                    sql.append(where? " OR " : " WHERE ");
+                    sql.append(" login = '");
+                    sql.append(usuario.getLogin());
+                    sql.append("'");
+                    
+                }
                 sql.append(";");
-                System.out.println(sql.toString());
                 pst = connection.prepareStatement(sql.toString());
                 ResultSet rs = pst.executeQuery();
                 while(rs.next()){
-                    Usuario usuario = new Usuario();
+                    usuario = new Usuario();
                     usuario.setDtCadastro(rs.getDate("dataCadastro"));
                     usuario.setEmail(rs.getString("email"));
                     usuario.setId(rs.getInt(idTable));
@@ -141,6 +156,8 @@ public class UsuarioDAO extends AbstractDAOPostGreSQL{
                     usuario.setSenha("senha");
                     resultado.getEntidades().add(usuario);
                 }
+                System.out.println(pst.toString());
+                System.out.println(sql.toString());
                 
         } catch (SQLException e) {
             e.printStackTrace();			

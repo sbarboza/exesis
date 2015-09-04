@@ -25,34 +25,36 @@
         </f:facet>
     </p:menubar>
     <p:messages id="messages"  autoUpdate="true" showDetail="true" closable="true" />
-    <h:panelGrid id="grid" columns="3" cellpadding="5" >
-                    <h:outputText value="Nome: *" />
-                    <p:inputText id="nome" value="#{professorBean.professor.nome}" required="true" label="Nome"
+</h:form>
+<h:form style="position: relative; left: 30%; top: 40px; width: 69%; vertical-align: middle" >
+    <h:panelGrid id="grid" columns="3" cellpadding="5"  >
+                    <h:outputText value="Nome: *"/>
+                    <p:inputText id="nome" value="#{professorBean.professor.nome}" required="false" label="Nome"
                                  validatorMessage="O nome é obrigatório">
                     </p:inputText>
                     <p:message for="nome" display="text"/>
                     
                     <h:outputText value="Sobrenome: *" />
-                    <p:inputText id="sobrenome" value="#{professorBean.professor.sobrenome}" required="true" label="Sobrenome"/>
+                    <p:inputText id="sobrenome" value="#{professorBean.professor.sobrenome}" required="false" label="Sobrenome"/>
                     <p:message for="sobrenome" display="text" />
                     
                     <h:outputText value="Nome de usuário: *" />
-                    <p:inputText id="login" value="#{professorBean.usuario.login}" required="true" label="Nome de usuário"/>
+                    <p:inputText id="login" value="#{professorBean.usuario.login}" required="false" label="Nome de usuário"/>
                     <p:message for="login" display="text"/>
                     
                     <h:outputText value="Senha: *" />
-                    <p:password id="senha" value="#{professorBean.usuario.senha}" required="true" label="Senha">
+                    <p:password id="senha" value="#{professorBean.usuario.senha}" required="false" label="Senha" >
                         <f:validateLength minimum="5"/>
                         <p:clientValidator event="keyup"></p:clientValidator>
                     </p:password>
                     <p:message for="senha" display="text"/>
                     
                     <h:outputText value="Data de nascimento: *" />
-                    <p:inputMask mask="99/99/9999" id="dataNascimento" value="#{professorBean.professor.dataNascimento}" required="true" label="Data de Nascimento"/>
+                    <p:inputMask mask="99/99/9999" id="dataNascimento" value="#{professorBean.professor.dataNascimento}" required="false" label="Data de Nascimento"/>
                     <p:message for="dataNascimento" display="text"/>
                     
                     <h:outputText value="Sexo: *" />
-                    <h:selectOneMenu id="sexo" value="#{professorBean.professor.sexo}" label="Sexo" required="true">
+                    <h:selectOneMenu id="sexo" value="#{professorBean.professor.sexo}" label="Sexo" required="false">
                         <f:selectItem itemLabel="Selecione..." itemValue="" ></f:selectItem>                        
                         <f:selectItem itemLabel="Masculino" itemValue="M" ></f:selectItem>                        
                         <f:selectItem itemLabel="Feminino" itemValue="F" ></f:selectItem>
@@ -60,7 +62,7 @@
                     <p:message for="sexo" display="text"/>
                     
                     <h:outputText value="Email: *" />
-                    <p:inputText id="email" value="#{professorBean.usuario.email}" required="true" label="Email"/>
+                    <p:inputText id="email" value="#{professorBean.usuario.email}" required="false" label="Email"/>
                     <p:message for="email" display="text"/>
                     
                     <h:outputText value="Telefone: " />
@@ -68,7 +70,7 @@
                     <p:message for="telefone" display="text"/>
                     
                     <h:outputText value="Informações adicionais: " />
-                    <p:inputText id="informacoes" value="#{professorBean.professor.informacoesAdicionais}"/>
+                    <p:inputTextarea cols="22" id="informacoes" autoResize="true" value="#{professorBean.professor.informacoesAdicionais}"/>
                     <p:message for="informacoes" display="text"/>                    
         </h:panelGrid>
     <p:commandButton value="Salvar" update="grid" action="#{professorBean.salvar}" ajax="false"/>

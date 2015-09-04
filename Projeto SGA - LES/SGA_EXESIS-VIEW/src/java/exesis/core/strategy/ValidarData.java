@@ -9,6 +9,9 @@ package exesis.core.strategy;
 import exesis.core.aplicacao.Resultado;
 import exesis.model.EntidadeDominio;
 import exesis.model.Professor;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -19,12 +22,17 @@ public class ValidarData implements IStrategy{
     @Override
     public Resultado processar(EntidadeDominio entidade) {
         Resultado resultado = Resultado.getResultado();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);
         String data;
         if(entidade instanceof Professor){
             Professor professor = (Professor) entidade;
             data = professor.getDataNascimento();
-            if(data.length() != 10)
-                resultado.getMsgs().add("Data inválida!");
+            try{
+                sdf.parse(data);    
+            }catch(ParseException p){
+                resultado.getMsgs().add("Data inválida");
+            }
         }
         
         

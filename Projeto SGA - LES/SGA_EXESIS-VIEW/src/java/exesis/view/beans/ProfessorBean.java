@@ -9,31 +9,51 @@ package exesis.view.beans;
 import exesis.core.aplicacao.Resultado;
 import exesis.core.control.Fachada;
 import exesis.core.control.IFachada;
+import exesis.model.EntidadeDominio;
 import exesis.model.Professor;
 import exesis.model.Usuario;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
 
-/**
- *
- * @author SAMUEL
- */
 @ManagedBean(name = "professorBean")
 @RequestScoped
 public class ProfessorBean {
     private Professor professor;
     private Usuario usuario;
+    private List<Professor> listaProfessor;
     Resultado resultado;    
     IFachada fachada;
+    private String busca = "";
+    private boolean consulta = Boolean.FALSE;
+
+    public boolean isConsulta() {
+        return consulta;
+    }
+
+    public void setConsulta(boolean consulta) {
+        this.consulta = consulta;
+    }
     
     public ProfessorBean(){    
-        professor = new Professor();
-        usuario = new Usuario();
-        fachada = new Fachada();
+        limpar();
     }
+
+    public String getBusca() {
+        return busca;
+    }
+
+    public void setBusca(String busca) {
+        this.busca = busca;
+    }
+    
     public Professor getProfessor() {
         return professor;
     }
@@ -49,15 +69,27 @@ public class ProfessorBean {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-       
+
+    public List<Professor> getListaProfessor() {
+        return listaProfessor;
+    }
+
+    public void setListaProfessor(List<Professor> listaProfessor) {
+        this.listaProfessor = listaProfessor;
+    }
+    
+    
     public void salvar(){
+        consulta = Boolean.FALSE;
         professor.setUsuario(usuario);        
-        System.out.println("Professor Nome:"+ professor.getNome());
         resultado = fachada.salvar(professor);
         if(!resultado.getMsgs().isEmpty())
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Preencha os campos corretamente!", resultado.getMsgs().toString()));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Para continuar o cadastro, preencha corretamente os seguintes campos: ", resultado.getMsgs().toString()));
         else{
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Salvo com sucesso",  "O professor " + professor.getNome() +" foi salvo com sucesso!") );
+            if(professor.getSexo().equals("F"))
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Alterado com sucesso",  "Os dados da professora " + professor.getNome() +" foram salvos com sucesso!") );
+            else
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Alterado com sucesso",  "Os dados do professor " + professor.getNome() +" foram salvos com sucesso!") );
             reset();
         }
     }
@@ -65,22 +97,51 @@ public class ProfessorBean {
     public void alterar(){
         professor.setUsuario(usuario);
         resultado = fachada.alterar(professor);
-        if(!resultado.getMsgs().isEmpty())
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Preencha os campos corretamente!", resultado.getMsgs().toString()));
+        if(!resultado.getMsgs().isEmpty())      
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Para continuar a atualização o cadastro, preencha corretamente os seguintes campos: ", resultado.getMsgs().toString()));
         else{
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Alterado com sucesso",  "O professor " + professor.getNome() +" foi atualizado com sucesso!") );
-
+            if(professor.getSexo().equals("F"))
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Alterado com sucesso",  "Os dados da professora " + professor.getNome() +" foram atualizados com sucesso!") );
+            else
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Alterado com sucesso",  "Os dados do professor " + professor.getNome() +" foram atualizados com sucesso!") );
+            reset();
         }
     }
     
+    public void consultar(Integer id){
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("consultar_professor.xhtml");
+
+        } catch (IOException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Erro",  "Erro ao redirecionar a página"));
+
+        }
+        usuario.setId(id);
+        reset();
+        consultar();        
+    }
+    
     public void consultar(){
+        consulta = Boolean.TRUE;
+        reset();
+        if(busca.trim().length() != 0){
+            professor.setNome(busca);
+            professor.setSobrenome(busca);
+            usuario.setEmail(busca);
+            usuario.setLogin(busca);
+        }
         professor.setUsuario(usuario);
         resultado = fachada.consultar(professor);
         Professor p;
-        if(!resultado.getEntidades().isEmpty()){
+        if(!resultado.getEntidades().isEmpty()){// && resultado.getEntidades().get(0).getId() == professor.getUsuario().getId()){
             p = (Professor) resultado.getEntidades().get(0);
             professor = p;
             usuario = p.getUsuario();
+            listaProfessor.clear();
+            for(EntidadeDominio e: resultado.getEntidades()){
+                listaProfessor.add((Professor)e);
+            }
+            resultado.getEntidades().clear();
         }else{
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Não encontrado",  "Nada encontrado com os parâmetros da busca") );
@@ -105,7 +166,18 @@ public class ProfessorBean {
     }
     
     public void reset(){ 
+        consulta = Boolean.FALSE;
+        int id = usuario.getId();
+        limpar();
+        usuario.setId(id);
+    }
+    
+    public void limpar(){
         professor = new Professor();
         usuario = new Usuario();
+        listaProfessor = new ArrayList<Professor>();
+        fachada = new Fachada();
+        busca = "";
     }
+    
 }

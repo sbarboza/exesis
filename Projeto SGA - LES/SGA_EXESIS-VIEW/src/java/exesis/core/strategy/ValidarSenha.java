@@ -31,13 +31,15 @@ public class ValidarSenha implements IStrategy{
                 senha = professor.getUsuario().getSenha();
             else
                 resultado.getMsgs().add("Usuário não informado!");
-            
-            if(professor.getNome().contains(senha) || senha.contains(professor.getNome()) || senha.contains(professor.getSobrenome()))
-                resultado.getMsgs().add("A senha não pode conter o nome ou parte do nome!");
+            if(senha.length() > 0)
+                if(senha.contains(professor.getNome().trim()) || senha.trim().contains(professor.getSobrenome()))
+                    resultado.getMsgs().add("A senha não pode conter o nome ou parte do nome!");
         }
         if(senha.length() == 0)
-            resultado.getMsgs().add("Favor informar a senha!");
-        if(senha.length() < 5)
+            resultado.getMsgs().add("Senha");
+        else if(senha.contains(" "))
+            resultado.setMsg("A senha não deve ter espaços em branco");
+        else if(senha.length() < 5)
             resultado.getMsgs().add("A senha deve ter pelo menos 5 caracteres!");
         return resultado;
     }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package exesis.core.teste;
 import exesis.core.aplicacao.Resultado;
@@ -14,10 +9,6 @@ import exesis.model.Professor;
 import exesis.model.Usuario;
 import java.util.Date;
 
-/**
- *
- * @author SAMUEL
- */
 public class TesteBancoSQL {
     
     public static void main(String[] args) {
@@ -35,11 +26,9 @@ public class TesteBancoSQL {
         usuario.setSenha("senha");
         usuario.setPerfilAcesso(1);
         usuario.setDtCadastro(new Date());
-        
+        professor.setDataNascimento("08/11/1995");
         professor.setNome("Samuel");
         professor.setSobrenome("de Oliveira Barboza");
-        professor.setCpf("43403763889");
-//        professor.setDataNascimento(new Date());
         professor.setSexo("M");
         professor.setInformacoesAdicionais("Testando informações adicionais");
         professor.setTelefone("973652912");
@@ -66,7 +55,6 @@ public class TesteBancoSQL {
         
         professor.setNome("Samuel");
         professor.setSobrenome("de Oliveira Barboza");
-        professor.setCpf("43403763889");
         professor.setDataNascimento("08/11/1995");
         professor.setSexo("M");
         professor.setInformacoesAdicionais("Testando informações adicionais");

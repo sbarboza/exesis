@@ -5,6 +5,8 @@ import exesis.core.dao.IDAO;
 import exesis.core.dao.impl.ProfessorDAO;
 import exesis.core.strategy.IStrategy;
 import exesis.core.strategy.ValidarData;
+import exesis.core.strategy.ValidarEmail;
+import exesis.core.strategy.ValidarNomeUsuario;
 import exesis.core.strategy.ValidarNullProfessor;
 import exesis.core.strategy.ValidarSenha;
 import exesis.model.EntidadeDominio;
@@ -25,11 +27,15 @@ public class Fachada implements IFachada {
 		salvarProfessor.add(new ValidarNullProfessor());
                 salvarProfessor.add(new ValidarSenha());
                 salvarProfessor.add(new ValidarData()); 
+                salvarProfessor.add(new ValidarEmail());
+                salvarProfessor.add(new ValidarNomeUsuario());
+                
 		
                 List<IStrategy> alterarProfessor = new ArrayList<IStrategy>();
 		alterarProfessor.add(new ValidarNullProfessor());
-                alterarProfessor.add(new ValidarData()); 
-		
+                alterarProfessor.add(new ValidarData());
+                alterarProfessor.add(new ValidarEmail());
+		alterarProfessor.add(new ValidarNomeUsuario());
                 
 		// Mapas de entidades
 		Map<String, List<IStrategy>> rnsSalvar = new HashMap<String, List<IStrategy>>();
@@ -106,7 +112,6 @@ public class Fachada implements IFachada {
 			if(regras != null){
 				for(IStrategy s: regras){			
 					resultado = s.processar(entidade);		
-                                        System.out.println(resultado.getMsgs().toString());
 				}	
 			}			
 		}

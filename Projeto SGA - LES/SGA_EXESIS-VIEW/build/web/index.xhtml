@@ -1,31 +1,100 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Principal</title>
+        <title>Cadastro de Usuário</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body>
-<h:form>  
-    <p:growl id="messages"/>
-    <p:menubar>
-        <p:menuitem action="index.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
-        <p:submenu label="Usuários" icon="ui-icon-person">
-            <p:submenu label="Novo" icon="ui-icon-plus">
-                <p:menuitem value="Professor" action="novo_professor.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
-            </p:submenu>
-            <p:submenu label="Consultar" icon="ui-icon-search">
-                <p:menuitem value="Professor" action="consultar_professor.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
-            </p:submenu>
+        <h:form >
+            <p:menubar>
+                <p:submenu label="Cliente">
+                    <p:menuitem value="Inserir" icon="ui-icon-plus" action="cadastroUsuario.xhtml" ajax="false"/>
+                    <p:menuitem value="Pesquisar" icon="ui-icon-search" action="pesquisaUsuario.xhtml" ajax="false"/>
+                 </p:submenu>
+                <p:submenu label="Consultório">
+                    <p:menuitem value="Inserir" icon="ui-icon-plus"/>
+                    <p:menuitem value="Pesquisar" icon="ui-icon-search"/>
+                 </p:submenu>
+                <p:submenu label="Funcionário">
+                    <p:menuitem value="Inserir" icon="ui-icon-plus"/>
+                    <p:menuitem value="Pesquisar" icon="ui-icon-search"/>
+                 </p:submenu>
+                <p:submenu label="Consulta">
+                    <p:menuitem value="Marcar Consulta" icon="ui-icon-plus"/>
+                    <p:menuitem value="Pesquisar Consulta" icon="ui-icon-search"/>
+                 </p:submenu>
+                <f:facet name="options">
+                    <p:commandButton value="Logout" action="index.xhtml" icon="ui-icon-extlink" ajax="false"/>
+                </f:facet>
+            </p:menubar>
             
-        </p:submenu>
-        <f:facet name="options">
-            <p:commandButton type="button" value="Sair" icon="ui-icon-extlink" />
-        </f:facet>
-    </p:menubar>
-</h:form>
+            <h:messages/>
+            
+            <h:panelGrid columns="2" cellpadding="5">
+                
+                <p:outputLabel for="nome" value="Nome: " />
+                <p:inputText id="nome" value="#{controladora.clientesel.nome}"/>
+                
+                <p:outputLabel for="dtNascimento" value="Data de nascimento: " />
+                <p:inputMask id="dtNascimento" value="#{controladora.clientesel.dtNascimento}" mask="99/99/9999"/>
+                
+                <p:outputLabel for="cep" value="CEP:" />
+                <p:inputMask id="cep" value="#{controladora.endsel.cep}" mask="99999-999"/>
+                
+                <p:outputLabel for="endereco" value="Endereço: " />
+                <p:inputText id="endereco" value="#{controladora.endsel.rua}"/>
+
+                <p:outputLabel for="telefoneRes" value="Telefone Residencial:" />
+                <p:inputMask id="telefoneRes" value="#{controladora.clientesel.telefoneRes}" mask="(99) 9999-9999"/>
+
+                <p:outputLabel for="telefoneCom" value="Telefone Comercial:" />
+                <p:inputMask id="telefoneCom" value="#{controladora.clientesel.telefoneCom}" mask="(99) 9999-9999"/>
+
+                <p:outputLabel for="celular" value="Celular:" />
+                <p:inputMask id="celular" value="#{controladora.clientesel.celular}" mask="(99) 99999-9999"/>
+
+                <p:outputLabel for="cpf" value="CPF:" />
+                <p:inputMask id="cpf" value="#{controladora.clientesel.cpf}" mask="999.999.999-99"/>
+
+                <p:commandButton value="Saver" action="#{controladora.salvar}" ajax="false"/>
+                <p:commandButton value="Enviar" update="display" oncomplete="PF('dlg').show()"/>
+                
+            </h:panelGrid>
+
+            <p:dialog widgetVar="dlg" modal="true" resizable="false" header="Dados" showEffect="fade"> 
+                <p:panelGrid id="display" columns="2" columnClasses="label,value">
+                    
+                    <h:outputText value="Nome: " />
+                    <h:outputText id="nomeValue" value="#{controladora.clientesel.nome}" />
+                    
+                    <h:outputText value="Data de nascimento: " />
+                    <h:outputText id="dtNascimentoValue" value="#{controladora.clientesel.dtNascimento}" />
+                    
+                    <h:outputText value="CEP: " />
+                    <h:outputText id="cepValue" value="#{controladora.endsel.cep}" />
+                    
+                    <h:outputText value="Endereço: " />
+                    <h:outputText id="enderecoValue" value="#{controladora.endsel.rua}" />
+
+                    <h:outputText value="Telefone residencial: " />
+                    <h:outputText id="telefoneResValue" value="#{controladora.clientesel.telefoneRes}" />
+
+                    <h:outputText value="Telefone comercial: " />
+                    <h:outputText id="telefoneComValue" value="#{controladora.clientesel.telefoneCom}"/>
+
+                    <h:outputText value="Celular: " />
+                    <h:outputText id="celularValue" value="#{controladora.clientesel.celular}" />
+
+                    <h:outputText value="CPF: " />
+                    <h:outputText id="cpfValue" value="#{controladora.clientesel.cpf}" />
+
+                    
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
     </h:body>
 </html>
-

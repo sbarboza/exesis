@@ -68,7 +68,6 @@ public abstract class AbstractDAOPostGreSQL implements IDAO{
 			
 			if(connection == null || connection.isClosed()){
 				connection = Conexao.getConnection();				
-                                System.out.println("CONEXÃO OK!");
                         }
 		} catch (ClassNotFoundException e) {
 			System.out.println("CONEXÃO FAILED - ClassNotFoundException!");

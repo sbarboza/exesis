@@ -15,7 +15,10 @@ import exesis.model.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -79,15 +82,14 @@ public class ProfessorDAO extends AbstractDAOPostGreSQL{
     @Override
     public Resultado alterar(EntidadeDominio entidade) {
         Resultado resultado = Resultado.getResultado();
-        System.out.println("ALTERAR - PROFESSOR");
         PreparedStatement pst=null;
         StringBuilder sql= new StringBuilder();
         Professor professor = (Professor) entidade;
         IDAO dao = new UsuarioDAO();
-        
         try {
                 openConnection();
                 ctrlTransaction = false;
+                connection.setAutoCommit(false);
                 resultado = dao.alterar(professor.getUsuario());
                 sql.append("UPDATE ");
                 sql.append(table);
@@ -96,7 +98,6 @@ public class ProfessorDAO extends AbstractDAOPostGreSQL{
                 sql.append(" = ");
                 sql.append(professor.getUsuario().getId());
                 sql.append(";");
-                System.out.println(sql.toString());
                 pst = connection.prepareStatement(sql.toString());
                 pst.setString(1, professor.getNome());
                 pst.setString(2, professor.getSobrenome());
@@ -105,7 +106,7 @@ public class ProfessorDAO extends AbstractDAOPostGreSQL{
                 pst.setString(5, professor.getTelefone());
                 pst.setString(6, professor.getInformacoesAdicionais());
                 pst.executeUpdate();
-                System.out.println(sql.toString());
+                System.out.println(pst.toString());
                 ctrlTransaction = true;
                 connection.commit();
         } catch (SQLException e) {
@@ -172,44 +173,65 @@ public class ProfessorDAO extends AbstractDAOPostGreSQL{
     
     @Override
     public Resultado consultar(EntidadeDominio entidade) {
-        System.out.println("PROFESSOR");
+        boolean where = false;
         Resultado resultado = Resultado.getResultado();
         PreparedStatement pst = null;
         StringBuilder sql = new StringBuilder();
         Professor professor = (Professor) entidade;
+        Usuario usuario;
+        Map<Integer, Professor> listaProfessores = new HashMap<Integer, Professor>();
         IDAO dao = new UsuarioDAO();
         try {
                 resultado = dao.consultar(professor.getUsuario());
-                if(!resultado.getEntidades().isEmpty()){
-                    professor.setUsuario((Usuario) resultado.getEntidades().get(0));
-                    System.out.println("USUARIO");
-                }
-                else
-                    professor.setUsuario(new Usuario());
+                for(EntidadeDominio e: resultado.getEntidades()){
+                    usuario = (Usuario) e;
+                    Professor p = new Professor();
+                    p.setUsuario(usuario);
+                    listaProfessores.put(e.getId(), p);
+                    }
                 openConnection();
                 sql.append("SELECT * FROM ");
                 sql.append(table);                
-                sql.append(" WHERE ");
-                sql.append(idTable);
-                sql.append(" = ");
-                sql.append(professor.getUsuario().getId());
+                for(Professor p: listaProfessores.values()){
+                    sql.append(where? " OR " : " WHERE ");
+                    sql.append(idTable);
+                    sql.append(" = ");
+                    sql.append(p.getUsuario().getId());
+                    where = true;
+                }
+                if(professor.getNome()!= null && professor.getNome().trim().length() != 0){
+                    sql.append(where? " OR " : " WHERE ");
+                    sql.append(" nome = '");
+                    sql.append(professor.getNome());
+                    sql.append("'");
+                }
                 sql.append(";");
                 pst = connection.prepareStatement(sql.toString());
                 ResultSet rs = pst.executeQuery();
                 resultado.getEntidades().clear();
                 while(rs.next()){
-                    professor.setDataNascimento(rs.getString("dataNascimento"));
-                    professor.setId(rs.getInt(idTable));
-                    professor.setInformacoesAdicionais(rs.getString("informacoesAdicionais"));
-                    professor.setNome(rs.getString("nome"));
-                    professor.setSexo(rs.getString("sexo"));
-                    professor.setSobrenome(rs.getString("sobrenome"));
-                    professor.setTelefone(rs.getString("telefone"));
-                    resultado.getEntidades().add(professor);
+                    for(Professor p: listaProfessores.values()){
+                            if(p.getUsuario().getId() == rs.getInt(idTable)){
+                                professor = listaProfessores.get(rs.getInt(idTable));
+                                professor.setDataNascimento(rs.getString("dataNascimento"));
+                                professor.setId(rs.getInt(idTable));
+                                professor.setInformacoesAdicionais(rs.getString("informacoesAdicionais"));
+                                professor.setNome(rs.getString("nome"));
+                                professor.setSexo(rs.getString("sexo"));
+                                professor.setSobrenome(rs.getString("sobrenome"));
+                                professor.setTelefone(rs.getString("telefone"));
+                                resultado.getEntidades().add(professor);
+                            }
+                    }
                 }
+                
+                System.out.println(pst.toString());
+                System.out.println(sql.toString());
         } catch (SQLException e) {
             e.printStackTrace();			
         }
+        
         return resultado;
     }
+
 }
