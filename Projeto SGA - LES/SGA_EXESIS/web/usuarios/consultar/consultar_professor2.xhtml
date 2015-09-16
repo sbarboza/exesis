@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Consultar professor</title>
+    </h:head>
+    <h:body>
+<h:form>  
+   <p:menubar>
+        <p:menuitem action="/index.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+        <p:submenu label="Usuários" icon="ui-icon-person">
+            <p:submenu label="Novo" icon="ui-icon-plus">
+                <p:menuitem value="Professor" action="/usuarios/novo/novo_professor.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+               <p:menuitem value="Aluno" action="/usuarios/novo/novo_aluno.xhtml" ajax="false" immediate="true" />
+            </p:submenu>
+            <p:submenu label="Consultar" icon="ui-icon-search">
+                <p:menuitem value="Professor" action="/usuarios/consultar/consultar_professor.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                <p:menuitem value="Aluno" action="/usuarios/consultar/consultar_aluno.xhtml" ajax="false"  immediate="true"/>
+            </p:submenu>
+        </p:submenu>
+        <p:submenu label="Instituição" icon="ui-icon-pencil">
+            <p:submenu label="Novo" icon="ui-icon-contact">
+                <p:menuitem value="Disciplina" url="#" />
+                <p:menuitem value="Turma" url="#" />
+            </p:submenu>
+            <p:submenu label="Consultar" icon="ui-icon-contact">
+                <p:menuitem value="Disciplina" url="#" />
+                <p:menuitem value="Turma" url="#" />
+            </p:submenu>
+        </p:submenu>
+        <p:submenu label="Atividades" icon="ui-icon-pencil">
+            <p:submenu label="Novo" icon="ui-icon-contact">
+                <p:menuitem value="Exercício" url="#" />
+                <p:menuitem value="Avaliação" url="#" />
+            </p:submenu>
+            <p:submenu label="Consultar" icon="ui-icon-contact">
+                <p:menuitem value="Exercício" url="#" />
+                <p:menuitem value="Avaliação" url="#" />
+            </p:submenu>
+            <p:separator/>
+            <p:menuitem value="Gerar avaliação" url="#" />
+            <p:menuitem value="Avaliações criadas" url="#" />
+            <p:menuitem value="Disponibilizar avaliação" url="#" />
+            
+        </p:submenu> 
+        <p:submenu label="Relatórios" icon="ui-icon-help">
+           
+        </p:submenu>
+        <p:submenu label="Configurações" icon="ui-icon-gear">
+            <p:menuitem value="Notificações" icon="ui-icon-contact"/>
+            <p:menuitem value="Método de Avaliação" icon="ui-icon-contact"/>
+        </p:submenu>
+        <f:facet name="options">
+            <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
+        </f:facet>
+    </p:menubar>
+    
+    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+    </h:form>
+    <h:form style="position: relative ; top: 60px; left: 35%; vertical-align: middle; width: 40%">
+        <h:panelGrid columns="2" cellspacing="8" >
+        <p:inputText value="#{professorBean.busca}" label="Busca"  />
+        <p:commandButton value="Buscar" icon="ui-icon-search" action="#{professorBean.consultar}" ajax="false"/>
+        </h:panelGrid>
+        
+   </h:form>
+    <h:form style="position: relative ; top: 60px; left: 30%; vertical-align: middle; width: 40%">
+        <p:dataList value="#{professorBean.listaProfessor}" var="p" type="unordered" itemType="none" paginator="true" rows="10" styleClass="paginated">
+            <f:facet name="header">
+                Professores
+            </f:facet>
+            <p:commandLink value="#{p.nome}" actionListener="#{professorBean.consultar(p.usuario.id)}" ajax="false"/>
+    </p:dataList>
+    </h:form>
+</h:body>
+</html>
+
+
