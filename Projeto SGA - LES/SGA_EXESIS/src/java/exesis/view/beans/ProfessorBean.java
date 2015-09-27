@@ -10,7 +10,6 @@ import exesis.core.control.Fachada;
 import exesis.model.EntidadeDominio;
 import exesis.model.Professor;
 import exesis.model.Usuario;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -28,8 +27,8 @@ public class ProfessorBean extends AbstractBean{
     private String busca = "";
     
     public ProfessorBean(){    
-        professor = (Professor) context.getBean("professor");
-        usuario = (Usuario) context.getBean("usuario");
+        professor = (Professor) contexto.getBean("professor");
+        usuario = (Usuario) contexto.getBean("usuario");
     }
 
     public String getBusca() {

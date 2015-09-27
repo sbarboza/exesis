@@ -11,11 +11,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class AbstractBean {
     protected Resultado resultado;
-    protected AnnotationConfigApplicationContext context;
+    protected AnnotationConfigApplicationContext contexto;
     protected IFachada fachada;
     protected boolean renderizarCampos;
     public AbstractBean() {
-        context = new AnnotationConfigApplicationContext("exesis");
+        contexto = new AnnotationConfigApplicationContext("exesis");
         renderizarCampos = Boolean.FALSE;
     }
     
@@ -38,11 +38,11 @@ public class AbstractBean {
     }
 
     public AnnotationConfigApplicationContext getContext() {
-        return context;
+        return contexto;
     }
 
     public void setContext(AnnotationConfigApplicationContext context) {
-        this.context = context;
+        this.contexto = context;
     }
 
     public IFachada getFachada() {

@@ -59,7 +59,7 @@ public class TesteHibernate {
         usuario.setEmail("samuel.barboza@live.com");
         usuario.setPerfilAcesso(1);
         usuario.setDtCadastro(new Date());
-        usuario.setSenha("");
+        usuario.setSenha("senha");
         professor.setNome("Samuel");
         professor.setSobrenome("de Oliveira Barboza");
         professor.setDataNascimento("08/11/1995");

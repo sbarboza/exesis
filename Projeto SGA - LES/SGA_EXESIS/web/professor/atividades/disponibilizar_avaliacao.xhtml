@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Disponibilizar Avaliação</title>
+    </h:head>
+    <h:body>
+<h:form>  
+    <p:menubar>
+        <p:menuitem action="/professor.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+        <p:submenu label="Usuários" icon="ui-icon-person">
+            <p:submenu label="Consultar" icon="ui-icon-search">
+                <p:menuitem value="Aluno" action="/admin/usuarios/consultar/consultar_aluno.xhtml" icon="ui-icon-person" ajax="false" immediate="true" />
+                <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/consultar/consultar_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+            </p:submenu>
+        </p:submenu>
+        <p:submenu label="Atividades" icon="ui-icon-pencil">
+            <p:submenu label="Novo" icon="ui-icon-contact">
+                <p:menuitem value="Exercício" action="/professor/atividades/novo/novo_exercicio.xhtml" ajax="false" immediate="true" />
+                <p:menuitem value="Avaliação" url="#" />
+            </p:submenu>
+            <p:submenu label="Consultar" icon="ui-icon-contact">
+                <p:menuitem value="Exercício" url="#" />
+                <p:menuitem value="Avaliação" url="#" />
+            </p:submenu>
+            <p:separator/>
+            <p:menuitem value="Gerar avaliação" url="#" />
+            <p:menuitem value="Disponibilizar avaliação" url="#" />
+            
+        </p:submenu> 
+        <p:menuitem value="Relatórios" icon="ui-icon-signal"/>
+        <p:submenu label="Configurações" icon="ui-icon-gear">
+            <p:menuitem value="Notificações" icon="ui-icon-contact"/>
+        </p:submenu>
+        <f:facet name="options">
+            <p:commandButton type="button" value="Sair" icon="ui-icon-extlink" />
+        </f:facet>
+    </p:menubar>
+</h:form>
+<h:form>
+    <p:panel header="Novo exercício" >
+         <h:panelGrid  columns="6" cellpadding="10">
+             <h:outputText value="Turma: " />  
+             <p:selectOneMenu id="turma" value="#{avaliacaoBean.avaliacao.turma}">
+                <f:selectItem itemLabel="Selecione a turma" noSelectionOption="true" />
+                <f:selectItems value="#{avaliacaoBean.turmas}" />
+            </p:selectOneMenu>
+             <h:outputText value="Avaliação: " />  
+             <p:selectOneMenu id="periodo" value="#{avaliacaoBean.avaliacao.nome}">
+                <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"></f:selectItem>                        
+                <f:selectItems value="#{avaliacaoBean.listas}" />
+             </p:selectOneMenu>
+            <h:outputText value="Prazo: " />  
+            <p:calendar id="datetime" value="#{avaliacaoBean.avaliacao.prazo}" pattern="MM/dd/yyyy HH:mm:ss" />
+             <p:commandButton id="btn_add" value="Adicionar" update="tabela @parent" action="#{avaliacaoBean.reinit}" >
+                <p:collector value="#{avaliacaoBean.avaliacao}" addTo="#{avaliacaoBean.avaliacoes}" unique="true"/>
+            </p:commandButton>
+         </h:panelGrid>
+    </p:panel>
+    <p:outputPanel id="disciplinas">
+        <p:dataTable value="#{avaliacaoBean.avaliacoes}" var="valor" id="tabela" >
+ 
+            <p:column headerText="Prazo">
+                <p:calendar readonlyInput="true" disabled="true" readonly="true" id="prazo" value="#{valor.prazo}" pattern="MM/dd/yyyy HH:mm:ss" />
+            </p:column>
+ 
+            <p:column headerText="Turma">
+                <h:outputText value="#{valor.turma}" />
+            </p:column>
+ 
+            <p:column headerText="Avaliação">
+                <h:outputText value="#{valor.nome}" />
+            </p:column>
+ 
+            <p:column headerText="Ação">
+                <p:commandLink value="Remove" update="tabela" process="tabela">
+                    <p:collector value="#{valor}" removeFrom="#{avaliacaoBean.avaliacoes}" unique="true"/>
+                </p:commandLink>
+            </p:column>
+            
+        </p:dataTable>
+    </p:outputPanel>
+    
+</h:form>
+    </h:body>
+</html>
+
+

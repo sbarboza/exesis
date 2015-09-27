@@ -21,10 +21,10 @@ import org.hibernate.cfg.Configuration;
  */
 public class HibernateDAO implements IDAO{
     protected boolean ctrlTransation = true;
-    private Transaction tx;
-    private Session session;
-    private Configuration cfg;
-    private SessionFactory sf;
+    protected Transaction tx;
+    protected Session session;
+    protected Configuration cfg;
+    protected SessionFactory sf;
     protected Resultado resultado;
     
 

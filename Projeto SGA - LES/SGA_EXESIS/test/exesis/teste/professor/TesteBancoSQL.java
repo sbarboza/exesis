@@ -1,13 +1,15 @@
 
 package exesis.teste.professor;
+
 import exesis.core.aplicacao.Resultado;
 import exesis.core.control.Fachada;
 import exesis.core.control.IFachada;
 import exesis.core.dao.IDAO;
-import exesis.core.dao.sql.impl.ProfessorDAO;
+import exesis.core.dao.hibernate.ProfessorHibernate;
 import exesis.model.Professor;
 import exesis.model.Usuario;
 import java.util.Date;
+
 
 public class TesteBancoSQL {
     
@@ -17,7 +19,7 @@ public class TesteBancoSQL {
     }
     public  static void testeDAOProfessor(){
         
-        IDAO dao = new ProfessorDAO();
+        IDAO dao = new ProfessorHibernate();
         Professor professor = new Professor();
         Usuario usuario = new Usuario();
         

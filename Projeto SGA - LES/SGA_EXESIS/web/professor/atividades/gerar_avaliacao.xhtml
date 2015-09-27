@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Gerar Avaliação</title>
+    </h:head>
+    <h:body>
+<h:form>  
+    <p:menubar>
+        <p:menuitem action="/professor.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+        <p:submenu label="Usuários" icon="ui-icon-person">
+            <p:submenu label="Consultar" icon="ui-icon-search">
+                <p:menuitem value="Aluno" action="/admin/usuarios/consultar/consultar_aluno.xhtml" icon="ui-icon-person" ajax="false" immediate="true" />
+                <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/consultar/consultar_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+            </p:submenu>
+        </p:submenu>
+        <p:submenu label="Atividades" icon="ui-icon-pencil">
+            <p:submenu label="Novo" icon="ui-icon-contact">
+                <p:menuitem value="Exercício" action="/professor/atividades/novo/novo_exercicio.xhtml" ajax="false" immediate="true" />
+                <p:menuitem value="Avaliação" url="#" />
+            </p:submenu>
+            <p:submenu label="Consultar" icon="ui-icon-contact">
+                <p:menuitem value="Exercício" url="#" />
+                <p:menuitem value="Avaliação" url="#" />
+            </p:submenu>
+            <p:separator/>
+            <p:menuitem value="Gerar avaliação" url="#" />
+            <p:menuitem value="Disponibilizar avaliação" url="#" />
+            
+        </p:submenu> 
+        <p:menuitem value="Relatórios" icon="ui-icon-signal"/>
+        <p:submenu label="Configurações" icon="ui-icon-gear">
+            <p:menuitem value="Notificações" icon="ui-icon-contact"/>
+        </p:submenu>
+        <f:facet name="options">
+            <p:commandButton type="button" value="Sair" icon="ui-icon-extlink" />
+        </f:facet>
+    </p:menubar>
+</h:form>
+<h:form>
+      
+    <p:panel id="horizontal" header="Configurações" toggleable="true" toggleOrientation="vertical"  >
+        <h:panelGrid columns="2" cellpadding="10">
+            <h:outputText value="Quantidade de exercícios: " />  
+            <p:spinner id="minMax" value="#{avaliacaoBean.quantidade}" maxlength="2" max="20" size="6"  />
+        </h:panelGrid>
+    </p:panel>
+    <p:panel header="Novo exercício" >
+         <h:panelGrid  columns="4" cellpadding="10">
+             <h:outputText value="Título da Avaliação " />  
+             <p:inputText id="nome" value="#{avaliacaoBean.nome}" size="39"  />
+             <h:outputText value="Categoria: " />  
+            <h:selectOneMenu id="periodo" value="#{avaliacaoBean}" label="Tipo da avaliação: " required="true">
+                <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"></f:selectItem>                        
+                         <f:selectItem itemLabel="Prova Final" itemValue="1" ></f:selectItem>                        
+                         <f:selectItem itemLabel="Avaliação Bimestral" itemValue="2" ></f:selectItem>
+                         <f:selectItem itemLabel="Lista semanal" itemValue="3" ></f:selectItem>                        
+                         <f:selectItem itemLabel="Lista de treino" itemValue="4" ></f:selectItem>                        
+            </h:selectOneMenu>
+            <h:outputText value="Palavras-chave:" />
+            <p:autoComplete id="keys" multiple="true" value="#{exercicioBean.keywordsSelected}" completeMethod="#{exercicioBean.completeKeywors}" var="key" itemLabel="#{key}" itemValue="#{key}">
+                <p:column>
+                    <h:outputText value="#{key}" />
+                </p:column>
+            </p:autoComplete>
+            <p:commandButton value="Gerar lista" />
+                
+         </h:panelGrid>
+    </p:panel>
+    
+    
+</h:form>
+    </h:body>
+</html>
+

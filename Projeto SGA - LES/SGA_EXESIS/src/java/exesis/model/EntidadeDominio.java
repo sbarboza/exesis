@@ -14,9 +14,10 @@ import javax.persistence.TemporalType;
 public class EntidadeDominio implements Serializable{
 	@Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int id; 
+        protected int id; 
 	@Temporal(TemporalType.DATE)
-        private Date dtCadastro;
+        protected Date dtCadastro;
+        
 
     public int getId() {
         return id;

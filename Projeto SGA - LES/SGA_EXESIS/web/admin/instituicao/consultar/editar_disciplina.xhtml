@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Consultar Disciplina</title>
+    </h:head>
+    <h:body>
+<h:form>  
+    <p:growl id="messages"/>
+    <p:menubar>
+        <p:menuitem action="/admin.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+        <p:submenu label="Usuários" icon="ui-icon-person">
+            <p:submenu label="Novo" icon="ui-icon-plus">
+                <p:menuitem value="Administrador" action="/admin/usuarios/novo/novo_admin.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                <p:menuitem value="Aluno" action="/admin/usuarios/novo/novo_aluno.xhtml" icon="ui-icon-person"  ajax="false" immediate="true" />
+                <p:menuitem value="Professor" action="/admin/usuarios/novo/novo_professor.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/novo/novo_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+            </p:submenu>
+            <p:submenu label="Consultar" icon="ui-icon-search">
+                <p:menuitem value="Administrador" action="/admin/usuarios/consultar/consultar_admin.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                <p:menuitem value="Aluno" action="/admin/usuarios/consultar/consultar_aluno.xhtml" icon="ui-icon-person" ajax="false" immediate="true" />
+                <p:menuitem value="Professor" action="/admin/usuarios/consultar/consultar_professor.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/consultar/consultar_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+            </p:submenu>
+        </p:submenu>
+        <p:submenu label="Instituição" icon="ui-icon-pencil">
+            <p:submenu label="Novo" icon="ui-icon-contact">
+                <p:menuitem value="Disciplina" action="/admin/instituicao/novo/nova_disciplina.xhtml" ajax="false" immediate="true"/>
+                <p:menuitem value="Turma" action="/admin/instituicao/novo/nova_turma.xhtml" ajax="false" immediate="true"  />   
+            </p:submenu>
+            <p:submenu label="Consultar" icon="ui-icon-contact">
+                <p:menuitem value="Disciplina" url="#" />
+                <p:menuitem value="Turma" url="#" />
+            </p:submenu>
+        </p:submenu>
+        <p:menuitem value="Relatórios" icon="ui-icon-signal"/>
+        <p:submenu label="Configurações" icon="ui-icon-gear">
+            <p:menuitem value="Notificações" icon="ui-icon-contact"/>
+        </p:submenu>
+        <f:facet name="options">
+            <p:commandButton type="button" value="Sair" icon="ui-icon-extlink" />
+        </f:facet>
+    </p:menubar>
+</h:form >
+<h:form style="position: relative; left: 25%; top: 50px; right: 25%; width:  50%;vertical-align: middle">
+        
+    <p:panel class="ui-grid"  header="Professores da Disciplina:">
+        
+        
+            <p:outputLabel>Disciplina</p:outputLabel>
+            <p:inputText placeholder="Nome da Disciplina" id="nome" value="#{disciplinaBean.disciplina.nome}"></p:inputText>
+            <p:pickList  id="PojoPickList" value="#{disciplinaBean.professores}" var="professor" effect="bounce"
+                         itemValue="#{professor}" itemLabel="#{professor.nome}" 
+                         showCheckbox="true" showSourceControls="true" showTargetControls="true"
+                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >
+
+            <f:facet name="sourceCaption">Professores Cadastrados</f:facet>
+            <f:facet name="targetCaption">Professores Alocados</f:facet>
+
+
+
+            <p:column  style="width:100%;">
+                <h:outputText value="#{professor.nome}" />
+            </p:column>
+
+            </p:pickList>
+            
+        </p:panel>
+
+        </h:form>
+    </h:body>
+</html>
+

@@ -5,11 +5,12 @@ import exesis.core.aplicacao.Resultado;
 import exesis.core.control.Fachada;
 import exesis.core.control.IFachada;
 import exesis.core.dao.IDAO;
-import exesis.core.dao.sql.impl.AlunoDAO;
+import exesis.core.dao.hibernate.AlunoHibernate;
 import exesis.model.Aluno;
 import exesis.model.EntidadeDominio;
 import exesis.model.Usuario;
 import java.util.Date;
+
 
 
 public class TesteAluno {
@@ -22,7 +23,7 @@ public class TesteAluno {
     // teste DAO - Funcionando
     public  static void testeDAOAluno(){
         
-        IDAO dao = new AlunoDAO();
+        IDAO dao = new AlunoHibernate();
         Aluno aluno = new Aluno();
         Usuario usuario = new Usuario();
         
@@ -98,7 +99,7 @@ public class TesteAluno {
     }
      
      public static void testeDAOConsultar(){
-        IDAO dao = new AlunoDAO();
+        IDAO dao = new AlunoHibernate();
         Aluno aluno = new Aluno();
         Usuario usuario = new Usuario();
         

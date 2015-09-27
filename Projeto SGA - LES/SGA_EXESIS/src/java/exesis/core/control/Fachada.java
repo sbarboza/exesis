@@ -2,7 +2,7 @@ package exesis.core.control;
 
 import exesis.core.aplicacao.Resultado;
 import exesis.core.dao.IDAO;
-import exesis.core.factory.factories.FactoryStrategy;
+import exesis.core.factory.FactoryStrategy;
 import exesis.core.strategy.IStrategy;
 import exesis.model.EntidadeDominio;
 import java.util.List;
