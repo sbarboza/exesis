@@ -57,13 +57,13 @@
         </p:outputPanel>
         <p:outputPanel style="margin-left: 30px;">            
                     <h:outputText value="Prefixo *" />
-                    <p:inputText id="prefixo" value="#{turmaBean.turma.prefixo}" required="false" label="Nome" maxlength="1"/>
+                    <p:inputText id="prefixo" value="#{turmaBean.turma.prefixo}" size="2" style="text-transform: uppercase" required="false" label="Nome" maxlength="1"/>
                     <p:message for="prefixo" display="text"/>
         </p:outputPanel>
         <p:outputPanel>
             <h:outputText value="Período :* " />
             <h:selectOneMenu id="periodo" value="#{turmaBean.turma.periodo}" label="Período: " required="false">
-                         <f:selectItem itemLabel="Selecione..." itemValue="" ></f:selectItem>                        
+                <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true" ></f:selectItem>                        
                          <f:selectItem itemLabel="Manhã" itemValue="1" ></f:selectItem>                        
                          <f:selectItem itemLabel="Tarde" itemValue="2" ></f:selectItem>
                          <f:selectItem itemLabel="Noite" itemValue="3" ></f:selectItem>                        
@@ -98,8 +98,7 @@
             <p:commandButton id="btn_add" value="Adicionar" update="tabela @parent" action="#{turmaBean.reinit}" >
                 <p:collector value="#{turmaBean.disciplinaProfessor}" addTo="#{turmaBean.lista}" unique="true"/>
             </p:commandButton>
-            <p:commandButton id="btn_reset" value="Limpar Seleção" type="reset"/>
-            <p:commandButton id="btn_salvar" value="Finalizar Cadastro" update="grid" icon="ui-icon-check" action="{DisciplinaBean.Salvar}" ajax="false"/>
+            <p:commandButton id="btn_salvar" value="Finalizar Cadastro" update="grid" icon="ui-icon-check" action="#{turmaBean.salvar}" ajax="false"/>
 
         </h:panelGrid>
     </p:panel>

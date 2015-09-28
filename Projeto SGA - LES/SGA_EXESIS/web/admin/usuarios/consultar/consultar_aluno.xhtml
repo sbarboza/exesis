@@ -27,8 +27,8 @@
         </p:submenu>
         <p:submenu label="Instituição" icon="ui-icon-pencil">
             <p:submenu label="Novo" icon="ui-icon-contact">
-                <p:menuitem value="Disciplina" url="#" />
-                <p:menuitem value="Turma" url="#" />
+                <p:menuitem value="Disciplina" action="/admin/instituicao/novo/nova_disciplina.xhtml" ajax="false" immediate="true"/>
+                <p:menuitem value="Turma" action="/admin/instituicao/novo/nova_turma.xhtml" ajax="false" immediate="true"  />
             </p:submenu>
             <p:submenu label="Consultar" icon="ui-icon-contact">
                 <p:menuitem value="Disciplina" url="#" />
@@ -40,10 +40,9 @@
             <p:menuitem value="Notificações" icon="ui-icon-contact"/>
         </p:submenu>
         <f:facet name="options">
-            <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
+            <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false"/>
         </f:facet>
     </p:menubar>
-    
 </h:form>
 <p:messages id="grownl" showDetail="true" autoUpdate="true" closable="true" />
 <h:form style="position: relative; left: 30%; top: 40px; width: 69%; vertical-align: middle" >

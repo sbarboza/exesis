@@ -21,6 +21,4 @@ public class ResponsavelAluno extends Pessoa{
         this.alunos = alunos;
     }
 
-   
-        
 }

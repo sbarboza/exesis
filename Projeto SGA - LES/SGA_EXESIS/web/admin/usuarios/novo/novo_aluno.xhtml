@@ -9,8 +9,7 @@
     </h:head>
     <h:body>
 <h:form>  
-    
-        <p:menubar>
+    <p:menubar>
         <p:menuitem action="/admin.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
         <p:submenu label="Usuários" icon="ui-icon-person">
             <p:submenu label="Novo" icon="ui-icon-plus">
@@ -41,7 +40,7 @@
             <p:menuitem value="Notificações" icon="ui-icon-contact"/>
         </p:submenu>
         <f:facet name="options">
-            <p:commandButton type="button" value="Sair" icon="ui-icon-extlink" action="#{usuarioBean.sair}" ajax="false" />
+            <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false"/>
         </f:facet>
     </p:menubar>
    
@@ -96,6 +95,7 @@
                     
         </h:panelGrid>
     <p:commandButton value="Salvar" update="grid" action="#{alunoBean.salvar}" ajax="false"/>
+    <p:commandButton value="Cancelar" actionListener="#{alunoBean.reset}" action="/admin.xhtml"  ajax="false" immediate="true"/>
    </h:form>
 </h:body>
 </html>

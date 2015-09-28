@@ -1,22 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package exesis.core.strategy;
 
 import exesis.core.aplicacao.Resultado;
+import exesis.model.Administrador;
+import exesis.model.Aluno;
 import exesis.model.EntidadeDominio;
 import exesis.model.Professor;
+import exesis.model.ResponsavelAluno;
 import exesis.model.Usuario;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author SAMUEL
- */
 public class ValidarEmail implements IStrategy{
 
     @Override
@@ -28,9 +21,22 @@ public class ValidarEmail implements IStrategy{
             Professor professor = (Professor) entidade;
             if(professor.getUsuario() != null)
                 usuario = professor.getUsuario();
+        }else if(entidade instanceof Aluno){
+            Aluno aluno = (Aluno) entidade;
+            if(aluno.getUsuario() != null)
+                usuario = aluno.getUsuario();
+        }else if(entidade instanceof Aluno){
+            ResponsavelAluno responsavel = (ResponsavelAluno) entidade;
+            if(responsavel.getUsuario() != null)
+                usuario = responsavel.getUsuario();
+        }else if(entidade instanceof Administrador){
+            Administrador administrador = (Administrador) entidade;
+            if(administrador.getUsuario() != null)
+                usuario = administrador.getUsuario();
         }else if(entidade instanceof Usuario){
             usuario = (Usuario) entidade;
-        }
+        }   
+        
         email = usuario.getEmail();
         
         

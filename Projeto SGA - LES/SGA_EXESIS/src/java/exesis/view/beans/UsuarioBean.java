@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 @ManagedBean
 @ViewScoped
 public class UsuarioBean extends AbstractBean{
+    private String nomeUsuario;
+    private String senhaUsuario;
     private Usuario usuario;
     
     public UsuarioBean(){
@@ -27,6 +29,8 @@ public class UsuarioBean extends AbstractBean{
     }
     
     public String entrar(){
+        usuario.setLogin(nomeUsuario);
+        usuario.setSenha(senhaUsuario);
         fachada = new Fachada();
         resultado = fachada.consultar(usuario);
         if(resultado.getEntidades().isEmpty()){
@@ -55,14 +59,35 @@ public class UsuarioBean extends AbstractBean{
             FacesContext context = FacesContext.getCurrentInstance();
             NavigationHandler navHandler = context.getApplication().getNavigationHandler();
             navHandler.handleNavigation(context, null , pagina);
+            usuario = null;
         }
         return null;
     }
     
     public String sair(){
+        HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        session.setAttribute("usuario", null);
         FacesContext context = FacesContext.getCurrentInstance();
-            NavigationHandler navHandler = context.getApplication().getNavigationHandler();
-            navHandler.handleNavigation(context, null , "login");
+        NavigationHandler navHandler = context.getApplication().getNavigationHandler();
+        navHandler.handleNavigation(context, null , "login");
+        usuario = null;
         return null;
     }
+
+    public String getNomeUsuario() {
+        return nomeUsuario;
+    }
+
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
+    }
+
+    public String getSenhaUsuario() {
+        return senhaUsuario;
+    }
+
+    public void setSenhaUsuario(String senhaUsuario) {
+        this.senhaUsuario = senhaUsuario;
+    }
+    
 }

@@ -7,14 +7,15 @@
     </h:head>
          
   <h:body>
+      <p:messages id="messages" showDetail="true" />
         <h:form style="position: relative; left: 35%; top: 35%; width: 30%; height: 30%;vertical-align: middle" >
-              <p:messages id="messages" />
+              
                 <p:panelGrid id="grid" columns="2"  >
                     <p:outputLabel for="nomeUsuario" value="Nome Usuário:" />
-                    <p:inputText id="nomeUsuario" value="#{usuarioBean.usuario.login}" />
+                    <p:inputText id="nomeUsuario"   value="#{usuarioBean.nomeUsuario}" />
                     
                     <p:outputLabel for="senha" value="Senha:" />
-                    <p:password id="senha" value="#{usuarioBean.usuario.senha}" />
+                    <p:password id="senha" value="#{usuarioBean.senhaUsuario}" />
                     
                     <p:commandButton value="Entrar" icon="ui-icon-star" action="#{usuarioBean.entrar}" ajax="false">
                     </p:commandButton>

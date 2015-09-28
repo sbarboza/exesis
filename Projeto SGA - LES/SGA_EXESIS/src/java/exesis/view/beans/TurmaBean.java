@@ -131,8 +131,11 @@ public class  TurmaBean extends AbstractBean implements Serializable{
         return null;
     }
     
-    public void atualizarLista(){
-        
+    public void salvar(){
+    }
+    
+    public void limpar(){
+        lista = new ArrayList<DisciplinaProfessor>();
     }
 
     public Map<String, String> getSeries() {

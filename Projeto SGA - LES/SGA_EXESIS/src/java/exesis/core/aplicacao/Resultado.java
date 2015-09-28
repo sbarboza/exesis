@@ -14,6 +14,7 @@ public class Resultado {
     public void zerar(){
         msgs = null;
         entidades = null;
+        resultadostatico = null;    
     }
     
     public static Resultado getResultado(){

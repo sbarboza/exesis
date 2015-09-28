@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Consultar professor</title>
+        <title>Consultar administrador</title>
     </h:head>
     <h:body>
 <h:form>  
@@ -49,28 +49,28 @@
     
     <h:panelGrid id="grid" columns="3"  cellpadding="5">
                     <h:outputText value="ID: *" />
-                    <p:inputText id="id" value="#{professorBean.professor.id}" label="ID" readonly="#{professorBean.renderizarCampos}" maxlength="5"/>
+                    <p:inputText id="id" value="#{administradorBean.administrador.id}" label="ID" readonly="#{administradorBean.renderizarCampos}" maxlength="5"/>
                     <p:message for="id" display="text"/>
                     
                     <h:outputText value="Nome: *" />
-                    <p:inputText id="nome" value="#{professorBean.professor.nome}" required="false" label="Nome" >
+                    <p:inputText id="nome" value="#{administradorBean.administrador.nome}" required="false" label="Nome" >
                     </p:inputText>
                     <p:message for="nome" display="text"/>
                     
                     <h:outputText value="Sobrenome: *" />
-                    <p:inputText id="sobrenome" value="#{professorBean.professor.sobrenome}" required="false" label="Sobrenome"/>
+                    <p:inputText id="sobrenome" value="#{administradorBean.administrador.sobrenome}" required="false" label="Sobrenome"/>
                     <p:message for="sobrenome" display="text" />
                     
                     <h:outputText value="Nome de usuário: *" />
-                    <p:inputText id="login" value="#{professorBean.usuario.login}" required="false" label="Nome de usuário"/>
+                    <p:inputText id="login" value="#{administradorBean.usuario.login}" required="false" label="Nome de usuário"/>
                     <p:message for="login" display="text"/>
                     
                     <h:outputText value="Data de nascimento: *" />
-                    <p:inputMask mask="99/99/9999" id="dataNascimento" value="#{professorBean.professor.dataNascimento}" required="false" label="Data de Nascimento"/>
+                    <p:inputMask mask="99/99/9999" id="dataNascimento" value="#{administradorBean.administrador.dataNascimento}" required="false" label="Data de Nascimento"/>
                     <p:message for="dataNascimento" display="text"/>
                     
                     <h:outputText value="Sexo: *" />
-                    <h:selectOneMenu id="sexo" value="#{professorBean.professor.sexo}" label="Sexo" required="false">
+                    <h:selectOneMenu id="sexo" value="#{administradorBean.administrador.sexo}" label="Sexo" required="false">
                         <f:selectItem itemLabel="Selecione..." itemValue="" ></f:selectItem>                        
                         <f:selectItem itemLabel="Masculino" itemValue="M" ></f:selectItem>                        
                         <f:selectItem itemLabel="Feminino" itemValue="F" ></f:selectItem>
@@ -78,21 +78,21 @@
                     <p:message id="valsexo" for="sexo" display="text"/>
                     
                     <h:outputText value="Email: *" />
-                    <p:inputText id="email" value="#{professorBean.usuario.email}" required="false" label="Email"/>
+                    <p:inputText id="email" value="#{administradorBean.usuario.email}" required="false" label="Email"/>
                     <p:message for="email" display="text"/>
                     
                     <h:outputText value="Telefone: " />
-                    <p:inputMask id="telefone" mask="(99) *9999-9999" value="#{professorBean.professor.telefone}"/>
+                    <p:inputMask id="telefone" mask="(99) *9999-9999" value="#{administradorBean.administrador.telefone}"/>
                     <p:message for="telefone" display="text"/>
                     
                     <h:outputText value="Informações adicionais: " />
-                    <p:inputText id="informacoes" value="#{professorBean.professor.informacoesAdicionais}"/>
+                    <p:inputText id="informacoes" value="#{administradorBean.administrador.informacoesAdicionais}"/>
                     <p:message for="informacoes" display="text"/>                    
         </h:panelGrid>
-    <p:commandButton value="Consultar" update="grid" icon="ui-icon-search" action="#{professorBean.consultar}" ajax="false"/>
-    <p:commandButton value="Alterar" update="grid" icon="ui-icon-arrowrefresh-1-e" action="#{professorBean.alterar}" ajax="false"/>
-    <p:commandButton value="Excluir" update="grid" icon="ui-icon-closethick" action="#{professorBean.excluir}" ajax="false"/>
-    <p:commandButton value="Limpar" update="grid" icon="ui-icon-trash" action="#{professorBean.limpar}" ajax="false"/>
+    <p:commandButton value="Consultar" update="grid" icon="ui-icon-search" action="#{administradorBean.consultar}" ajax="false"/>
+    <p:commandButton value="Alterar" update="grid" icon="ui-icon-arrowrefresh-1-e" action="#{administradorBean.alterar}" ajax="false"/>
+    <p:commandButton value="Excluir" update="grid" icon="ui-icon-closethick" action="#{administradorBean.excluir}" ajax="false"/>
+    <p:commandButton value="Limpar" update="grid" icon="ui-icon-trash" action="#{administradorBean.limpar}" ajax="false"/>
    </h:form>
 </h:body>
 </html>

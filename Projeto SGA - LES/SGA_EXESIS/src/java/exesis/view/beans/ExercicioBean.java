@@ -5,7 +5,6 @@
  */
 package exesis.view.beans;
 
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import exesis.model.Alternativa;
 import exesis.model.Exercicio;
 import exesis.model.MultiplaEscolha;

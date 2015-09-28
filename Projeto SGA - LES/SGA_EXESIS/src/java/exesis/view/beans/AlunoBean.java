@@ -81,7 +81,7 @@ public class AlunoBean extends AbstractBean{
             fachada = new Fachada();
             aluno.setUsuario(usuario);
             resultado = fachada.excluir(aluno);
-            if(!resultado.getMsgs().isEmpty()){
+            if(resultado.getMsgs().isEmpty()){
                Mensagem(FacesMessage.SEVERITY_INFO, "Operação realizada. ",  "Aluno excluído com sucesso!");
                limpar();
             }else{
@@ -106,6 +106,7 @@ public class AlunoBean extends AbstractBean{
         public void limpar() {
             aluno = new Aluno();
             usuario = new Usuario();
+            renderizarCampos = false;
         }
 }
 
