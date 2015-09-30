@@ -2,6 +2,7 @@ package exesis.view.beans;
 
 import exesis.core.control.Fachada;
 import exesis.model.Usuario;
+import exesis.teste.popularBanco.PopularBancoHibernate;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.bean.ManagedBean;
@@ -15,6 +16,7 @@ public class UsuarioBean extends AbstractBean{
     private String nomeUsuario;
     private String senhaUsuario;
     private Usuario usuario;
+    private PopularBancoHibernate popular;
     
     public UsuarioBean(){
         usuario = new Usuario();
@@ -73,6 +75,11 @@ public class UsuarioBean extends AbstractBean{
         usuario = null;
         return null;
     }
+    
+    public void teste(){
+        popular = new PopularBancoHibernate();
+        popular.popular(10);
+    }
 
     public String getNomeUsuario() {
         return nomeUsuario;
@@ -86,6 +93,14 @@ public class UsuarioBean extends AbstractBean{
         return senhaUsuario;
     }
 
+    
+    public PopularBancoHibernate getPopular() {
+        return popular;
+    }
+
+    public void setPopular(PopularBancoHibernate popular) {
+        this.popular = popular;
+    }
     public void setSenhaUsuario(String senhaUsuario) {
         this.senhaUsuario = senhaUsuario;
     }

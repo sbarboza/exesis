@@ -79,6 +79,7 @@ public class HibernateDAO implements IDAO{
             tx.rollback();
         }finally{
             session.close();
+            sf.close();
         }
         return resultado;
     }

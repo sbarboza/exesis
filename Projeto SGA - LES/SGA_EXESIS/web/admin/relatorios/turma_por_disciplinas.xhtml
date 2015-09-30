@@ -5,12 +5,12 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Principal</title>
+        <title>Relatório - Turma por disciplina</title>
     </h:head>
     <h:body>
 <h:form>  
-    <p:messages id="messages" />
-       <p:menubar>
+    <p:growl id="messages"/>
+            <p:menubar>
             <p:menuitem action="/admin.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
             <p:submenu label="Usuários" icon="ui-icon-person">
                 <p:submenu label="Novo" icon="ui-icon-plus">
@@ -47,8 +47,9 @@
                 <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false" immediate="true"/>
             </f:facet>
         </p:menubar>
-    
-</h:form>
+    </h:form >
+    <h:form style="position: relative;  top: 50px;vertical-align: middle; width: 90%" >
+        <p:chart type="bar" model="#{adminRelatorioBean.barraTurmaPorDisciplinas}" style="height:400px;"/>
+    </h:form>
     </h:body>
 </html>
-

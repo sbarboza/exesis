@@ -21,8 +21,8 @@ public class ProfessorBean extends AbstractBean{
     private String busca = "";
     
     public ProfessorBean(){    
-        professor = (Professor) contexto.getBean("professor");
-        usuario = (Usuario) contexto.getBean("usuario");
+        professor = new Professor();
+        usuario = new Usuario();
     }
 
     public String getBusca() {

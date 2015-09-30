@@ -8,8 +8,9 @@
          
   <h:body>
       <p:messages id="messages" showDetail="true" />
-        <h:form style="position: relative; left: 35%; top: 35%; width: 30%; height: 30%;vertical-align: middle" >
-              
+      
+      <h:form style="position: relative; left: 35%; top: 15%; width: 30%; height: 30%;vertical-align: middle" >
+            <center><p:graphicImage  value="/imagens/logo/logo2.jpg" alt="EXESIS" width="200"/>  </center>          
                 <p:panelGrid id="grid" columns="2"  >
                     <p:outputLabel for="nomeUsuario" value="Nome Usuário:" />
                     <p:inputText id="nomeUsuario"   value="#{usuarioBean.nomeUsuario}" />
@@ -19,8 +20,9 @@
                     
                     <p:commandButton value="Entrar" icon="ui-icon-star" action="#{usuarioBean.entrar}" ajax="false">
                     </p:commandButton>
-   
+                    <p:commandButton action="#{usuarioBean.teste}" value="POPULAR BANCO" ajax="false"/>
               </p:panelGrid>
+            
         </h:form>
   </h:body>
 </html>

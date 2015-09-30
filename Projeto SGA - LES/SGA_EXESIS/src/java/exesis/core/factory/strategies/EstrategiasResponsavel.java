@@ -5,6 +5,7 @@ import exesis.core.strategy.DefinirNivelAcesso;
 import exesis.core.strategy.IStrategy;
 import exesis.core.strategy.ValidarData;
 import exesis.core.strategy.ValidarEmail;
+import exesis.core.strategy.ValidarNomeUsuario;
 import exesis.core.strategy.ValidarNullResponsavel;
 import exesis.core.strategy.ValidarSenha;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class EstrategiasResponsavel extends FactoryStrategy{
                 estrategias.add(new ValidarNullResponsavel());
                 estrategias.add(new ValidarData());
                 estrategias.add(new ValidarEmail());
+                estrategias.add(new ValidarNomeUsuario());
                 break;
             case "EXCLUIR":
                 break;

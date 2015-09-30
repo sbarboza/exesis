@@ -16,5 +16,6 @@
     <mapping class="exesis.model.ResponsavelAluno"/>
     <mapping class="exesis.model.Pessoa"/>
     <mapping class="exesis.model.Administrador"/>
+   
   </session-factory>
 </hibernate-configuration>

@@ -6,16 +6,14 @@ import exesis.core.control.IFachada;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 public class AbstractBean {
     protected Resultado resultado;
-    protected AnnotationConfigApplicationContext contexto;
+
     protected IFachada fachada;
     protected boolean renderizarCampos;
     public AbstractBean() {
-        contexto = new AnnotationConfigApplicationContext("exesis");
         renderizarCampos = Boolean.FALSE;
     }
     
@@ -37,13 +35,6 @@ public class AbstractBean {
         this.resultado = resultado;
     }
 
-    public AnnotationConfigApplicationContext getContext() {
-        return contexto;
-    }
-
-    public void setContext(AnnotationConfigApplicationContext context) {
-        this.contexto = context;
-    }
 
     public IFachada getFachada() {
         return fachada;

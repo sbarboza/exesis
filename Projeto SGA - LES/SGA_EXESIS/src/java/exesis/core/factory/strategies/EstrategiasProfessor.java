@@ -10,6 +10,7 @@ import exesis.core.strategy.DefinirNivelAcesso;
 import exesis.core.strategy.IStrategy;
 import exesis.core.strategy.ValidarData;
 import exesis.core.strategy.ValidarEmail;
+import exesis.core.strategy.ValidarNomeUsuario;
 import exesis.core.strategy.ValidarNullProfessor;
 import exesis.core.strategy.ValidarSenha;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class EstrategiasProfessor extends FactoryStrategy{
                 estrategias.add(new ValidarNullProfessor());
                 estrategias.add(new ValidarData());
                 estrategias.add(new ValidarEmail());
+                estrategias.add(new ValidarNomeUsuario());
                 break;
             case "EXCLUIR":
                 break;

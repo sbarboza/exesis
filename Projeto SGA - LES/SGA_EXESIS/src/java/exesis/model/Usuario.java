@@ -1,6 +1,7 @@
 
 package exesis.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ public class Usuario extends EntidadeDominio{
     
    
     private String email;
+    @Column(unique = true)
     private String login;
     private String senha;
     private int perfilAcesso;
