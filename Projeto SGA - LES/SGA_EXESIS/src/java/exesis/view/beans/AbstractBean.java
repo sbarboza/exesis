@@ -3,12 +3,13 @@ package exesis.view.beans;
 
 import exesis.core.aplicacao.Resultado;
 import exesis.core.control.IFachada;
+import java.io.Serializable;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 
-public class AbstractBean {
+public class AbstractBean implements Serializable{
     protected Resultado resultado;
 
     protected IFachada fachada;

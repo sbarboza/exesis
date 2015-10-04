@@ -21,7 +21,7 @@ public class DisciplinaBean implements Serializable{
     private List<Professor> profCadastrados;
     private List<Professor> profAlocados;
     private Disciplina disciplina;
-
+    private List<Disciplina> listaDisciplinas;
     public DualListModel<Professor> getProfessores() {
         return professores;
     }
@@ -30,28 +30,46 @@ public class DisciplinaBean implements Serializable{
     public void init(){
         profAlocados = new ArrayList<Professor>();
         profCadastrados = new ArrayList<Professor>();
-        Professor prof = new Professor();
-        prof.setNome("João");
+        listaDisciplinas = new ArrayList<Disciplina>();
+        
+        Professor prof = new Professor("João");
         profCadastrados.add(prof);
         
-        Professor prof1 = new Professor();
-        prof1.setNome("Carlos");
+        Professor prof1 = new Professor("Carlos");
         profCadastrados.add(prof1);
         
-        Professor prof2 = new Professor();
-        prof2.setNome("Alberto");
+        Professor prof2 = new Professor("Alberto");
         profCadastrados.add(prof2);
         
-        Professor prof3 = new Professor();
-        prof3.setNome("Nobrega");
+        Professor prof3 = new Professor("Nobrega");
         profCadastrados.add(prof3);
         
-        Professor prof4 = new Professor();
-        prof4.setNome("Roberto");
+        Professor prof4 = new Professor("Roberto");
         profCadastrados.add(prof4);
+        
         professores = new DualListModel<>(profCadastrados, profAlocados);
+        
+        
+        listaDisciplinas.add(new Disciplina("Matemática"));
+        listaDisciplinas.add(new Disciplina("Português"));
+        listaDisciplinas.add(new Disciplina("Biologia"));
+        listaDisciplinas.add(new Disciplina("História"));
+        listaDisciplinas.add(new Disciplina("Geografia"));
     }
 
+    public void redirecionar(){
+            FacesContext context = FacesContext.getCurrentInstance();
+            NavigationHandler navHandler = context.getApplication().getNavigationHandler();
+            navHandler.handleNavigation(context, null , "/admin/instituicao/consultar/editar_disciplina.xhtml");
+    }
+    
+    public void editar(){
+        FacesContext context = FacesContext.getCurrentInstance();
+            NavigationHandler navHandler = context.getApplication().getNavigationHandler();
+            navHandler.handleNavigation(context, null , "/admin/instituicao/consultar/editar_disciplina.jsf");
+            
+    }
+    
     public List<Professor> getProfCadastrados() {
         return profCadastrados;
     }
@@ -76,11 +94,13 @@ public class DisciplinaBean implements Serializable{
         this.disciplina = disciplina;
     }
 
-    public void editar(){
-        FacesContext context = FacesContext.getCurrentInstance();
-            NavigationHandler navHandler = context.getApplication().getNavigationHandler();
-            navHandler.handleNavigation(context, null , "/admin/instituicao/consultar/editar_disciplina.jsf");
-            
+
+    public List<Disciplina> getListaDisciplinas() {
+        return listaDisciplinas;
+    }
+
+    public void setListaDisciplinas(List<Disciplina> listaDisciplinas) {
+        this.listaDisciplinas = listaDisciplinas;
     }
     
 }

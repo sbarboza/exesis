@@ -22,7 +22,7 @@ public class AvaliacaoBean extends AbstractBean{
     private List<Avaliacao> avaliacoes;
     @PostConstruct
     public void init(){
-        
+        quantidade = 1;
         listas = new HashMap<String, String>();
         turmas = new HashMap<String, String>();
         

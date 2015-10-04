@@ -9,12 +9,12 @@
     </h:head>
     <h:body>
 <h:form>  
-    <p:menubar>
+        <p:menubar>
         <p:menuitem action="/professor.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
         <p:submenu label="Usuários" icon="ui-icon-person">
             <p:submenu label="Consultar" icon="ui-icon-search">
-                <p:menuitem value="Aluno" action="/admin/usuarios/consultar/consultar_aluno.xhtml" icon="ui-icon-person" ajax="false" immediate="true" />
-                <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/consultar/consultar_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                <p:menuitem value="Aluno" action="/professor/usuarios/consultar/consultar_aluno.xhtml" icon="ui-icon-person" ajax="false" immediate="true" />
+                <p:menuitem value="Responsável do Aluno" action="/professor/usuarios/consultar/consultar_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
             </p:submenu>
         </p:submenu>
         <p:submenu label="Atividades" icon="ui-icon-pencil">
@@ -27,25 +27,31 @@
                 <p:menuitem value="Avaliação" url="#" />
             </p:submenu>
             <p:separator/>
-            <p:menuitem value="Gerar avaliação" url="#" />
-            <p:menuitem value="Disponibilizar avaliação" url="#" />
-            
+            <p:menuitem value="Gerar avaliação" action="/professor/atividades/gerar_avaliacao.xhtml" ajax="false" immediate="true" />
+            <p:menuitem value="Disponibilizar avaliação" action="/professor/atividades/disponibilizar_avaliacao.xhtml" ajax="false" immediate="true" />
         </p:submenu> 
-        <p:menuitem value="Relatórios" icon="ui-icon-signal"/>
+        <p:submenu label="Relatórios" icon="ui-icon-signal">
+                <p:menuitem value="Disciplina por turmas" action="/professor/relatorios/disciplinas_por_turma.xhtml" ajax="false" />
+                <p:menuitem value="Desempenho por conteúdo" action="/professor/relatorios/desempenho_por_conteudo.xhtml" ajax="false" />
+                <p:menuitem value="Turma X Aluno" action="/professor/relatorios/comparacao_turma_aluno.xhtml" ajax="false" />
+                <p:menuitem value="Desempenho dos alunos" action="/professor/relatorios/desempenho_alunos.xhtml" ajax="false" />
+            </p:submenu>
         <p:submenu label="Configurações" icon="ui-icon-gear">
-            <p:menuitem value="Notificações" icon="ui-icon-contact"/>
+            <p:menuitem value="Notificações" action="/professor/configuracoes/notificacoes.xhtml" ajax="false" />
+            <p:menuitem value="Método de Avaliação" action="/professor/configuracoes/metodos_avaliacao.xhtml" ajax="false" />
         </p:submenu>
         <f:facet name="options">
-            <p:commandButton type="button" value="Sair" icon="ui-icon-extlink" />
+            <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false"/>
         </f:facet>
     </p:menubar>
+
 </h:form>
 <h:form>
       
     <p:panel id="horizontal" header="Configurações" toggleable="true" toggleOrientation="vertical"  >
         <h:panelGrid columns="2" cellpadding="10">
             <h:outputText value="Quantidade de exercícios: " />  
-            <p:spinner id="minMax" value="#{avaliacaoBean.quantidade}" maxlength="2" max="20" size="6"  />
+            <p:spinner id="minMax" value="#{avaliacaoBean.quantidade}" maxlength="2" min="1" max="20" size="6"  />
         </h:panelGrid>
     </p:panel>
     <p:panel header="Novo exercício" >

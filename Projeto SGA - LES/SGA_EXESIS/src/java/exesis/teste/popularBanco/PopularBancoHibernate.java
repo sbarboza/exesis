@@ -31,7 +31,7 @@ public class PopularBancoHibernate {
             professor.setSexo("M");
             
             Usuario usuario = new Usuario();
-            usuario.setLogin("teste"+rand.nextInt(i+quantidade));
+            usuario.setLogin("professor"+i);
             usuario.setEmail("teste"+i+"@teste.com");
             usuario.setSenha("senha");
             
@@ -54,7 +54,7 @@ public class PopularBancoHibernate {
             aluno.setSexo("M");
             aluno.setMatricula("2015"+rand.nextInt(i+quantidade));
             Usuario usuario = new Usuario();
-            usuario.setLogin("teste"+rand.nextInt(i+quantidade));
+            usuario.setLogin("aluno"+i);
             usuario.setEmail("teste"+i+"@teste.com");
             usuario.setSenha("senha");
             aluno.setUsuario(usuario);
@@ -72,7 +72,7 @@ public class PopularBancoHibernate {
             admin.setTelefone("(11) 97334-3442");
             admin.setSexo("M");
             Usuario usuario = new Usuario();
-            usuario.setLogin("teste"+rand.nextInt(i+quantidade));
+            usuario.setLogin("admin"+i);
             usuario.setEmail("teste"+i+"@teste.com");
             usuario.setSenha("senha");
             admin.setUsuario(usuario);
@@ -91,7 +91,7 @@ public class PopularBancoHibernate {
             responsavel.setTelefone("(11) 97334-3442");
             responsavel.setSexo("M");
             Usuario usuario = new Usuario();
-            usuario.setLogin("teste"+rand.nextInt(i+quantidade));
+            usuario.setLogin("responsavel"+i);
             usuario.setEmail("teste"+i+"@teste.com");
             usuario.setSenha("senha");
             responsavel.setUsuario(usuario);

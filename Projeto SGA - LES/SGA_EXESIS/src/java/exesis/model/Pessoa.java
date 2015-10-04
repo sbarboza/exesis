@@ -11,15 +11,15 @@ import javax.persistence.OneToOne;
 
 @MappedSuperclass
 public class Pessoa extends EntidadeDominio{
-        private String nome;
-        private String sobrenome;
-        private String sexo;
-        private String dataNascimento;
-        private String telefone;
+        protected String nome;
+        protected String sobrenome;
+        protected String sexo;
+        protected String dataNascimento;
+        protected String telefone;
         @OneToOne(cascade = javax.persistence.CascadeType.ALL)
         @JoinColumn(name = "idUsuario")
-        private Usuario usuario;
-        private String informacoesAdicionais;
+        protected Usuario usuario;
+        protected String informacoesAdicionais;
 
     public String getNome() {
         return nome;

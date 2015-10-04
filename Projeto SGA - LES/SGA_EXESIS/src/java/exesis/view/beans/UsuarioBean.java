@@ -79,6 +79,7 @@ public class UsuarioBean extends AbstractBean{
     public void teste(){
         popular = new PopularBancoHibernate();
         popular.popular(10);
+        Mensagem(FacesMessage.SEVERITY_INFO, "Populado Banco", "Realizado o cadastro dos testes no banco");
     }
 
     public String getNomeUsuario() {

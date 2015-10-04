@@ -9,7 +9,6 @@
     </h:head>
     <h:body>
 <h:form>  
-    <p:messages id="messages" />
        <p:menubar>
             <p:menuitem action="/admin.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
             <p:submenu label="Usuários" icon="ui-icon-person">
@@ -32,23 +31,23 @@
                     <p:menuitem value="Turma" action="/admin/instituicao/novo/nova_turma.xhtml" ajax="false" immediate="true"  />
                 </p:submenu>
                 <p:submenu label="Consultar" icon="ui-icon-contact">
-                    <p:menuitem value="Disciplina" url="#" />
-                    <p:menuitem value="Turma" url="#" />
+                    <p:menuitem value="Disciplina" action="/admin/instituicao/consultar/consultar_disciplina.xhtml" ajax="false" immediate="true"/>
+                    <p:menuitem value="Turma" action="/admin/instituicao/consultar/consultar_turma.xhtml" ajax="false" immediate="true"  />
                 </p:submenu>
             </p:submenu>
             <p:submenu label="Relatórios" icon="ui-icon-signal">
-                <p:menuitem value="Turma por disciplinas" action="/admin/relatorios/turma_por_disciplinas.xhtml" ajax="false" />
+                <p:menuitem value="Turma por disciplinas" action="/admin/relatorios/turmas_por_disciplina.xhtml" ajax="false" />
                 <p:menuitem value="Disciplina por turmas" action="/admin/relatorios/disciplinas_por_turma.xhtml" ajax="false" />
             </p:submenu>
             <p:submenu label="Configurações" icon="ui-icon-gear">
-                <p:menuitem value="Notificações" icon="ui-icon-contact"/>
+                <p:menuitem value="Notificações" icon="ui-icon-contact" action="/admin/configuracoes/notificacoes.xhtml" ajax="false" />
             </p:submenu>
             <f:facet name="options">
                 <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false" immediate="true"/>
             </f:facet>
         </p:menubar>
-    
 </h:form>
+<p:messages id="grownl" showDetail="true" autoUpdate="true" closable="true" />
     </h:body>
 </html>
 

@@ -3,10 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Novo Exercício</title>
+        <title>Relatório - Desempenho dos alunos</title>
     </h:head>
     <h:body>
 <h:form>  
@@ -46,36 +45,13 @@
         </f:facet>
     </p:menubar>
 </h:form>
-        <h:form id="form">
-        <p:panel header="Novo exercício">
-        <p:panelGrid columns="2" >
-            <p:outputLabel value="Enunciado :* " />
-            <p:inputTextarea  cols="70" rows="4" placeholder="Insira o enunciado do exercício" />
-            <h:outputText value="Palavras-chave:" />
-            <p:autoComplete id="keys" multiple="true" 
-                            value="#{exercicioBean.keywordsSelected}" completeMethod="#{exercicioBean.completeKeywors}" var="key" 
-                            itemLabel="#{key}" itemValue="#{key}">
-            <p:column>
-                <h:outputText value="#{key}" />
-            </p:column>
-            </p:autoComplete>
-        </p:panelGrid>
-        </p:panel>
-        <p:panel header="Alternativas" >
-            <h:panelGrid columns="7" cellpadding="5">
-            <ui:repeat value="#{exercicioBean.multiplaescolha.alternativas}" var="alternativa" >
-                <p:selectBooleanCheckbox value="#{alternativa.resposta}" />
-                <h:inputText value="#{alternativa.descricao}" />
-                <p:commandLink value="Remover" update="form" process="form">
-                    <p:collector value="#{alternativa}" removeFrom="#{exercicioBean.multiplaescolha.alternativas}" unique="true"/>
-                </p:commandLink>
-            </ui:repeat>
-            <p:commandButton id="btn_add" value="Adicionar" update="form @parent">
-                <p:collector value="#{alternativa}" addTo="#{exercicioBean.multiplaescolha.alternativas}" unique="true"/>
-            </p:commandButton>
-            </h:panelGrid>
-        </p:panel>
-</h:form>
+<p:messages id="grownl" showDetail="true" autoUpdate="true" closable="true" />
+
+    <h:form style="position: relative;  top: 50px;vertical-align: middle; width: 95%; height: 90% ;">
+<!--        <p:selectOneButton>
+            <p:selectOneMenu value="relatorioBean."
+        </p:selectOneButton>-->
+        <p:chart type="bar" model="#{relatorioBean.barraComparacaoTurmaAluno}" responsive="true" />
+    </h:form>
     </h:body>
 </html>
-
