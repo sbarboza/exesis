@@ -22,7 +22,8 @@
     <mapping class="exesis.model.NotificacaoAdministrador"/>
     <mapping class="exesis.model.Dissertativo"/>
     <mapping class="exesis.model.Tag"/>
-    <mapping class="exesis.model.MultiplaEscolha"/>
-    <mapping class="exesis.model.Alternativa"/>   
+    <mapping class="exesis.model.Exercicio"/>
+<!--    <mapping class="exesis.model.MultiplaEscolha"/>
+-->    <mapping class="exesis.model.Alternativa"/>   
   </session-factory>
 </hibernate-configuration>

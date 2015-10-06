@@ -1,12 +1,8 @@
 package exesis.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 
-@Entity
-@Table(name = "tbExerciciosDissertativo")
-public class Dissertativo extends Exercicio{
+public class Dissertativo{
     private String resposta;
 
     public String getResposta() {

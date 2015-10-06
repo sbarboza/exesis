@@ -10,6 +10,7 @@ public class Tag extends EntidadeDominio{
     public Tag(String nome){
         this.nome = nome;
     }
+    
     private String nome;
 
     public String getNome() {

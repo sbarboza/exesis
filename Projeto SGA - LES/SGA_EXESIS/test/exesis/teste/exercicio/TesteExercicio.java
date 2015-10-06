@@ -2,19 +2,17 @@ package exesis.teste.exercicio;
 
 import exesis.core.control.Fachada;
 import exesis.model.Alternativa;
-import exesis.model.Dissertativo;
 import exesis.model.Exercicio;
-import exesis.model.MultiplaEscolha;
 import exesis.model.Tag;
 import java.util.ArrayList;
 
 public class TesteExercicio {
     public static void main(String[] args) {
-        cadastrarExercicio();
+        cadastrarExercicioAlternativas();
     }
     
     public static void cadastrarExercicio(){
-        Exercicio exercicio = new Dissertativo();
+        Exercicio exercicio = new Exercicio();
         exercicio.setEnunciado("novo testando o enunciado?");
         exercicio.setTags(new ArrayList<Tag>());
         exercicio.getTags().add(new Tag("Exercício"));
@@ -25,7 +23,7 @@ public class TesteExercicio {
     }
     
     public static void cadastrarExercicioAlternativas(){
-        MultiplaEscolha exercicio = new MultiplaEscolha();
+        Exercicio exercicio = new Exercicio();
         exercicio.setEnunciado("aaaaa testando o enunciado?");
         exercicio.setTags(new ArrayList<Tag>());
         exercicio.getTags().add(new Tag("Exercício"));
@@ -39,5 +37,4 @@ public class TesteExercicio {
         Fachada f = new Fachada();
         f.salvar(exercicio);
     }
-    
 }
