@@ -23,6 +23,7 @@ public class Fachada implements IFachada {
                 String nmClasse = entidade.getClass().getName();
 		resultado = executarRegras(entidade, "SALVAR");
 		if(resultado.getMsgs().isEmpty()){
+                        System.out.println(nmClasse);
 			IDAO dao = (IDAO) context.getBean(nmClasse);
                         resultado = dao.salvar(entidade);
 		}
@@ -40,12 +41,6 @@ public class Fachada implements IFachada {
                 }
 		return resultado;
 	}
-
-    /**
-     *
-     * @param entidade
-     * @return
-     */
     @Override
 	public Resultado excluir(EntidadeDominio entidade) {
 		Resultado resultado = Resultado.getResultado();

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package exesis.view.beans;
 
 import exesis.model.Alternativa;
@@ -14,10 +9,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-/**
- *
- * @author SAMUEL
- */
 @ManagedBean
 @ViewScoped
 public class ExercicioBean extends AbstractBean{
@@ -65,6 +56,15 @@ public class ExercicioBean extends AbstractBean{
         return filteredKeys;
     }
 
+    public void novaAlternativa(){
+        if(multiplaescolha != null)
+            if(multiplaescolha.getAlternativas() != null)
+                multiplaescolha.getAlternativas().add(new Alternativa());
+    }
+    
+    public void removerAlternativa(Alternativa alternativa){
+        multiplaescolha.getAlternativas().remove(alternativa);
+    }
     public List<String> getKeywordsSelected() {
         return keywordsSelected;
     }
@@ -89,16 +89,6 @@ public class ExercicioBean extends AbstractBean{
         this.quantidade = quantidade;
     }
     
-    
-
-//    public List<MultiplaEscolha> getMultiplaEscolha() {
-//        return multiplaEscolha;
-//    }
-//
-//    public void setMultiplaEscolha(List<MultiplaEscolha> multiplaEscolha) {
-//        this.multiplaEscolha = multiplaEscolha;
-//    }
-
     public MultiplaEscolha getMultiplaescolha() {
         return multiplaescolha;
     }

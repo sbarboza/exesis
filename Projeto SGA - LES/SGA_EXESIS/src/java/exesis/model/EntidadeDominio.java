@@ -2,6 +2,7 @@ package exesis.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,12 +13,17 @@ import javax.persistence.TemporalType;
 
 @MappedSuperclass
 public class EntidadeDominio implements Serializable{
-	@Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        protected int id; 
-	@Temporal(TemporalType.DATE)
-        protected Date dtCadastro;
-        
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name= "id")
+    protected int id; 
+    @Temporal(TemporalType.DATE)
+    protected Date dtCadastro;
+    
+    public EntidadeDominio(){
+        dtCadastro = new Date();
+    }
+
 
     public int getId() {
         return id;
@@ -27,7 +33,7 @@ public class EntidadeDominio implements Serializable{
         this.id = id;
     }
 
-    public Date getDtCadastro() {
+    public Date getDtCadastro() {        
         return dtCadastro = new Date();
     }
 

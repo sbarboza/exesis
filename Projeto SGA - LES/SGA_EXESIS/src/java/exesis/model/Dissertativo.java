@@ -1,11 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package exesis.model;
 
-public class Dissertativa {
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name = "tbExerciciosDissertativo")
+public class Dissertativo extends Exercicio{
     private String resposta;
 
     public String getResposta() {

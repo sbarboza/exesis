@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package exesis.core.dao.hibernate;
 
 import exesis.core.aplicacao.Resultado;
@@ -15,10 +10,6 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
-/**
- *
- * @author SAMUEL
- */
 public class HibernateDAO implements IDAO{
     protected boolean ctrlTransation = true;
     protected Transaction tx;

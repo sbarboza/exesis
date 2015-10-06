@@ -1,10 +1,26 @@
 package exesis.model;
 
-public class Alternativa extends EntidadeDominio{
-        private boolean resposta;
-        private String descricao;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-    public boolean isResposta() {
+@Entity
+@Table(name = "tbAlternativas")
+public class Alternativa extends EntidadeDominio{
+    private boolean resposta;
+    private String descricao;
+
+    public Alternativa(){}
+    public Alternativa(int hash){
+        this.id = hash;
+    }
+    public Alternativa(String descricao){
+        this.descricao = descricao;
+    }
+    public Alternativa(boolean resposta, String descricao){
+        this.descricao = descricao;
+        this.resposta = resposta;
+    }
+    public boolean getResposta() {
         return resposta;
     }
 

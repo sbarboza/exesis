@@ -61,18 +61,16 @@
             </p:autoComplete>
         </p:panelGrid>
         </p:panel>
-        <p:panel header="Alternativas" >
-            <h:panelGrid columns="7" cellpadding="5">
+        <p:panel id="panel" header="Alternativas" >
+            <h:panelGrid columns="1" cellpadding="5">
             <ui:repeat value="#{exercicioBean.multiplaescolha.alternativas}" var="alternativa" >
-                <p:selectBooleanCheckbox value="#{alternativa.resposta}" />
-                <h:inputText value="#{alternativa.descricao}" />
-                <p:commandLink value="Remover" update="form" process="form">
-                    <p:collector value="#{alternativa}" removeFrom="#{exercicioBean.multiplaescolha.alternativas}" unique="true"/>
-                </p:commandLink>
+                <p:outputPanel>
+                    <p:selectBooleanCheckbox value="#{alternativa.resposta}" />
+                    <h:inputText value="#{alternativa.descricao}" />
+                    <p:commandLink value="Remover" action="#{exercicioBean.removerAlternativa(alternativa)}" /> 
+                </p:outputPanel>
             </ui:repeat>
-            <p:commandButton id="btn_add" value="Adicionar" update="form @parent">
-                <p:collector value="#{alternativa}" addTo="#{exercicioBean.multiplaescolha.alternativas}" unique="true"/>
-            </p:commandButton>
+                <h:commandButton value="Adicionar" action="#{exercicioBean.novaAlternativa}" />
             </h:panelGrid>
         </p:panel>
 </h:form>

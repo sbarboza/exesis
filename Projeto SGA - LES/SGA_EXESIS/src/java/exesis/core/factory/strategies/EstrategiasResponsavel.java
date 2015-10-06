@@ -1,6 +1,7 @@
 package exesis.core.factory.strategies;
 
 import exesis.core.factory.FactoryStrategy;
+import exesis.core.strategy.ComplementarDtCadastro;
 import exesis.core.strategy.DefinirNivelAcesso;
 import exesis.core.strategy.IStrategy;
 import exesis.core.strategy.ValidarData;
@@ -18,6 +19,7 @@ public class EstrategiasResponsavel extends FactoryStrategy{
                 estrategias = new ArrayList<IStrategy>();
         switch(operacao.toUpperCase()){
             case "SALVAR":
+                estrategias.add(new ComplementarDtCadastro());
                 estrategias.add(new DefinirNivelAcesso());
                 estrategias.add(new ValidarSenha());
             case "ALTERAR":

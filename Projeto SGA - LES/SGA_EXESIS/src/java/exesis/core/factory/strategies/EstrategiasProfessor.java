@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package exesis.core.factory.strategies;
 
 import exesis.core.factory.FactoryStrategy;
+import exesis.core.strategy.ComplementarDtCadastro;
 import exesis.core.strategy.DefinirNivelAcesso;
 import exesis.core.strategy.IStrategy;
 import exesis.core.strategy.ValidarData;
@@ -21,6 +17,7 @@ public class EstrategiasProfessor extends FactoryStrategy{
         estrategias = new ArrayList<IStrategy>();
         switch(operacao.toUpperCase()){
             case "SALVAR":
+                estrategias.add(new ComplementarDtCadastro());
                 estrategias.add(new DefinirNivelAcesso());
                 estrategias.add(new ValidarSenha());
             case "ALTERAR":

@@ -1,18 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package exesis.model;
 
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 
+@MappedSuperclass
 public class Exercicio extends EntidadeDominio{
-    private String enunciado;
-    private double peso;
-    private double nota;
-    private List<String> tags;
-
+    protected String enunciado;
+    protected double peso;
+    protected double nota;
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "tbExerciciosTags", 
+        joinColumns = {@JoinColumn(name = "exercicio_id", referencedColumnName = "id")},   
+        inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")}
+    )
+    protected List<Tag> tags;
+    
     public String getEnunciado() {
         return enunciado;
     }
@@ -37,14 +44,14 @@ public class Exercicio extends EntidadeDominio{
         this.nota = nota;
     }
 
-    public List<String> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
+
     
-    
-	
+
 }

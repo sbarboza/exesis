@@ -88,18 +88,6 @@ public class ConteudoBean implements Serializable {
         this.selectedConteudos = selectedConteudos;
     }
      
-    public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Conteudo Selected", ((Conteudo) event.getObject()).getId());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
- 
-    public void onRowUnselect(UnselectEvent event) {
-        FacesMessage msg = new FacesMessage("Conteudo Unselected", ((Conteudo) event.getObject()).getId());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-    
-    
-    
         private StreamedContent file;
      
     public ConteudoBean() {        
