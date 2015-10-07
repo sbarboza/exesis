@@ -24,12 +24,11 @@ public class Exercicio extends EntidadeDominio{
     protected List<Tag> tags;
     
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "tbMulplicaEscolhaAlternativa", joinColumns = {
-        @JoinColumn(name = "id_multiplaEscolha", referencedColumnName = "id")},   
+    @JoinTable(name = "tbExercicioAlternativa", joinColumns = {
+        @JoinColumn(name = "id_exercicio", referencedColumnName = "id")},   
         inverseJoinColumns = {@JoinColumn(name = "id_alternativa", referencedColumnName = "id")}
     )
     private List<Alternativa> alternativas;
-    private String respostaDissertativa;
         
     public List<Alternativa> getAlternativas() {
         return alternativas;
@@ -71,15 +70,4 @@ public class Exercicio extends EntidadeDominio{
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
-
-    public String getRespostaDissertativa() {
-        return respostaDissertativa;
-    }
-
-    public void setRespostaDissertativa(String respostaDissertativa) {
-        this.respostaDissertativa = respostaDissertativa;
-    }
-
-    
-
 }

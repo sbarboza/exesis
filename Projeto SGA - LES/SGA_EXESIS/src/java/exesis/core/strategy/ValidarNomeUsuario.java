@@ -22,7 +22,9 @@ public class ValidarNomeUsuario implements IStrategy{
             Pessoa p = (Pessoa) entidade;
             resultado = dao.consultarLogin(p.getUsuario());
             if(resultado.getEntidades() != null && resultado.getEntidades().size() > 0)
-                resultado.setMsg("Usuário já cadastrado!");
+                if(entidade.getId() == 0 || ((Pessoa)entidade).getUsuario().getId() != resultado.getEntidades().get(0).getId()){
+                    resultado.setMsg("Usuário já cadastrado!");
+                }
         }
         
         return resultado;

@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name = "tbResponsavelAluno")
+@Table(name = "tbResponsaveisAlunos")
 @Component("responsavelAluno")
 public class ResponsavelAluno extends Pessoa{
         @OneToMany(mappedBy = "responsavel")
