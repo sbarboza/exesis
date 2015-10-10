@@ -1,10 +1,14 @@
 package exesis.view.beans;
 import exesis.core.control.Fachada;
 import exesis.model.Aluno;
+import exesis.model.EntidadeDominio;
 import exesis.model.Usuario;
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "alunoBean")
 @RequestScoped
@@ -12,6 +16,8 @@ public class AlunoBean extends AbstractBean{
     
     private Aluno aluno;
     private Usuario usuario;
+    private List<Aluno> listaAluno;
+    private String busca = "";
     
     public AlunoBean(){    
         aluno = new Aluno();
@@ -34,80 +40,95 @@ public class AlunoBean extends AbstractBean{
         this.usuario = usuario;
     }
     
-    public boolean isRenderizarCampos() {
-        return renderizarCampos;
-    }
-
-    public void setRenderizarCampos(boolean renderizarCampos) {
-        this.renderizarCampos = renderizarCampos;
-    }
     
     public void salvar(){
         fachada = new Fachada();
-        aluno.setUsuario(usuario);
+        renderizarCampos = Boolean.FALSE;
+        aluno.setUsuario(usuario);        
         resultado = fachada.salvar(aluno);
         if(!resultado.getMsgs().isEmpty())
-            Mensagem(FacesMessage.SEVERITY_WARN, "Preencha os campos corretamente!", "Campos: ".concat(resultado.getMsgs().toString()));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Para continuar o cadastro, preencha corretamente os seguintes campos: ", resultado.getMsgs().toString()));
         else{
-            Mensagem(FacesMessage.SEVERITY_INFO, "Operação realizada!", "O aluno " + aluno.getNome() + " " + aluno.getSobrenome() + " foi salvo com sucesso!");
-            aluno = new Aluno();
-            usuario = new Usuario();
+            if(aluno.getSexo().equals("F"))
+                Mensagem(FacesMessage.SEVERITY_INFO, "Salvo com sucesso",  "Os dados da aluna " + aluno.getNome() +" foram salvos com sucesso!");
+            else
+                Mensagem(FacesMessage.SEVERITY_INFO, "Salvo com sucesso",  "Os dados do aluno " + aluno.getNome() +" foram salvos com sucesso!");
+            reset();
         }
     }
     
-    public void buscar(){
-        consultar();
-        renderizarCampos = Boolean.FALSE;
+    public void alterar(){
+        fachada = new Fachada();
+        aluno.setUsuario(usuario);
+        usuario.setId(aluno.getId());
+        resultado = fachada.alterar(aluno);
+        if(!resultado.getMsgs().isEmpty())      
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Para continuar a atualização o cadastro, preencha corretamente os seguintes campos: ", resultado.getMsgs().toString()));
+        else{
+            if(aluno.getSexo().equals("F"))
+                Mensagem(FacesMessage.SEVERITY_INFO, "Alterado com sucesso",  "Os dados da aluna " + aluno.getNome() +" foram atualizados com sucesso!");
+            else
+                Mensagem(FacesMessage.SEVERITY_INFO, "Alterado com sucesso",  "Os dados do aluno " + aluno.getNome() +" foram atualizados com sucesso!");
+            reset();
+        }
     }
     
     public void consultar(){
+        renderizarCampos = Boolean.TRUE;
         fachada = new Fachada();
+        reset();
+        if(busca.trim().length() != 0){
+            aluno.setNome(busca);
+            aluno.setSobrenome(busca);
+            usuario.setEmail(busca);
+            usuario.setLogin(busca);
+        }
         aluno.setUsuario(usuario);
         resultado = fachada.consultar(aluno);
+        Aluno a;
         if(!resultado.getEntidades().isEmpty()){
-            renderizarCampos = Boolean.TRUE;
-            aluno = (Aluno) resultado.getEntidades().get(0);
-            usuario = aluno.getUsuario();
-            resultado.getEntidades().clear();  
+            a = (Aluno) resultado.getEntidades().get(0);
+            aluno = a;
+            usuario = a.getUsuario();
+            listaAluno.clear();
+            for(EntidadeDominio e: resultado.getEntidades()){
+                listaAluno.add((Aluno)e);
+            }
+            resultado.getEntidades().clear();
         }else{
-            renderizarCampos = Boolean.FALSE;
-            Mensagem(FacesMessage.SEVERITY_WARN, "Registro não encontrado! ", "");
+            Mensagem(FacesMessage.SEVERITY_INFO, "Não encontrado",  "Nada encontrado com os parâmetros da busca");
+            reset();
         }
-        
-    }
-
-        public void excluir(){
-            renderizarCampos = Boolean.FALSE;
-            fachada = new Fachada();
-            aluno.setUsuario(usuario);
-            resultado = fachada.excluir(aluno);
-            if(resultado.getMsgs().isEmpty()){
-               Mensagem(FacesMessage.SEVERITY_INFO, "Operação realizada. ",  "Aluno excluído com sucesso!");
-               limpar();
-            }else{
-                Mensagem(FacesMessage.SEVERITY_WARN, "Operação não realizada", "Não foi encontrado nenhum registro!");
-            }
-        }     
-   
-        public void alterar(){
-            renderizarCampos = Boolean.FALSE;
-            fachada = new Fachada();
-            aluno.setUsuario(usuario);
-            resultado = fachada.alterar(aluno);
-            if(!resultado.getMsgs().isEmpty()){
-                 Mensagem(FacesMessage.SEVERITY_WARN, "Preencha os campos corretamente!", "");
-                 Mensagem(FacesMessage.SEVERITY_WARN, "Campos pendentes: ", resultado.getMsgs());
-            }else{
-                Mensagem(FacesMessage.SEVERITY_INFO, "Operação realizada. ", "");
-                limpar();
-            }
+    } 
+    
+    public void excluir(){
+        fachada = new Fachada();
+        reset();
+        aluno.setUsuario(usuario);
+        resultado = fachada.excluir(aluno);
+        if(!resultado.getMsgs().isEmpty()){
+            Mensagem(FacesMessage.SEVERITY_ERROR, "Erro ao tentar excluir",  "Não foi possível excluir o registro") ;
+        }else{
+             Mensagem(FacesMessage.SEVERITY_INFO, "Excluído com sucesso", resultado.getMsgs());
+        }
+        reset();
     }
     
-        public void limpar() {
-            aluno = new Aluno();
-            usuario = new Usuario();
-            renderizarCampos = false;
-        }
+    public void reset(){ 
+        renderizarCampos = Boolean.FALSE;
+        int id = aluno.getId();
+        limpar();
+        aluno.setId(id);
+        usuario.setId(id);
+    }
+    
+    public void limpar(){
+        aluno = new Aluno();
+        usuario = new Usuario();
+        listaAluno = new ArrayList<Aluno>();
+        fachada = new Fachada();
+        busca = "";
+    }
 }
 
 

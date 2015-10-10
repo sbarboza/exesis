@@ -16,17 +16,21 @@ public class Exercicio extends EntidadeDominio{
     protected double peso;
     protected double nota;
     
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(name = "tbExerciciosTags", 
+        // Exericio - this
         joinColumns = {@JoinColumn(name = "exercicio_id", referencedColumnName = "id")},   
-        inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")}
+        // Tag - List<Tag>
+        inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")} 
     )
     protected List<Tag> tags;
     
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "tbExercicioAlternativa", joinColumns = {
-        @JoinColumn(name = "id_exercicio", referencedColumnName = "id")},   
-        inverseJoinColumns = {@JoinColumn(name = "id_alternativa", referencedColumnName = "id")}
+    @JoinTable(name = "tbExercicioAlternativa", 
+        // Exercício
+        joinColumns = {@JoinColumn(name = "exercicio_id", referencedColumnName = "id")},   
+        // Alternativa
+        inverseJoinColumns = {@JoinColumn(name = "alternativa_id", referencedColumnName = "id")}
     )
     private List<Alternativa> alternativas;
         

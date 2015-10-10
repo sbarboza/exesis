@@ -45,4 +45,9 @@ public class Resultado {
     public void setEntidades(List<EntidadeDominio> entidades) {
         Resultado.entidades = entidades;
     }
+    public void setEntidade(EntidadeDominio entidade) {
+        if(entidades == null)
+            entidades = new ArrayList<EntidadeDominio>();
+        Resultado.entidades.add(entidade);
+    }
 }

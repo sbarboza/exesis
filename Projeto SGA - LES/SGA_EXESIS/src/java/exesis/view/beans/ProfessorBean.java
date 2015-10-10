@@ -67,9 +67,9 @@ public class ProfessorBean extends AbstractBean{
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Para continuar o cadastro, preencha corretamente os seguintes campos: ", resultado.getMsgs().toString()));
         else{
             if(professor.getSexo().equals("F"))
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Alterado com sucesso",  "Os dados da professora " + professor.getNome() +" foram salvos com sucesso!") );
+                Mensagem(FacesMessage.SEVERITY_INFO, "Salvo com sucesso",  "Os dados da professora " + professor.getNome() +" foram salvos com sucesso!");
             else
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Alterado com sucesso",  "Os dados do professor " + professor.getNome() +" foram salvos com sucesso!") );
+                Mensagem(FacesMessage.SEVERITY_INFO, "Salvo com sucesso",  "Os dados do professor " + professor.getNome() +" foram salvos com sucesso!");
             reset();
         }
     }
@@ -83,9 +83,9 @@ public class ProfessorBean extends AbstractBean{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Para continuar a atualização o cadastro, preencha corretamente os seguintes campos: ", resultado.getMsgs().toString()));
         else{
             if(professor.getSexo().equals("F"))
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Alterado com sucesso",  "Os dados da professora " + professor.getNome() +" foram atualizados com sucesso!") );
+                Mensagem(FacesMessage.SEVERITY_INFO, "Alterado com sucesso",  "Os dados da professora " + professor.getNome() +" foram atualizados com sucesso!");
             else
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Alterado com sucesso",  "Os dados do professor " + professor.getNome() +" foram atualizados com sucesso!") );
+                Mensagem(FacesMessage.SEVERITY_INFO, "Alterado com sucesso",  "Os dados do professor " + professor.getNome() +" foram atualizados com sucesso!");
             reset();
         }
     }

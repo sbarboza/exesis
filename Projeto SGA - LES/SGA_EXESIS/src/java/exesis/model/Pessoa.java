@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package exesis.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
@@ -16,7 +12,7 @@ public class Pessoa extends EntidadeDominio{
         protected String sexo;
         protected String dataNascimento;
         protected String telefone;
-        @OneToOne(cascade = javax.persistence.CascadeType.ALL)
+        @OneToOne(cascade = CascadeType.ALL)
         @JoinColumn(name = "idUsuario")
         protected Usuario usuario;
         protected String informacoesAdicionais;

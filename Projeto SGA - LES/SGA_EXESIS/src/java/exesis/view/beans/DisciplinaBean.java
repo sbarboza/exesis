@@ -32,6 +32,7 @@ public class DisciplinaBean implements Serializable{
         profCadastrados = new ArrayList<Professor>();
         listaDisciplinas = new ArrayList<Disciplina>();
         
+        
         Professor prof = new Professor("João");
         profCadastrados.add(prof);
         

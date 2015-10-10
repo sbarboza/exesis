@@ -1,7 +1,9 @@
 package exesis.model;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -11,6 +13,7 @@ public class ListaCriada extends EntidadeDominio{
     private String nome;
     private String categoria;
     private int quantidade;
+    
     
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "tbListasCriadasTags", joinColumns = {
@@ -65,4 +68,8 @@ public class ListaCriada extends EntidadeDominio{
     public void setExercicios(List<Exercicio> exercicios) {
         this.exercicios = exercicios;
     }
+    
+    
+    
+    
 }

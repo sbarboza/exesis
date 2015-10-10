@@ -1,5 +1,6 @@
 package exesis.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,7 +11,12 @@ public class Tag extends EntidadeDominio{
     public Tag(String nome){
         this.nome = nome;
     }
+    public Tag(int id, String nome){
+        this.id = id;
+        this.nome = nome;
+    }
     
+    @Column(unique = true, updatable = true)
     private String nome;
 
     public String getNome() {
