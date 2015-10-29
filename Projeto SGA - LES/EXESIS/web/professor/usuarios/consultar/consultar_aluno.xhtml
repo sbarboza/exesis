@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Consultar aluno</title>
+    </h:head>
+    <h:body>
+<h:form>  
+    <p:menubar>
+        <p:menuitem action="/professor.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+        <p:submenu label="Usuários" icon="ui-icon-person">
+            <p:submenu label="Consultar" icon="ui-icon-search">
+                <p:menuitem value="Aluno" action="/professor/usuarios/consultar/consultar_aluno.xhtml" icon="ui-icon-person" ajax="false" immediate="true" />
+                <p:menuitem value="Responsável do Aluno" action="/professor/usuarios/consultar/consultar_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+            </p:submenu>
+        </p:submenu>
+        <p:submenu label="Atividades" icon="ui-icon-pencil">
+            <p:submenu label="Novo" icon="ui-icon-contact">
+                <p:menuitem value="Exercício" action="/professor/atividades/novo/novo_exercicio.xhtml" ajax="false" immediate="true" />
+                <p:menuitem value="Avaliação" url="#" />
+            </p:submenu>
+            <p:submenu label="Consultar" icon="ui-icon-contact">
+                <p:menuitem value="Exercício" url="#" />
+                <p:menuitem value="Avaliação" url="#" />
+            </p:submenu>
+            <p:separator/>
+            <p:menuitem value="Gerar avaliação" action="/professor/atividades/gerar_avaliacao.xhtml" ajax="false" immediate="true" />
+            <p:menuitem value="Disponibilizar avaliação" action="/professor/atividades/disponibilizar_avaliacao.xhtml" ajax="false" immediate="true" />
+        </p:submenu> 
+        <p:submenu label="Relatórios" icon="ui-icon-signal">
+                <p:menuitem value="Disciplina por turmas" action="/professor/relatorios/disciplinas_por_turma.xhtml" ajax="false" />
+                <p:menuitem value="Desempenho por conteúdo" action="/professor/relatorios/desempenho_por_conteudo.xhtml" ajax="false" />
+                <p:menuitem value="Turma X Aluno" action="/professor/relatorios/comparacao_turma_aluno.xhtml" ajax="false" />
+                <p:menuitem value="Desempenho dos alunos" action="/professor/relatorios/desempenho_alunos.xhtml" ajax="false" />
+            </p:submenu>
+        <p:submenu label="Configurações" icon="ui-icon-gear">
+            <p:menuitem value="Notificações" action="/professor/configuracoes/notificacoes.xhtml" ajax="false" />
+            <p:menuitem value="Método de Avaliação" action="/professor/configuracoes/metodos_avaliacao.xhtml" ajax="false" />
+        </p:submenu>
+        <f:facet name="options">
+            <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false"/>
+        </f:facet>
+    </p:menubar>
+</h:form>
+<p:growl id="grownl" showDetail="true" autoUpdate="true"  />
+<h:form style="position: relative; left: 30%; top: 40px; width: 69%; vertical-align: middle" >
+    
+    <h:panelGrid id="grid" columns="3"  cellpadding="5">
+                    <h:outputText value="ID: *" />
+                    <p:inputText id="id" value="#{alunoBean.aluno.id}" label="ID" readonly="#{alunoBean.renderizarCampos}" maxlength="5"/>
+                    <p:message for="id" display="text"/>
+                    
+                    <h:outputText value="Nome: *" />
+                    <p:inputText id="nome" value="#{alunoBean.aluno.nome}" required="false" label="Nome" >
+                    </p:inputText>
+                    <p:message for="nome" display="text"/>
+                    
+                    <h:outputText value="Sobrenome: *" />
+                    <p:inputText id="sobrenome" value="#{alunoBean.aluno.sobrenome}" required="false" label="Sobrenome"/>
+                    <p:message for="sobrenome" display="text" />
+                    
+                    <h:outputText value="Nome de usuário: *" />
+                    <p:inputText id="login" value="#{alunoBean.usuario.login}" required="false" label="Nome de usuário"/>
+                    <p:message for="login" display="text"/>
+                    
+                    <h:outputText value="Data de nascimento: *" />
+                    <p:inputMask mask="99/99/9999" id="dataNascimento" value="#{alunoBean.aluno.dataNascimento}" required="false" label="Data de Nascimento"/>
+                    <p:message for="dataNascimento" display="text"/>
+                    
+                    <h:outputText value="Sexo: *" />
+                    <h:selectOneMenu id="sexo" value="#{alunoBean.aluno.sexo}" label="Sexo" required="false">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" ></f:selectItem>                        
+                        <f:selectItem itemLabel="Masculino" itemValue="M" ></f:selectItem>                        
+                        <f:selectItem itemLabel="Feminino" itemValue="F" ></f:selectItem>
+                    </h:selectOneMenu>
+                    <p:message id="valsexo" for="sexo" display="text"/>
+                    
+                    <h:outputText value="Email: *" />
+                    <p:inputText id="email" value="#{alunoBean.usuario.email}" required="false" label="Email"/>
+                    <p:message for="email" display="text"/>
+                    
+                    <h:outputText value="Telefone: " />
+                    <p:inputMask id="telefone" mask="(99) *9999-9999" value="#{alunoBean.aluno.telefone}"/>
+                    <p:message for="telefone" display="text"/>
+                    
+                    <h:outputText value="Matrícula " />
+                    <p:inputText id="matricula" value="#{alunoBean.aluno.matricula}"/>
+                    <p:message for="matricula" display="text"/>
+                    
+                    <h:outputText value="Informações adicionais: " />
+                    <p:inputText id="informacoes" value="#{alunoBean.aluno.informacoesAdicionais}"/>
+                    <p:message for="informacoes" display="text"/>                    
+        </h:panelGrid>
+    <p:commandButton value="Consultar" update="grid" icon="ui-icon-search" action="#{alunoBean.consultar}" ajax="false"/>
+    <p:commandButton value="Alterar" update="grid" icon="ui-icon-arrowrefresh-1-e" action="#{alunoBean.alterar}" ajax="false"/>
+    <p:commandButton value="Excluir" update="grid" icon="ui-icon-closethick" action="#{alunoBean.excluir}" ajax="false"/>
+    <p:commandButton value="Limpar" update="grid" icon="ui-icon-trash" action="#{alunoBean.limpar}" ajax="false"/>
+   </h:form>
+</h:body>
+</html>
+
+

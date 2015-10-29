@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Gerar Avaliação</title>
+    </h:head>
+    <h:body>
+<h:form>  
+        <p:menubar>
+        <p:menuitem action="/professor.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+        <p:submenu label="Usuários" icon="ui-icon-person">
+            <p:submenu label="Consultar" icon="ui-icon-search">
+                <p:menuitem value="Aluno" action="/professor/usuarios/consultar/consultar_aluno.xhtml" icon="ui-icon-person" ajax="false" immediate="true" />
+                <p:menuitem value="Responsável do Aluno" action="/professor/usuarios/consultar/consultar_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+            </p:submenu>
+        </p:submenu>
+        <p:submenu label="Atividades" icon="ui-icon-pencil">
+            <p:submenu label="Novo" icon="ui-icon-contact">
+                <p:menuitem value="Exercício" action="/professor/atividades/novo/novo_exercicio.xhtml" ajax="false" immediate="true" />
+                <p:menuitem value="Avaliação" url="#" />
+            </p:submenu>
+            <p:submenu label="Consultar" icon="ui-icon-contact">
+                <p:menuitem value="Exercício" url="#" />
+                <p:menuitem value="Avaliação" url="#" />
+            </p:submenu>
+            <p:separator/>
+            <p:menuitem value="Gerar avaliação" action="/professor/atividades/gerar_avaliacao.xhtml" ajax="false" immediate="true" />
+            <p:menuitem value="Disponibilizar avaliação" action="/professor/atividades/disponibilizar_avaliacao.xhtml" ajax="false" immediate="true" />
+        </p:submenu> 
+        <p:submenu label="Relatórios" icon="ui-icon-signal">
+                <p:menuitem value="Disciplina por turmas" action="/professor/relatorios/disciplinas_por_turma.xhtml" ajax="false" />
+                <p:menuitem value="Desempenho por conteúdo" action="/professor/relatorios/desempenho_por_conteudo.xhtml" ajax="false" />
+                <p:menuitem value="Turma X Aluno" action="/professor/relatorios/comparacao_turma_aluno.xhtml" ajax="false" />
+                <p:menuitem value="Desempenho dos alunos" action="/professor/relatorios/desempenho_alunos.xhtml" ajax="false" />
+            </p:submenu>
+        <p:submenu label="Configurações" icon="ui-icon-gear">
+            <p:menuitem value="Notificações" action="/professor/configuracoes/notificacoes.xhtml" ajax="false" />
+            <p:menuitem value="Método de Avaliação" action="/professor/configuracoes/metodos_avaliacao.xhtml" ajax="false" />
+        </p:submenu>
+        <f:facet name="options">
+            <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false"/>
+        </f:facet>
+    </p:menubar>
+
+</h:form>
+<h:form id="form"  >
+      <h:panelGrid  columns="1" cellpadding="5" id="grid" style="position: relative; width: 70%; left: 15%" >
+          <p:fieldset>
+              <p:panelGrid columns="2" style="width: 100%">
+                  <h:outputLabel value="#{avaliacaoBean.nome }" />
+                  <h:outputLabel value="#{avaliacaoBean.tipo}" />
+                  <h:outputLabel>
+                      <ui:repeat  id="tag" value="#{avaliacaoBean.listaCriada.tags}" var="chaves"  >
+                          <div style="border: 2px solid; border-radius: 5px; text-align: center; padding: 2px; margin: 0; display: inline-block">
+                              <h:outputText value="#{chaves.nome}" />
+                          </div>
+                      </ui:repeat>
+                  </h:outputLabel>
+              <h:outputLabel value="Disciplina: Laboratório de Engenharia de Software" />
+              </p:panelGrid>
+          </p:fieldset>
+            <ui:repeat  id="exe" value="#{avaliacaoBean.exercicios}" var="exercicio"  >
+                    <p:fieldset>
+                        <h:outputText  value="#{exercicio.enunciado}"/>    
+                        <ui:repeat  id="tag" value="#{exercicio.tags}" var="chaves"  >
+                          <div style="border: 2px solid; border-radius: 5px; text-align: center; padding: 2px; margin: 0; display: inline-block">
+                              <h:outputText value="#{chaves.nome}" />
+                          </div>
+                        </ui:repeat>
+                        <p:outputPanel>
+                                <ui:repeat  id="alt" value="#{exercicio.alternativas}"  var="alternativa" >
+                                    <h:panelGrid columns="2" cellspacing="3">
+                                        <p:selectBooleanCheckbox  value="#{alternativa.resposta}" />
+                                        <h:outputText value="#{alternativa.descricao}" />
+                                    </h:panelGrid>
+                                </ui:repeat>
+                        </p:outputPanel>
+                    </p:fieldset>
+                </ui:repeat>
+            </h:panelGrid>
+</h:form>
+    </h:body>
+</html>
+

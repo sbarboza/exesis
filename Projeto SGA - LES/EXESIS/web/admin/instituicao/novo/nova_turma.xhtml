@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Nova Turma</title>
+    </h:head>
+    <h:body>
+<h:form>  
+       <p:menubar>
+            <p:menuitem action="/admin.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+            <p:submenu label="Usuários" icon="ui-icon-person">
+                <p:submenu label="Novo" icon="ui-icon-plus">
+                    <p:menuitem value="Administrador" action="/admin/usuarios/novo/novo_admin.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Aluno" action="/admin/usuarios/novo/novo_aluno.xhtml" icon="ui-icon-person"  ajax="false" immediate="true" />
+                    <p:menuitem value="Professor" action="/admin/usuarios/novo/novo_professor.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/novo/novo_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                </p:submenu>
+                <p:submenu label="Consultar" icon="ui-icon-search">
+                    <p:menuitem value="Administrador" action="/admin/usuarios/consultar/consultar_admin.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Aluno" action="/admin/usuarios/consultar/consultar_aluno.xhtml" icon="ui-icon-person" ajax="false" immediate="true" />
+                    <p:menuitem value="Professor" action="/admin/usuarios/consultar/consultar_professor.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/consultar/consultar_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                </p:submenu>
+            </p:submenu>
+            <p:submenu label="Instituição" icon="ui-icon-pencil">
+                <p:submenu label="Novo" icon="ui-icon-contact">
+                    <p:menuitem value="Disciplina" action="/admin/instituicao/novo/nova_disciplina.xhtml" ajax="false" immediate="true"/>
+                    <p:menuitem value="Turma" action="/admin/instituicao/novo/nova_turma.xhtml" ajax="false" immediate="true"  />
+                </p:submenu>
+                <p:submenu label="Consultar" icon="ui-icon-contact">
+                    <p:menuitem value="Disciplina" action="/admin/instituicao/consultar/consultar_disciplina.xhtml" ajax="false" immediate="true"/>
+                    <p:menuitem value="Turma" action="/admin/instituicao/consultar/consultar_turma.xhtml" ajax="false" immediate="true"  />
+                </p:submenu>
+            </p:submenu>
+            <p:submenu label="Relatórios" icon="ui-icon-signal">
+                <p:menuitem value="Turma por disciplinas" action="/admin/relatorios/turmas_por_disciplina.xhtml" ajax="false" />
+                <p:menuitem value="Disciplina por turmas" action="/admin/relatorios/disciplinas_por_turma.xhtml" ajax="false" />
+            </p:submenu>
+            <p:submenu label="Configurações" icon="ui-icon-gear">
+                <p:menuitem value="Notificações" icon="ui-icon-contact" action="/admin/configuracoes/notificacoes.xhtml" ajax="false" />
+            </p:submenu>
+            <f:facet name="options">
+                <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false" immediate="true"/>
+            </f:facet>
+        </p:menubar>
+</h:form>
+<p:growl id="grownl" showDetail="true" autoUpdate="true"  />
+<h:form style="position: relative; top: 40px; width: 100%; vertical-align: middle" >
+    <p:panel header="Informações da Turma" style="margin-bottom:40px">
+        <h:panelGrid id="grid" columns="3"  cellpadding="9">
+        <p:outputPanel>
+            <p:outputLabel value="Série :* " for="dd" />
+            <p:autoComplete id="dd" dropdown="true" value="#{turmaBean.serie}" completeMethod="#{turmaBean.completeText}" />
+        </p:outputPanel>
+        <p:outputPanel style="margin-left: 30px;">            
+                    <h:outputText value="Prefixo *" />
+                    <p:inputText id="prefixo" value="#{turmaBean.turma.prefixo}" size="2" style="text-transform: uppercase" required="false" label="Nome" maxlength="1"/>
+                    <p:message for="prefixo" display="text"/>
+        </p:outputPanel>
+        <p:outputPanel>
+            <h:outputText value="Período :* " />
+            <h:selectOneMenu id="periodo" value="#{turmaBean.turma.periodo}" label="Período: " required="false">
+                <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true" ></f:selectItem>                        
+                         <f:selectItem itemLabel="Manhã" itemValue="1" ></f:selectItem>                        
+                         <f:selectItem itemLabel="Tarde" itemValue="2" ></f:selectItem>
+                         <f:selectItem itemLabel="Noite" itemValue="3" ></f:selectItem>                        
+            </h:selectOneMenu>
+        </p:outputPanel>
+    </h:panelGrid>
+    </p:panel>
+</h:form>
+<h:form>
+    <p:panel header="Selecione as Disciplinas da Turma" style="margin-bottom:20px">
+        <h:panelGrid columns="7" cellpadding="5">
+
+            <h:outputLabel value="Disciplina : *" for="disc"></h:outputLabel>
+            <p:selectOneMenu id="disc" value="#{turmaBean.disciplinaProfessor.disciplina}">
+                <p:ajax listener="#{turmaBean.onChange}" update="prof" />
+                <f:selectItem itemLabel="Selecione o professor" noSelectionOption="true" />
+                <f:selectItems value="#{turmaBean.mapaDisciplinas}" />
+            </p:selectOneMenu>
+            <h:outputLabel value="Professor : *" for="prof"></h:outputLabel>
+            <p:selectOneMenu id="prof" value="#{turmaBean.disciplinaProfessor.professor}" >
+                <f:selectItem itemLabel="Selecione o professor" noSelectionOption="true" />
+                <f:selectItems value="#{turmaBean.mapaProfessores}" />
+            </p:selectOneMenu>
+            
+            <p:commandButton id="btn_add" value="Adicionar" update="tabela @parent" action="#{turmaBean.reinit}" >
+                <p:collector value="#{turmaBean.disciplinaProfessor}" addTo="#{turmaBean.lista}" unique="true"/>
+            </p:commandButton>
+            <p:commandButton id="btn_salvar" value="Finalizar Cadastro" update="grid" icon="ui-icon-check" action="#{turmaBean.salvar}" ajax="false"/>
+
+        </h:panelGrid>
+    </p:panel>
+ 
+    <p:outputPanel id="disciplinas">
+        <p:dataTable value="#{turmaBean.lista}" var="valor" id="tabela" >
+ 
+            <p:column headerText="Disciplina">
+                <h:outputText value="#{valor.disciplina}" />
+            </p:column>
+ 
+            <p:column headerText="Professor">
+                <f:facet name="header">
+                    <h:outputText value="Professor" />
+                </f:facet>
+                <h:outputText value="#{valor.professor}" />
+            </p:column>
+ 
+            <p:column headerText="Ação">
+                <p:commandLink value="Remove" update="tabela" process="tabela">
+                    <p:collector value="#{valor}" removeFrom="#{turmaBean.lista}" unique="true"/>
+                </p:commandLink>
+            </p:column>
+            
+        </p:dataTable>
+    </p:outputPanel>
+
+</h:form>
+    </h:body>
+</html>
+    

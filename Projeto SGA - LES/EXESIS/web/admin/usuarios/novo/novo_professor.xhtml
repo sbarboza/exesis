@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:head>
+        <title>Novo professor</title>
+    </h:head>
+    <h:body>
+<h:form>  
+       <p:menubar>
+            <p:menuitem action="/admin.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+            <p:submenu label="Usuários" icon="ui-icon-person">
+                <p:submenu label="Novo" icon="ui-icon-plus">
+                    <p:menuitem value="Administrador" action="/admin/usuarios/novo/novo_admin.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Aluno" action="/admin/usuarios/novo/novo_aluno.xhtml" icon="ui-icon-person"  ajax="false" immediate="true" />
+                    <p:menuitem value="Professor" action="/admin/usuarios/novo/novo_professor.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/novo/novo_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                </p:submenu>
+                <p:submenu label="Consultar" icon="ui-icon-search">
+                    <p:menuitem value="Administrador" action="/admin/usuarios/consultar/consultar_admin.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Aluno" action="/admin/usuarios/consultar/consultar_aluno.xhtml" icon="ui-icon-person" ajax="false" immediate="true" />
+                    <p:menuitem value="Professor" action="/admin/usuarios/consultar/consultar_professor.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/consultar/consultar_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                </p:submenu>
+            </p:submenu>
+            <p:submenu label="Instituição" icon="ui-icon-pencil">
+                <p:submenu label="Novo" icon="ui-icon-contact">
+                    <p:menuitem value="Disciplina" action="/admin/instituicao/novo/nova_disciplina.xhtml" ajax="false" immediate="true"/>
+                    <p:menuitem value="Turma" action="/admin/instituicao/novo/nova_turma.xhtml" ajax="false" immediate="true"  />
+                </p:submenu>
+                <p:submenu label="Consultar" icon="ui-icon-contact">
+                    <p:menuitem value="Disciplina" action="/admin/instituicao/consultar/consultar_disciplina.xhtml" ajax="false" immediate="true"/>
+                    <p:menuitem value="Turma" action="/admin/instituicao/consultar/consultar_turma.xhtml" ajax="false" immediate="true"  />
+                </p:submenu>
+            </p:submenu>
+            <p:submenu label="Relatórios" icon="ui-icon-signal">
+                <p:menuitem value="Turma por disciplinas" action="/admin/relatorios/turmas_por_disciplina.xhtml" ajax="false" />
+                <p:menuitem value="Disciplina por turmas" action="/admin/relatorios/disciplinas_por_turma.xhtml" ajax="false" />
+            </p:submenu>
+            <p:submenu label="Configurações" icon="ui-icon-gear">
+                <p:menuitem value="Notificações" icon="ui-icon-contact" action="/admin/configuracoes/notificacoes.xhtml" ajax="false" />
+            </p:submenu>
+            <f:facet name="options">
+                <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false" immediate="true"/>
+            </f:facet>
+        </p:menubar>
+</h:form>
+<p:growl id="grownl" showDetail="true" autoUpdate="true"  />
+<h:form style="position: relative; left: 30%; top: 40px; width: 69%; vertical-align: middle" >
+    <h:panelGrid id="grid" columns="3" cellpadding="5"  >
+                    <h:outputText value="Nome: *"/>
+                    <p:inputText id="nome" value="#{professorBean.professor.nome}" required="false" label="Nome"
+                                 validatorMessage="O nome é obrigatório">
+                    </p:inputText>
+                    <p:message for="nome" display="text"/>
+                    
+                    <h:outputText value="Sobrenome: *" />
+                    <p:inputText id="sobrenome" value="#{professorBean.professor.sobrenome}" required="false" label="Sobrenome"/>
+                    <p:message for="sobrenome" display="text" />
+                    
+                    <h:outputText value="Nome de usuário: *" />
+                    <p:inputText id="login" value="#{professorBean.usuario.login}" required="false" label="Nome de usuário"/>
+                    <p:message for="login" display="text"/>
+                    
+                    <h:outputText value="Senha: *" />
+                    <p:password id="senha" value="#{professorBean.usuario.senha}" required="false" label="Senha" >
+                        <f:validateLength minimum="5"/>
+                        <p:clientValidator event="keyup"></p:clientValidator>
+                    </p:password>
+                    <p:message for="senha" display="text"/>
+                    
+                    <h:outputText value="Data de nascimento: *" />
+                    <p:inputMask mask="99/99/9999" id="dataNascimento" value="#{professorBean.professor.dataNascimento}" required="false" label="Data de Nascimento"/>
+                    <p:message for="dataNascimento" display="text"/>
+                    
+                    <h:outputText value="Sexo: *" />
+                    <h:selectOneMenu id="sexo" value="#{professorBean.professor.sexo}" label="Sexo" required="false">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" ></f:selectItem>                        
+                        <f:selectItem itemLabel="Masculino" itemValue="M" ></f:selectItem>                        
+                        <f:selectItem itemLabel="Feminino" itemValue="F" ></f:selectItem>
+                    </h:selectOneMenu>
+                    <p:message for="sexo" display="text"/>
+                    
+                    <h:outputText value="Email: *" />
+                    <p:inputText id="email" value="#{professorBean.usuario.email}" required="false" label="Email"/>
+                    <p:message for="email" display="text"/>
+                    
+                    <h:outputText value="Telefone: " />
+                    <p:inputMask id="telefone" mask="(99) *9999-9999" value="#{professorBean.professor.telefone}"/>
+                    <p:message for="telefone" display="text"/>
+                    
+                    <h:outputText value="Informações adicionais: " />
+                    <p:inputTextarea cols="22" id="informacoes" autoResize="true" value="#{professorBean.professor.informacoesAdicionais}"/>
+                    <p:message for="informacoes" display="text"/>                    
+        </h:panelGrid>
+    <p:commandButton value="Salvar" update="grid" action="#{professorBean.salvar}" ajax="false"/>
+    <p:commandButton value="Cancelar" actionListener="#{professorBean.reset}" action="index.xhtml"  ajax="false" immediate="true"/>
+    
+   </h:form>
+</h:body>
+</html>
+

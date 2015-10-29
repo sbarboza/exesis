@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Atividades Pendentes</title>
+    <script type="text/javascript">
+    function start() {
+        PF('startButton1').disable();
+
+        window['progress'] = setInterval(function() {
+            var pbClient = PF('pbClient'),
+            oldValue = pbClient.getValue(),
+            newValue = oldValue + 10;
+
+            pbClient.setValue(pbClient.getValue() + 10);
+
+            if(newValue === 100) {
+                clearInterval(window['progress']);
+                cancel();
+            }
+
+
+        }, 1000);
+    }
+
+    function cancel() {
+        clearInterval(window['progress']);
+        PF('pbClient').setValue(0);
+        PF('startButton1').enable();
+    }
+    
+    function shoOutPutMsg(){
+       // $("#outputMsg").css("display: block");
+        document.getElementById('outputMsg').style.display = "block";
+    }
+    </script>
+    </h:head>
+    <h:body>
+<h:form>  
+    <p:menubar>
+        <p:menuitem action="/aluno.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+        <p:menuitem value="Consultar Conteúdo" icon="ui-icon-search" action="/aluno/conteudo/consultar_conteudo.xhtml" ajax="false" immediate="true" />
+        <p:submenu label="Atividades" icon="ui-icon-pencil">
+            <p:submenu label="Avaliações" icon="ui-icon-pencil">
+                <p:menuitem value="Pendentes" icon="ui-icon-alert" action="/aluno/atividades/avaliacoes/avaliacoes_pendentes.xhtml" ajax="false" immediate="true" />
+                <p:menuitem value="Realizadas" icon="ui-icon-circle-check" action="/aluno/atividades/avaliacoes/avaliacoes_realizadas.xhtml" ajax="false" immediate="true" />
+            </p:submenu>
+            <p:separator/>
+            <p:menuitem value="Listas de treino" icon="ui-icon-clipboard" action="/aluno/atividades/avaliacoes_pendentes.xhtml" ajax="false" immediate="true" />
+        </p:submenu> 
+        <p:submenu label="Relatórios" icon="ui-icon-signal">
+            <p:menuitem value="Desempenho nas disciplinas" action="/aluno/relatorios/desempenho_aluno_disciplina.xhtml" ajax="false" immediate="true"/>
+        </p:submenu>
+        <p:submenu label="Configurações" icon="ui-icon-gear">
+            <p:menuitem value="Notificações" icon="ui-icon-contact" action="/aluno/configuracoes/notificacoes.xhtml" ajax="false" immediate="true"/>
+        </p:submenu>
+        <f:facet name="options">
+            <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false"/>
+        </f:facet>
+    </p:menubar>
+</h:form>
+<p:growl id="grownl" showDetail="true" autoUpdate="true"  />
+<h:form id="form">
+    <p:dataTable id="singleDT" var="lista" value="#{listaPendenteBean.listas2}" selectionMode="single" selection="#{listaPendenteBean.selectedLista}" rowKey="#{lista.id}">
+        <f:facet name="header">
+            Avaliações/listas pendentes
+        </f:facet>
+        <p:column headerText="Descrição">
+            <h:outputText value="#{lista.descricao}" />
+        </p:column>
+        <p:column headerText="Disciplina">
+            <h:outputText value="#{lista.disciplina}" />
+        </p:column>
+        <p:column headerText="Professor">
+            <h:outputText value="#{lista.professor}" />
+        </p:column>
+        <p:column headerText="Data">
+            <h:outputText value="#{lista.data}" />
+        </p:column>
+        
+        <f:facet name="footer">
+            <p:commandButton process="singleDT"  icon="ui-icon-search" value="Iniciar Avaliação" style="height: 50px;" />
+            <p:commandButton process="singleDT"  icon="ui-icon-search" value="Simular Desempenho" style="margin: 10px; height: 50px;" 
+            oncomplete="PF('listaDialog').show()" onclick="PF('pbAjax').start();PF('startButton2').disable();" widgetVar="startButton2" />
+        </f:facet>
+    </p:dataTable>
+        
+        <p:dialog header="Simulação de Desempenho " widgetVar="listaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:outputPanel id="listaDetail" style="text-align:center;">
+
+            <div id="outputMsg" style="display:none;">
+                Nota obtida através da simulação: <b style="color:red;">6</b><br/><br/>
+                    <p:commandButton value="Conteúdos sugeridos"  actionListener="#{listaPendenteBean.cancel}" oncomplete="PF('pbAjax').cancel();PF('startButton2').enable();" />
+                    <p:commandButton value="Gerar Lista de Treino" type="button" onclick="PF('pbAjax').start();PF('startButton2').disable();" widgetVar="startButton2" />
+            <br/><br/>
+            </div>
+
+            <p:outputPanel>
+                    <p:progressBar widgetVar="pbAjax" ajax="true" value="#{listaPendenteBean.progress}" labelTemplate="{value}%" styleClass="animated" global="false">
+                        <p:ajax event="complete" listener="#{listaPendenteBean.onComplete}"  oncomplete="PF('startButton2').enable(); shoOutPutMsg();"/>
+                    </p:progressBar>
+            </p:outputPanel>
+        </p:outputPanel>
+        </p:dialog>
+    </h:form>
+    </h:body>
+</html>
+

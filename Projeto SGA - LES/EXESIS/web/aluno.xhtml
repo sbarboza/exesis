@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Principal</title>
+    </h:head>
+    <h:body>
+<h:form>  
+    <p:menubar>
+        <p:menuitem action="/aluno.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+        <p:menuitem value="Consultar Conteúdo" icon="ui-icon-search" action="/aluno/conteudo/consultar_conteudo.xhtml" ajax="false" immediate="true" />
+        <p:submenu label="Atividades" icon="ui-icon-pencil">
+            <p:submenu label="Avaliações" icon="ui-icon-pencil">
+                <p:menuitem value="Pendentes" icon="ui-icon-alert" action="/aluno/atividades/avaliacoes/avaliacoes_pendentes.xhtml" ajax="false" immediate="true" />
+                <p:menuitem value="Realizadas" icon="ui-icon-circle-check" action="/aluno/atividades/avaliacoes/avaliacoes_realizadas.xhtml" ajax="false" immediate="true" />
+            </p:submenu>
+            <p:separator/>
+            <p:menuitem value="Listas de treino" icon="ui-icon-clipboard" action="/aluno/atividades/avaliacoes_pendentes.xhtml" ajax="false" immediate="true" />
+        </p:submenu> 
+        <p:submenu label="Relatórios" icon="ui-icon-signal">
+            <p:menuitem value="Desempenho nas disciplinas" action="/aluno/relatorios/desempenho_aluno_disciplina.xhtml" ajax="false" immediate="true"/>
+        </p:submenu>
+        <p:submenu label="Configurações" icon="ui-icon-gear">
+            <p:menuitem value="Notificações" icon="ui-icon-contact" action="/aluno/configuracoes/notificacoes.xhtml" ajax="false" immediate="true"/>
+        </p:submenu>
+        <f:facet name="options">
+            <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false"/>
+        </f:facet>
+    </p:menubar>
+</h:form>
+<p:growl id="grownl" showDetail="true" autoUpdate="true"  />
+    </h:body>
+</html>
+
