@@ -11,16 +11,32 @@ DROP TABLE IF EXISTS tbResponsaveisAlunos CASCADE;
 DROP TABLE IF EXISTS tbListasCriadas CASCADE;
 DROP TABLE IF EXISTS tbTiposListas CASCADE;
 DROP TABLE IF EXISTS tbListasCriadasExercicios CASCADE;
+DROP TABLE IF EXISTS tblistascriadasturmas CASCADE;
+DROP TABLE IF EXISTS tbdisciplina CASCADE;
+DROP TABLE IF EXISTS tbdisciplinasprofessores CASCADE;
+DROP TABLE IF EXISTS tbNivel CASCADE;
+
+CREATE TABLE IF NOT EXISTS tbNivel
+(
+ id serial NOT NULL,
+ descricao character varying,
+ peso double precision,
+ CONSTRAINT pk_nivel PRIMARY KEY (id)
+);
 
  /* Criar tabela de Exercicio */
 CREATE TABLE IF NOT EXISTS tbExercicios
 (
-  id serial NOT NULL,
-  dtCadastro timestamp without time zone,
+    id serial NOT NULL,
+  dtcadastro timestamp without time zone,
   enunciado character varying,
-  tipo integer not null,
+  tipo integer NOT NULL,
   contador integer,
-  CONSTRAINT pk_exercicio PRIMARY KEY (id)
+  nivel_id integer,
+  CONSTRAINT pk_exercicio PRIMARY KEY (id),
+  CONSTRAINT fk_nivel FOREIGN KEY (nivel_id)
+      REFERENCES tbnivel (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
 );
   
  /* Criar tabela de Alternativas - Dependencia: Tabela de Exercício*/
@@ -134,7 +150,7 @@ CREATE TABLE IF NOT EXISTS tbTiposListas
  CONSTRAINT pk_tipolista PRIMARY KEY (id)
 );
 
-CREATE TABLE tblistascriadas
+CREATE TABLE IF NOT EXISTS tblistascriadas
 (
   id serial NOT NULL,
   nome character varying,
@@ -146,9 +162,59 @@ CREATE TABLE tblistascriadas
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-CREATE TABLE tblistascriadasExercicios
+CREATE TABLE IF NOT EXISTS tblistascriadasExercicios
 (
   exercicio_id integer,
   listaCriada_id integer,
   peso double precision
+);
+
+
+CREATE TABLE IF NOT EXISTS tblistascriadasturmas
+(
+  turma_id integer,
+  listacriada_id integer,
+  prazo timestamp with time zone,
+  CONSTRAINT fk_listacriada FOREIGN KEY (listacriada_id)
+      REFERENCES tblistascriadas (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
+
+CREATE TABLE IF NOT EXISTS tbdisciplina
+(
+  id serial NOT NULL,
+  nome character varying,
+  dtcadastro time with time zone,
+  CONSTRAINT pk_disciplina PRIMARY KEY (id),
+  CONSTRAINT tbdisciplina_nome_key UNIQUE (nome)
+);
+
+CREATE TABLE IF NOT EXISTS tbdisciplinasprofessores
+(
+  disciplina_id integer,
+  professor_id integer,
+  CONSTRAINT fk_disciplina FOREIGN KEY (disciplina_id)
+      REFERENCES tbdisciplina (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_professor FOREIGN KEY (professor_id)
+      REFERENCES tbprofessores (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
+CREATE TABLE IF NOT EXISTS tbturmas
+(
+ id serial,
+ serie_id integer,
+ prefixo char,
+ periodo character varying,
+ disciplinaprofessor_id integer,
+ CONSTRAINT pk_turma PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS tbseries
+(
+ id serial
+ serie character varying,
+ CONSTRAINT pk_serie PRIMARY KEY (id)
 );

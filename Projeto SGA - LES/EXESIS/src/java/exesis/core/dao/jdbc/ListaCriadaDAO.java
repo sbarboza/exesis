@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JOptionPane;
 import org.springframework.stereotype.Component;
 
 /**
@@ -122,8 +123,10 @@ public class ListaCriadaDAO extends AbstractJdbcDAO{
 	public Resultado consultar(EntidadeDominio entidade){
             // DECLARAÇÃO DAS VARIÁVEIS
             ListaCriada listaCriada = null;
-            if(entidade instanceof Exercicio){
+            if(entidade instanceof ListaCriada){
                 listaCriada = (ListaCriada) entidade;
+                if(!listaCriada.getTags().isEmpty())
+                    return consultarPorTags(listaCriada);
                 if(listaCriada.getId() != 0) // TEM ID
                     return consultarPorId(listaCriada);
             }
@@ -159,6 +162,58 @@ public class ListaCriadaDAO extends AbstractJdbcDAO{
             sql.append(";");
             return executarConsulta(sql.toString());
         }
+        
+        private Resultado consultarPorTags(ListaCriada listaCriada){
+            // DEFINIR AS VARIÁVEIS A SEREM USADAS
+                Exercicio exercicio = null;
+                IDAO dao = null;
+                Resultado resultado = Resultado.getResultado();
+                listaCriada.setExercicios(new ArrayList<Exercicio>());
+                PreparedStatement pst = null;
+		StringBuilder sql = null;
+                try {	
+			// ABRE A CONEXÃO COM O BANCO DE DADOS
+			openConnection();
+			sql = new StringBuilder();
+                        sql.append("SELECT ");
+                        sql.append("exercicio_id ");
+                        sql.append("FROM ");
+                        sql.append(" tbexercicios, tbexerciciostags, tbtags ");
+                        sql.append(" WHERE ");
+                        sql.append(" tbtags.id = tbexerciciostags.tag_id AND ");
+                        sql.append(" tbtags.nome in('");
+                        for(int i = 0; i < listaCriada.getTags().size(); i++){
+                            sql.append(listaCriada.getTags().get(i).getNome());
+                            if(i < listaCriada.getTags().size() - 1)
+                                sql.append("','");
+                        }
+                        sql.append("');");
+                        pst = connection.prepareStatement(sql.toString());
+                        ResultSet rs = pst.executeQuery();
+                        Map<Integer, Exercicio> mapaExercicios = new HashMap<Integer, Exercicio>();
+			while (rs.next()) {
+                            int id = rs.getInt("exercicio_id");
+                            if(!mapaExercicios.containsKey(id)){
+                                exercicio = new Exercicio();
+                                exercicio.setId(id);
+                            }else{
+                                exercicio = mapaExercicios.get(id);
+                            }
+                            mapaExercicios.put(id, exercicio);
+                        }
+                        dao = new ExercicioDAO();
+                        for(Exercicio e: mapaExercicios.values()){
+                            resultado = dao.consultar(e);
+                            listaCriada.getExercicios().add((Exercicio)resultado.getEntidades().get(0));
+                        }
+                        resultado.zerar();
+                        resultado.setEntidade(listaCriada);
+                } catch (SQLException e) {
+			e.printStackTrace();			
+		}
+		return resultado;
+        }
+
         
         private Resultado executarConsulta(String  sql){
             Resultado resultado = Resultado.getResultado();

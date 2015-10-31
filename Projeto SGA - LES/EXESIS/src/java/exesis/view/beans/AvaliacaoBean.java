@@ -4,9 +4,11 @@ import exesis.core.aplicacao.Resultado;
 import exesis.core.control.Fachada;
 import exesis.core.control.IFachada;
 import exesis.model.Alternativa;
+import exesis.model.EntidadeDominio;
 import exesis.model.Exercicio;
 import exesis.model.ListaCriada;
 import exesis.model.ListaRealizada;
+import exesis.model.Nivel;
 import exesis.model.Tag;
 import exesis.model.TipoLista;
 import exesis.model.Usuario;
@@ -15,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -29,24 +32,26 @@ public class AvaliacaoBean extends AbstractBean{
     private List<String> palavrasChaves;
     private String nome;
     private int quantidade;
-    private String tipo;
+    private TipoLista tipo;
+    private List<TipoLista> listatipo;
+    private Map<Integer,TipoLista> mapatipo;
     private String turma;
     private String lista;
     private Map<String, String> listas;
     private Map<String, String> turmas;
-    private Avaliacao avaliacao;
-    private List<Avaliacao> avaliacoes;
-    
+    private List<Nivel> listaNivel;
     private List<Exercicio> exercicios;
     private List<Alternativa> alternativas;
     
     
     @PostConstruct
     public void init(){
+        resultado = Resultado.getResultado();
+        fachada = new Fachada();
         quantidade = 1;
         listas = new HashMap<String, String>();
         turmas = new HashMap<String, String>();
-        
+        tipo = new TipoLista();
         listas.put("Avaliação Geometria", "Avaliação Geometria");
         listas.put("Avaliação Aritmética", "Avaliação Aritmética");
         listas.put("Lista de Treino - Equação", "Lista de Treino - Equação");
@@ -56,14 +61,38 @@ public class AvaliacaoBean extends AbstractBean{
         turmas.put("2C - Manhã", "2C - Manhã");
         turmas.put("4B - Tarde", "4B - Tarde");
         turmas.put("1E - Noite", "1E - Noite");
+        
+        resultado = fachada.consultar(new Nivel());
+        listaNivel = new ArrayList<Nivel>();
+        if(!resultado.getEntidades().isEmpty()){
+            for(int i = 0; i < resultado.getEntidades().size(); i++)
+                listaNivel.add((Nivel) resultado.getEntidades().get(i));
+        }
+        
         palavrasChaves =new ArrayList<String>();
         keywords = new ArrayList<String>();
+        resultado.zerar();
+        resultado = fachada.consultar(new Tag());
+        if(!resultado.getEntidades().isEmpty()){
+            for(EntidadeDominio e: resultado.getEntidades()){
+                keywords.add(((Tag)e).getNome());
+            }
+        }
+        resultado.zerar();
+        listatipo = new ArrayList<TipoLista>();
+        mapatipo = new HashMap<Integer, TipoLista>();
+        resultado = fachada.consultar(new TipoLista());
+        if(!resultado.getEntidades().isEmpty()){
+            for(EntidadeDominio e: resultado.getEntidades()){
+                listatipo.add(((TipoLista)e));
+                mapatipo.put(((TipoLista)e).getId(), (TipoLista)e);
+            }
+        }
         HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if(session.getAttribute("listaCriada") != null){
             listaCriada = (ListaCriada) session.getAttribute("listaCriada");
-            exercicios = listaCriada.getExercicios();
             nome = listaCriada.getNome();
-            tipo = listaCriada.getTipo().getDescricao();
+            tipo = listaCriada.getTipo();
         }
     }
     
@@ -74,21 +103,22 @@ public class AvaliacaoBean extends AbstractBean{
     }
 
      public void getListaExercicios(){
-        IFachada fachada = new Fachada();
-        Exercicio exercicio = new Exercicio();
-        exercicio.setTags(new ArrayList<Tag>());
+        fachada = new Fachada();
+        listaCriada = new ListaCriada();
+        listaCriada.setTags(new ArrayList<Tag>());
+        listaCriada.setQuantidade(quantidade);
         if(!palavrasChaves.isEmpty()){
             for(String k: palavrasChaves){
-                exercicio.getTags().add(new Tag(k));
+                listaCriada.getTags().add(new Tag(k));
             }
         resultado = Resultado.getResultado();   
         resultado.zerar();
-        resultado = fachada.consultar(exercicio);
+        resultado = fachada.consultar(listaCriada);
         if(!resultado.getEntidades().isEmpty()){
             listaCriada = (ListaCriada) resultado.getEntidades().get(0);
             listaCriada.setNome(nome);
             listaCriada.setQuantidade(quantidade);
-            listaCriada.setTipo(new TipoLista(tipo, 0));
+            listaCriada.setTipo(mapatipo.get(tipo.getId()));
             listaCriada.setTags(new ArrayList<Tag>());
             if(!palavrasChaves.isEmpty()){
                 for(String k: palavrasChaves){
@@ -101,8 +131,17 @@ public class AvaliacaoBean extends AbstractBean{
         }
         
     }
+    public void salvar(){
+        resultado.zerar();
+        resultado = fachada.salvar(listaCriada);
+        if(!resultado.getMsgs().isEmpty()){
+            Mensagem(FacesMessage.SEVERITY_WARN, "Erro ao salvar", resultado.getMsgs());
+        }else{
+            Mensagem(FacesMessage.SEVERITY_INFO, "Salvo com sucesso", "");
+        }
+    } 
+     
     public String reinit(){
-        avaliacao = new Avaliacao();
         return null;
     }
     
@@ -122,13 +161,15 @@ public class AvaliacaoBean extends AbstractBean{
         this.quantidade = quantidade;
     }
 
-    public String getTipo() {
+    public TipoLista getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoLista tipo) {
         this.tipo = tipo;
     }
+
+    
 
     public String getTurma() {
         return turma;
@@ -162,21 +203,6 @@ public class AvaliacaoBean extends AbstractBean{
         this.turmas = turmas;
     }
 
-    public Avaliacao getAvaliacao() {
-        return avaliacao;
-    }
-
-    public void setAvaliacao(Avaliacao avaliacao) {
-        this.avaliacao = avaliacao;
-    }
-
-    public List<Avaliacao> getAvaliacoes() {
-        return avaliacoes;
-    }
-
-    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
-        this.avaliacoes = avaliacoes;
-    }
 
     /**
      * @return the exercicios
@@ -207,14 +233,6 @@ public class AvaliacaoBean extends AbstractBean{
         
     }    
     
-    public List<Alternativa> getAlternativas(Exercicio exercicio) {
-        for( Exercicio e: this.avaliacao.getExercicios()){
-            if(!e.getEnunciado().equals(exercicio.getEnunciado()))
-               continue;
-            return e.getAlternativas();
-        }
-        return null;
-    }
 
     public Usuario getUsuario() {
         return usuario;
@@ -254,11 +272,11 @@ public class AvaliacaoBean extends AbstractBean{
          
         for (int i = 0; i < allKeys.size(); i++) {
             String key = allKeys.get(i);
-            if(key.toLowerCase().startsWith(query)) {
+            if(key.toLowerCase().startsWith(query) && !filteredKeys.contains(key)) {
                 filteredKeys.add(key);
             }
         }
-        if(filteredKeys.isEmpty())
+        if(filteredKeys.isEmpty())  
             filteredKeys.add(query);
         
         return filteredKeys;
@@ -279,6 +297,13 @@ public class AvaliacaoBean extends AbstractBean{
     public void setPalavrasChaves(List<String> palavrasChaves) {
         this.palavrasChaves = palavrasChaves;
     }
+
+    public List<TipoLista> getListatipo() {
+        return listatipo;
+    }
+
+    public void setListatipo(List<TipoLista> listatipo) {
+        this.listatipo = listatipo;
+    }
     
-     
 }

@@ -10,7 +10,6 @@ import exesis.core.aplicacao.Resultado;
 import exesis.model.Alternativa;
 import exesis.model.EntidadeDominio;
 import exesis.model.Exercicio;
-import exesis.model.Tag;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;

@@ -11,6 +11,7 @@ import exesis.core.dao.IDAO;
 import exesis.model.EntidadeDominio;
 import exesis.model.Exercicio;
 import exesis.model.ListaCriada;
+import exesis.model.Nivel;
 import exesis.model.Tag;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.springframework.stereotype.Component;
 
 // INDICA PARA O SPRING A ENTIDADE QUE SERÁ PERSISTIDA
@@ -41,8 +43,8 @@ public class ExercicioDAO extends AbstractJdbcDAO{
 		sql = new StringBuilder();
 		sql.append("INSERT INTO ");
 		sql.append(table);
-		sql.append("(dtCadastro, enunciado, tipo)");
-                sql.append(" VALUES(?, ?, ?)");
+		sql.append("(dtCadastro, enunciado, tipo, contador, nivel_id)");
+                sql.append(" VALUES(?, ?, ?, ?, ?)");
                 try {
                     openConnection();
                     pst = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS); // PREPARA O SQL PARA RETORNAR A CHAVE GERADA
@@ -50,6 +52,8 @@ public class ExercicioDAO extends AbstractJdbcDAO{
                     pst.setTimestamp(1, time);
                     pst.setString(2, exercicio.getEnunciado());
                     pst.setInt(3, exercicio.getTipo());                    
+                    pst.setInt(4, exercicio.getContador());                    
+                    pst.setInt(5, exercicio.getNivel().getId());                    
                     exercicio.setId(executarSQL(pst)); // EXECUTA O SQL E ATRIBUI O ID DA ENTIDADE
                     if(!exercicio.getTags().isEmpty()){
                         resultado = tagDao.salvar(exercicio); // SALVA AS TAGS DO EXERCÍCIO
@@ -68,7 +72,6 @@ public class ExercicioDAO extends AbstractJdbcDAO{
 				e.printStackTrace(); //SE DER ERRO, MOSTRE
 			}
 		}
-                
                 // RETORNA O RESULTADO
 		return resultado;
 	}
@@ -89,16 +92,22 @@ public class ExercicioDAO extends AbstractJdbcDAO{
 			sql = new StringBuilder();
 			sql.append("UPDATE ");
 			sql.append(table);
-			sql.append(" SET enunciado=? WHERE ");
+			sql.append(" SET ");
+                        sql.append(" enunciado='");
+                        sql.append(exercicio.getEnunciado());
+                        sql.append("', contador=");
+                        sql.append(exercicio.getContador());
+                        sql.append(", nivel_id=");
+                        sql.append(exercicio.getNivel().getId());
+                        sql.append(" WHERE ");
 			sql.append(idTable);
 			sql.append(" = ");
 			sql.append(entidade.getId());
 			sql.append(";");                        
 			pst = connection.prepareStatement(sql.toString()); // PREPARA O SQL PARA RETORNAR A CHAVE GERADA
-			pst.setString(1, exercicio.getEnunciado());
-                        executarSQL(pst);
+			executarSQL(pst);
                         // SALVA AS TAGS DO EXERCÍCIO
-                        if(!exercicio.getTags().isEmpty()){
+                        if(exercicio.getTags() != null && !exercicio.getTags().isEmpty()){
                             dao = new TagDAO();
                             resultado = dao.alterar(exercicio);
                         }
@@ -162,6 +171,7 @@ public class ExercicioDAO extends AbstractJdbcDAO{
                                 sql.append("','");
                         }
                         sql.append("');");
+                        JOptionPane.showMessageDialog(null,"E"+ sql.toString());
                         pst = connection.prepareStatement(sql.toString());
                         ResultSet rs = pst.executeQuery();
                         Map<Integer, Exercicio> mapaExercicios = new HashMap<Integer, Exercicio>();
@@ -195,7 +205,7 @@ public class ExercicioDAO extends AbstractJdbcDAO{
         private Resultado consultarPorId(Exercicio exercicio){
             StringBuilder sql = new StringBuilder();
             sql.append(" SELECT ");
-            sql.append(" tbexercicios.id, dtCadastro, enunciado, tag_id, nome, tipo ");
+            sql.append(" tbexercicios.id, dtCadastro, enunciado, tag_id, nome, tipo, contador, nivel_id ");
             sql.append(" FROM ");
             sql.append(table);
             sql.append(" inner join ");
@@ -204,6 +214,9 @@ public class ExercicioDAO extends AbstractJdbcDAO{
             sql.append(" inner join ");
             sql.append(" tbTags ");
             sql.append(" on (tbTags.id = tbExerciciosTags.tag_id) ");
+            sql.append(" inner join ");
+            sql.append(" tbNivel ");
+            sql.append(" on (tbNivel.id = tbExerciciosTags.nivel_id) ");
             sql.append(" WHERE ");
             sql.append(" tbexercicios.id =  ");
             sql.append(exercicio.getId());
@@ -214,7 +227,7 @@ public class ExercicioDAO extends AbstractJdbcDAO{
         private Resultado consultarTodos(){
             StringBuilder sql = new StringBuilder();
             sql.append(" SELECT ");
-            sql.append(" * ");
+            sql.append(" tbexercicios.id, dtCadastro, enunciado, tag_id, nome, tipo, contador, nivel_id, descricao, peso ");
             sql.append(" FROM ");
             sql.append(table);
             sql.append(" inner join ");
@@ -223,6 +236,9 @@ public class ExercicioDAO extends AbstractJdbcDAO{
             sql.append(" inner join ");
             sql.append(" tbTags ");
             sql.append(" on (tbTags.id = tbExerciciosTags.tag_id) ");
+            sql.append(" inner join ");
+            sql.append(" tbNivel ");
+            sql.append(" on (tbNivel.id = tbExerciciosTags.nivel_id) ");
             sql.append(";");
             return executarConsulta(sql.toString());
         }
@@ -243,13 +259,18 @@ public class ExercicioDAO extends AbstractJdbcDAO{
                                     exercicio = new Exercicio();
                                     exercicio.setId(id);
                                     exercicio.setTags(new ArrayList<Tag>());
+                                    exercicio.setTipo(rs.getInt("tipo"));
+                                    exercicio.setDtCadastro(rs.getTimestamp("dtCadastro"));
+                                    exercicio.setEnunciado(rs.getString("enunciado"));
+                                    exercicio.setContador(rs.getInt("contador"));
+                                    Nivel nivel = new Nivel();
+                                    nivel.setId(rs.getInt("nivel_id"));
+                                    nivel.setDescricao(rs.getString("descricao"));
+                                    nivel.setPeso(rs.getFloat("peso"));
                                 }else{
                                     exercicio = mapaExercicios.get(id);
                                     exercicio.setId(id);
                                 }
-                            exercicio.setTipo(rs.getInt("tipo"));
-                            exercicio.setDtCadastro(rs.getTimestamp("dtCadastro"));
-                            exercicio.setEnunciado(rs.getString("enunciado"));
                             Tag tag = new Tag();
                             tag.setId(rs.getInt("tag_id"));
                             tag.setNome(rs.getString("nome"));

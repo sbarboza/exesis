@@ -54,21 +54,19 @@
     <h:panelGrid columns="3" cellpadding="5">
             <p:outputLabel for="disciplina" value="Disciplina:"/>
             <p:inputText placeholder="Nome da Disciplina" id="disciplina" value="#{disciplinaBean.disciplina.nome}"></p:inputText>
-            <p:commandButton value="Salvar" update="grid" action="{}" ajax="false"/>
+            <p:commandButton value="Salvar" update="grid" action="#{disciplinaBean.salvar}" ajax="false"/>
     </h:panelGrid>
     
     <p:panel class="ui-grid"  header="Professores da Disciplina:">
-        
             <p:pickList  id="PojoPickList" value="#{disciplinaBean.professores}" var="professor" effect="bounce"
-                         itemValue="#{professor}" itemLabel="#{professor.nome}" 
-                         showCheckbox="true" showSourceControls="true" showTargetControls="true"
-                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >
+                         itemValue="#{professor}" 
+                         showCheckbox="true" showSourceControls="true" showTargetControls="true" filterMatchMode="contains" >
 
             <f:facet name="sourceCaption">Cadastrados</f:facet>
             <f:facet name="targetCaption">Alocados</f:facet>
 
             <p:column  style="width:100%;">
-                <h:outputText value="#{professor.nome}" />
+                <h:outputText value="#{professor}" />
             </p:column>
 
             </p:pickList>

@@ -27,7 +27,7 @@
                 <p:menuitem value="Avaliação" url="#" />
             </p:submenu>
             <p:separator/>
-            <p:menuitem value="Gerar avaliação" action="/professor/atividades/gerar_avaliacao.xhtml" ajax="false" immediate="true" />
+            <p:menuitem value="Gerar avaliação" action="/professor/atividades/gerar_avaliacao.xhtml" ajax="false" />
             <p:menuitem value="Disponibilizar avaliação" action="/professor/atividades/disponibilizar_avaliacao.xhtml" ajax="false" immediate="true" />
         </p:submenu> 
         <p:submenu label="Relatórios" icon="ui-icon-signal">
@@ -39,6 +39,7 @@
         <p:submenu label="Configurações" icon="ui-icon-gear">
             <p:menuitem value="Notificações" action="/professor/configuracoes/notificacoes.xhtml" ajax="false" />
             <p:menuitem value="Método de Avaliação" action="/professor/configuracoes/metodos_avaliacao.xhtml" ajax="false" />
+            <p:menuitem value="Nivel dos exercícios" action="/professor/configuracoes/nivel.xhtml" ajax="false" />
         </p:submenu>
         <f:facet name="options">
             <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false"/>

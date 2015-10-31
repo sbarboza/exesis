@@ -160,16 +160,6 @@ public class ProfessorDAO extends AbstractJdbcDAO{
     @Override
     public Resultado consultar(EntidadeDominio entidade) {
             // DECLARAÇÃO DAS VARIÁVEIS
-            /*
-            SELECT 
-            tbprofessores.id,nome, sobrenome, sexo, telefone, informacoesadicionais, login, email, idusuario, perfilacesso 
-            FROM 
-            tbprofessores, 
-            tbusuarios
-          WHERE 
-            idusuario = tbprofessores.id AND
-            tbprofessores.id = 1;
-            */
             openConnection();
             Resultado resultado = Resultado.getResultado();
             PreparedStatement pst = null;
@@ -181,17 +171,16 @@ public class ProfessorDAO extends AbstractJdbcDAO{
                 sql.append("FROM ");                
                 sql.append("tbprofessores, ");
                 sql.append("tbusuarios ");
-                System.out.println("IF PROFESSOR.GETID = "+professor.getId());
                 if(professor.getId() != 0){
-                sql.append(" WHERE ");
-                sql.append("tbprofessores.id");
-                sql.append(" = ");
-                sql.append(professor.getId());
-                sql.append(" AND ");
-                sql.append(" usuario_id ");
-                sql.append(" = ");
-                sql.append(" tbusuarios.id");
-                sql.append(";");
+                    sql.append(" WHERE ");
+                    sql.append("tbprofessores.id");
+                    sql.append(" = ");
+                    sql.append(professor.getId());
+                    sql.append(" AND ");
+                    sql.append(" usuario_id ");
+                    sql.append(" = ");
+                    sql.append(" tbusuarios.id");
+                    sql.append(";");
                 }else if(professor.getUsuario() != null && 
                         professor.getUsuario().getLogin() != null &&
                         !professor.getUsuario().getLogin().isEmpty()){
@@ -199,9 +188,9 @@ public class ProfessorDAO extends AbstractJdbcDAO{
                     sql.append(" login = '");
                     sql.append(professor.getUsuario().getLogin());
                     sql.append("'; ");
+                }else{
+                    sql.append("; ");
                 }
-                System.out.println("QUERY CONSULTA PROFESSOR: ");
-                System.out.println(sql.toString());
   		try {
 			pst = connection.prepareStatement(sql.toString());
 			ResultSet rs = pst.executeQuery();
@@ -230,6 +219,7 @@ public class ProfessorDAO extends AbstractJdbcDAO{
                 }finally{// FAÇA INDEPENDENTE DO QUE ACONTECER
                     try {// TENTE
                         // FECHAR O PREPARESATEMENT
+                        
                         pst.close();
                         if(ctrlTransaction) // SE A TRANSAÇÃO TERMINOU
                                 connection.close(); // FECHA A CONEXÃO

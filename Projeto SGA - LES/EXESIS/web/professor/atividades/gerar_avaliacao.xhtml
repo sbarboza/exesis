@@ -60,13 +60,10 @@
              <h:outputText value="Título da Avaliação " />  
              <p:inputText id="nome" value="#{avaliacaoBean.nome}" size="39"  />
              <h:outputText value="Categoria: " />  
-             <h:selectOneMenu id="periodo" value="#{avaliacaoBean.tipo}" label="Tipo da avaliação: " required="true">
+             <p:selectOneMenu id="tipo" value="#{avaliacaoBean.tipo.id}"  label="Tipo da avaliação: " required="true" >
                 <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true" ></f:selectItem>                        
-                         <f:selectItem itemLabel="Prova Final" itemValue="Prova Final" ></f:selectItem>                        
-                         <f:selectItem itemLabel="Avaliação Bimestral" itemValue="Avaliação Bimestral" ></f:selectItem>
-                         <f:selectItem itemLabel="Lista semanal" itemValue="Lista semanal" ></f:selectItem>                        
-                         <f:selectItem itemLabel="Lista de treino" itemValue="Lista de treino" ></f:selectItem>                        
-            </h:selectOneMenu>
+                <f:selectItems value="#{avaliacaoBean.listatipo}" var="t" itemLabel="#{t.descricao}" itemValue="#{t.id}" />
+            </p:selectOneMenu>
             <h:outputText value="Palavras-chave:" />
             <p:autoComplete id="keysTeste" multiple="true" value="#{avaliacaoBean.keywordsSelected}" completeMethod="#{avaliacaoBean.completeKeywors}" var="key" 
                             itemLabel="#{key}" itemValue="#{key}" >
@@ -77,8 +74,7 @@
          </h:panelGrid>
          <p:commandButton value="Gerar lista" action="#{avaliacaoBean.gerarLista}" ajax="false" />
     </p:panel>
-   
-    
+       
 </h:form>
     </h:body>
 </html>

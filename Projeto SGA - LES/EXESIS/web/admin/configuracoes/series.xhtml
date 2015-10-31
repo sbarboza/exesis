@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Consultar Disciplina</title>
+        <title>Configurar séries</title>
     </h:head>
     <h:body>
 <h:form>  
@@ -41,6 +41,7 @@
             </p:submenu>
             <p:submenu label="Configurações" icon="ui-icon-gear">
                 <p:menuitem value="Notificações" icon="ui-icon-contact" action="/admin/configuracoes/notificacoes.xhtml" ajax="false" />
+                <p:menuitem value="Séries" icon="ui-icon-contact" action="/admin/configuracoes/series.xhtml" ajax="false" />
             </p:submenu>
             <f:facet name="options">
                 <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false" immediate="true"/>
@@ -48,33 +49,52 @@
         </p:menubar>
 </h:form>
 <p:growl id="grownl" showDetail="true" autoUpdate="true"  />
-<h:form style="position: relative; left: 25%; top: 50px; right: 25%; width:  50%;vertical-align: middle">
-        
-  
-            <p:panel header="Cadastro de Disciplina" style="width: 100%">
-            <h:panelGrid columns="3" cellpadding="5">
-                    <p:outputLabel for="disciplina" value="Disciplina:"/>
-                    <p:inputText placeholder="Nome da Disciplina" id="disciplina" value="#{disciplinaBean.disciplina.nome}"></p:inputText>
-                    <p:commandButton value="Alterar" update="form" action="#{disciplinaBean.alterar}" ajax="false"/>
-            </h:panelGrid>
-
-            <p:panel class="ui-grid"  header="Professores da Disciplina:">
-
-            <p:pickList  id="PojoPickList" value="#{disciplinaBean.professores}" var="professor" effect="bounce"
-                         itemValue="#{professor}" 
-                         showCheckbox="true" showSourceControls="true" showTargetControls="true" filterMatchMode="contains" >
-
-            <f:facet name="sourceCaption">Cadastrados</f:facet>
-            <f:facet name="targetCaption">Alocados</f:facet>
-
-            <p:column  style="width:100%;">
-                <h:outputText value="#{professor}" />
-            </p:column>
-
-            </p:pickList>
-        </p:panel>
-        </p:panel>
-        </h:form>
-    </h:body>
+    <p:panel header="Nova série">
+        <h:panelGrid cellpadding="5" columns="3" >
+        <p:outputLabel for="descricao" value="Descrição: " >
+        <p:inputText id="descricao" value="#{metodoAvaliacaoBean.tipoLista.descricao}" />
+        </p:outputLabel>
+        <p:outputLabel for="peso" value="Peso: " >
+            <p:spinner id="peso" stepFactor="0.1" value="#{metodoAvaliacaoBean.tipoLista.peso}" min="0.1" max="10.0" maxlength="3"  size="5"/>
+        </p:outputLabel>
+            <p:commandButton ajax="false" value="Salvar" action="#{metodoAvaliacaoBean.salvar}" />
+        </h:panelGrid>
+    </p:panel>
+    <p:dataTable id="cadastrados" var="tipo" value="#{metodoAvaliacaoBean.listaTipos}" editable="true"  style="margin-bottom:20px">
+       <f:facet name="header">
+           Tipos de avaliação cadastrados
+       </f:facet>
+ 
+        <p:ajax event="rowEdit" listener="#{metodoAvaliacaoBean.alterartodos(tipo.id)}" />
+ 
+       <p:column headerText="Id">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{tipo.id}" /></f:facet>
+               <f:facet name="input"><p:inputText id="modelInput" value="#{tipo.id}" style="width:100%"/></f:facet>
+           </p:cellEditor>
+       </p:column>
+ 
+       <p:column headerText="Descrição">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{tipo.descricao}" /></f:facet>
+               <f:facet name="input"><p:inputText value="#{tipo.descricao}" style="width:100%" label="Descrição"/></f:facet>
+           </p:cellEditor>
+       </p:column>
+ 
+       <p:column headerText="Peso">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{tipo.peso}" /></f:facet>
+               <f:facet name="input"><p:spinner id="peso" stepFactor="0.1" min="0.1" max="10.0" maxlength="3"  value="#{tipo.peso}" style="width:100%" label="Peso"/></f:facet>
+           </p:cellEditor>
+       </p:column>
+ 
+       <p:column style="width:32px">
+           <p:rowEditor />
+       </p:column>
+       <p:column style="width:60px">
+           <p:commandLink value="Apagar" ajax="false" action="#{metodoAvaliacaoBean.apagar(tipo.id)}" />
+       </p:column>
+   </p:dataTable>    
+</h:body>
 </html>
 

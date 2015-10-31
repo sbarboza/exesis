@@ -10,9 +10,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
+import org.springframework.stereotype.Component;
 
 
 
+@Component(value = "exesis.model.Tag")
 public class TagDAO extends AbstractJdbcDAO{
 
 
@@ -55,7 +58,7 @@ public class TagDAO extends AbstractJdbcDAO{
                                 // PREPARA O SQL PARA RETORNAR A CHAVE GERADA
                                 pst = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
                                 // ADICIONA OS ATRIBUTOS REFERENCIANDO AS INTERROGAÇÕES DO "VALUES" DO SQL
-                                pst.setString(1, tag.getNome());
+                                pst.setString(1, tag.getNome().toLowerCase());
                                 // EXECUTA O SQL (SEM SALVAR)
                                 tagAux = tag;
                                 tagAux.setId(executarSQL(pst));
@@ -122,9 +125,11 @@ public class TagDAO extends AbstractJdbcDAO{
                         if(tag != null){ // VERIFICA SE O ATRIBUTO ESTÁ NULO
                             sql.append("SELECT * FROM ");
                             sql.append(table);
-                            sql.append(" WHERE nome = '");
-                            sql.append(tag.getNome());
-                            sql.append("';");
+                            if(tag.getNome() != null){
+                                sql.append(" WHERE nome = '");
+                                sql.append(tag.getNome().toLowerCase());
+                                sql.append("'");
+                            }
                         }else if(exercicio != null && exercicio.getId() != 0){ // VERIFICA SE O ATRIBUTO ESTÁ NULO
                                 sql.append("SELECT * FROM ");
                                 sql.append("tbExerciciosTags, ");
@@ -133,8 +138,8 @@ public class TagDAO extends AbstractJdbcDAO{
                                 sql.append("tbexerciciostags.tag_id = tbtags.id AND ");
                                 sql.append("tbexerciciostags.exercicio_id = ");
                                 sql.append(exercicio.getId());
-                                sql.append(";");
                         }
+                        sql.append(";");
                         pst = connection.prepareStatement(sql.toString());
                         ResultSet rs = pst.executeQuery();
 			while (rs.next()) {

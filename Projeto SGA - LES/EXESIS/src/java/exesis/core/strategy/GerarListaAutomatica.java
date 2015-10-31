@@ -1,17 +1,17 @@
 package exesis.core.strategy;
 
 import exesis.core.aplicacao.Resultado;
+import exesis.core.dao.jdbc.ExercicioDAO;
 import exesis.model.EntidadeDominio;
 import exesis.model.Exercicio;
 import exesis.model.ListaCriada;
 import exesis.model.Tag;
-import exesis.teste.jdbc.TesteExercicio;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-public class OrdenarListaAutomatica implements IStrategy{
+public class GerarListaAutomatica implements IStrategy{
 
     @Override
     public Resultado processar(EntidadeDominio entidade) {
@@ -22,12 +22,16 @@ public class OrdenarListaAutomatica implements IStrategy{
             tags.add(t.getNome());
         }
         resultado.zerar();
+        if(!lista.getExercicios().isEmpty())
         resultado = classificarPorRelevancia(tags, lista.getExercicios());
         lista.setExercicios(new ArrayList<Exercicio>());
         for(EntidadeDominio e: resultado.getEntidades()){
             Exercicio exercicio = (Exercicio) e;
             lista.getExercicios().add(exercicio);
         }
+       if(lista.getExercicios().size() > lista.getQuantidade()) // Se a quantidade de exercicios for maior que a pedida
+               lista.setExercicios(lista.getExercicios().subList(0, lista.getQuantidade())); // retire o restante que não foi pedido
+        lista = adicionarContador(lista);
         resultado.zerar();
         resultado.setEntidade(lista);
         return resultado;
@@ -88,6 +92,15 @@ public class OrdenarListaAutomatica implements IStrategy{
 		}
 		return resultado;
 	}
-
-    
+    private ListaCriada adicionarContador(ListaCriada lista){
+        ExercicioDAO dao = new ExercicioDAO();
+        for(Exercicio exercicio: lista.getExercicios()){
+            Exercicio e = new Exercicio();
+            e.setId(exercicio.getId());
+            e.setEnunciado(exercicio.getEnunciado());
+            e.setContador(exercicio.getContador()+1);
+            dao.alterar(e);
+        }
+        return lista;
+    }
 }

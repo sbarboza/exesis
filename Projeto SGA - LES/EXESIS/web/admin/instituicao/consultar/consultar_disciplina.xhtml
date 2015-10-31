@@ -48,18 +48,19 @@
         </p:menubar>
 </h:form>
 <p:growl id="grownl" showDetail="true" autoUpdate="true"  />
-<h:form style="position: relative; left: 25%; top: 50px; right: 25%; width:  50%;vertical-align: middle">
-        
-    <p:dataTable id="disciplina" value="#{disciplinaBean.listaDisciplinas}" selectionMode="single" selection="#{disciplinaBean.disciplina}" var="disciplina" rowKey="#{disciplina.id}">
+<h:form id="form" style="position: relative; left: 25%; top: 50px; right: 25%; width:  50%;vertical-align: middle">
+    <p:dataTable id="tabledisciplina" value="#{disciplinaBean.listaDisciplinas}" var="disciplina" >
         <f:facet name="header">
             Disciplinas
         </f:facet>
-        <p:ajax event="rowDblselect" listener="#{disciplinaBean.redirecionar}" />
         <p:column headerText="ID">
             <h:outputText value="#{disciplina.id}" />
         </p:column>
         <p:column headerText="Nome">
             <h:outputText value="#{disciplina.nome}" />
+        </p:column>
+        <p:column style="width:32px;text-align: center">
+            <p:commandButton update="form" action="#{disciplinaBean.editar(disciplina)}"  icon="ui-icon-search" title="Visualizar" />
         </p:column>
     </p:dataTable>
 </h:form>

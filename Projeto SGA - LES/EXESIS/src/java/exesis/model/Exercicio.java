@@ -11,6 +11,7 @@ import java.util.List;
     private int contador;
     protected List<Tag> tags;
     private List<Alternativa> alternativas;
+    private Nivel nivel;
     
     public Exercicio(){
         
@@ -76,6 +77,14 @@ import java.util.List;
 
     public void setContador(int contador) {
         this.contador = contador;
+    }
+
+    public Nivel getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Nivel nivel) {
+        this.nivel = nivel;
     }
     
 }

@@ -52,9 +52,9 @@
           <p:fieldset>
               <p:panelGrid columns="2" style="width: 100%">
                   <h:outputLabel value="#{avaliacaoBean.nome }" />
-                  <h:outputLabel value="#{avaliacaoBean.tipo}" />
+                  <h:outputLabel value="#{avaliacaoBean.tipo.descricao}" />
                   <h:outputLabel>
-                      <ui:repeat  id="tag" value="#{avaliacaoBean.listaCriada.tags}" var="chaves"  >
+                      <ui:repeat id="tag" value="#{avaliacaoBean.listaCriada.tags}" var="chaves"  >
                           <div style="border: 2px solid; border-radius: 5px; text-align: center; padding: 2px; margin: 0; display: inline-block">
                               <h:outputText value="#{chaves.nome}" />
                           </div>
@@ -63,9 +63,9 @@
               <h:outputLabel value="Disciplina: Laboratório de Engenharia de Software" />
               </p:panelGrid>
           </p:fieldset>
-            <ui:repeat  id="exe" value="#{avaliacaoBean.exercicios}" var="exercicio"  >
+          <ui:repeat  id="exe" value="#{avaliacaoBean.listaCriada.exercicios}" var="exercicio"  >
                     <p:fieldset>
-                        <h:outputText  value="#{exercicio.enunciado}"/>    
+                        <h:outputText  value="#{exercicio.enunciado}"/><br />    
                         <ui:repeat  id="tag" value="#{exercicio.tags}" var="chaves"  >
                           <div style="border: 2px solid; border-radius: 5px; text-align: center; padding: 2px; margin: 0; display: inline-block">
                               <h:outputText value="#{chaves.nome}" />
@@ -81,6 +81,10 @@
                         </p:outputPanel>
                     </p:fieldset>
                 </ui:repeat>
+          <p:fieldset >
+              <p:commandButton value="Salvar" action="#{avaliacaoBean.salvar}" ajax="false" />
+              
+          </p:fieldset>
             </h:panelGrid>
 </h:form>
     </h:body>

@@ -59,11 +59,7 @@ public class TesteProfessor {
     
     public static void consultarUsuario(){
         fachada = new Fachada();
-        Usuario usuario = new Usuario();
-        Professor professor = new Professor();
-        professor.setId(1);
-        professor.setUsuario(usuario);
-        resultado = fachada.consultar(professor);
+        resultado = fachada.consultar(new Professor());
         if(!resultado.getEntidades().isEmpty()){
             for(EntidadeDominio e: resultado.getEntidades()){
                 Professor u = (Professor) e;

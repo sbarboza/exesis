@@ -51,15 +51,20 @@
         <p:panel header="Novo exercício">
         <p:panelGrid columns="2" >
             <p:outputLabel value="Enunciado :* " />
-            <p:inputTextarea  cols="70" rows="4" placeholder="Insira o enunciado do exercício"  value="#{exercicioBean.exercicio.enunciado}"/>
+            <p:inputTextarea  cols="70" rows="4"  required="true" requiredMessage="Favor inserir o enunciado" placeholder="Insira o enunciado do exercício"  value="#{exercicioBean.exercicio.enunciado}"/>
             <h:outputText value="Palavras-chave:" />
-            <p:autoComplete id="keys" multiple="true" 
+            <p:autoComplete id="keys" multiple="true"  required="true" requiredMessage="Favor inserir pelo menos uma palavra-chave"
                             value="#{exercicioBean.keywordsSelected}" completeMethod="#{exercicioBean.completeKeywors}" var="key" 
                             itemLabel="#{key}" itemValue="#{key}">
             <p:column>
                 <h:outputText value="#{key}" />
             </p:column>
             </p:autoComplete>
+            <h:outputText value="Nível: " id="nivel" />
+            <p:selectOneMenu value="#{exercicioBean.nivel.id}" required="true" requiredMessage="Inserir o nível do exercício">
+                    <f:selectItem itemLabel="Selecione o nivel" noSelectionOption="true" />
+                    <f:selectItems value="#{exercicioBean.listaNivel}" var="nivel" itemLabel="#{nivel.descricao}" itemValue="#{nivel.id}" />
+            </p:selectOneMenu>
             <h:outputText value="Tipo: " id="tipo" />
             <p:selectOneRadio value="#{exercicioBean.isAlternativa}">
                 <p:ajax update="panel" event="change" />

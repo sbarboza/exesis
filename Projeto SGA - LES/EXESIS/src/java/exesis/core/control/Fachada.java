@@ -58,7 +58,7 @@ public class Fachada implements IFachada {
 		Resultado resultado = Resultado.getResultado();
 
 		String nmClasse = entidade.getClass().getName();
-		resultado = executarRegras(entidade, "CONSULTAR");  
+		
 		if(resultado.getMsgs().isEmpty()){
 			IDAO dao = (IDAO) context.getBean(nmClasse);
                         resultado = dao.consultar(entidade);

@@ -20,10 +20,10 @@ public class TesteTag {
         Exercicio exercicio = new Exercicio();
         exercicio.setTags(new ArrayList<Tag>());
         exercicio.getTags().add(new Tag("comida"));
-        resultado =  fachada.consultar(exercicio);
-        ListaCriada lista = (ListaCriada) resultado.getEntidades().get(0);
-        for(Exercicio e: lista.getExercicios()){
-            TesteExercicio.testeExercicio(e);
+        resultado =  fachada.consultar(new Tag());
+        for(EntidadeDominio e: resultado.getEntidades()){
+            Tag tag = (Tag) e;
+            TesteExercicio.testeTag(tag);
         }
             
         

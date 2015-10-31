@@ -64,4 +64,5 @@ public class Pessoa extends EntidadeDominio{
     public void setInformacoesAdicionais(String informacoesAdicionais) {
         this.informacoesAdicionais = informacoesAdicionais;
     }
+    
 }

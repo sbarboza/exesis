@@ -14,25 +14,25 @@ public class TesteExercicio {
     
     public static IFachada fachada;    
     public static void main(String[] args) {
-        cadastrarExercicios();
+        cadastrarExercicios("TESTE ENUNCIADO");
         alterarExercicios();
         consultarExercicios();
     }
     
-    public static void cadastrarExercicios() {
+    public static void cadastrarExercicios(String exe) {
         fachada = new Fachada();
         Exercicio exercicio = new Exercicio();
         exercicio.setId(1);
-        exercicio.setEnunciado("TESTE ENUNCIADO43");
+        exercicio.setEnunciado(exe);
         exercicio.setTipo(exercicio.MULTIPLAESCOLHA);
         exercicio.setTags(new ArrayList<Tag>());
-        exercicio.getTags().add(new Tag("TESTANDO43"));
-        exercicio.getTags().add(new Tag("TAG43"));
-        exercicio.getTags().add(new Tag("EXERCICIO43"));
+        exercicio.getTags().add(new Tag(exe+"1"));
+        exercicio.getTags().add(new Tag("tag1"));
+        exercicio.getTags().add(new Tag("todos"));
         exercicio.setAlternativas(new ArrayList<Alternativa>());
-        exercicio.getAlternativas().add(new Alternativa(true, "TESTE43"));
-        exercicio.getAlternativas().add(new Alternativa(false, "AQUELES43"));
-        exercicio.getAlternativas().add(new Alternativa(true, "EXERCICIO43"));
+        exercicio.getAlternativas().add(new Alternativa(true, "Alternativa1"));
+        exercicio.getAlternativas().add(new Alternativa(false, "Alternativa2"));
+        exercicio.getAlternativas().add(new Alternativa(true, "Alternativa3"));
         fachada.salvar(exercicio);
     }
     
