@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.springframework.stereotype.Component;
 
@@ -205,7 +203,7 @@ public class ExercicioDAO extends AbstractJdbcDAO{
         private Resultado consultarPorId(Exercicio exercicio){
             StringBuilder sql = new StringBuilder();
             sql.append(" SELECT ");
-            sql.append(" tbexercicios.id, dtCadastro, enunciado, tag_id, nome, tipo, contador, nivel_id ");
+            sql.append(" tbexercicios.id, dtCadastro, enunciado, tag_id, nome, tipo, contador, nivel_id, descricao, peso ");
             sql.append(" FROM ");
             sql.append(table);
             sql.append(" inner join ");
@@ -216,7 +214,7 @@ public class ExercicioDAO extends AbstractJdbcDAO{
             sql.append(" on (tbTags.id = tbExerciciosTags.tag_id) ");
             sql.append(" inner join ");
             sql.append(" tbNivel ");
-            sql.append(" on (tbNivel.id = tbExerciciosTags.nivel_id) ");
+            sql.append(" on (tbNivel.id = tbExercicios.nivel_id) ");
             sql.append(" WHERE ");
             sql.append(" tbexercicios.id =  ");
             sql.append(exercicio.getId());
@@ -236,9 +234,9 @@ public class ExercicioDAO extends AbstractJdbcDAO{
             sql.append(" inner join ");
             sql.append(" tbTags ");
             sql.append(" on (tbTags.id = tbExerciciosTags.tag_id) ");
-            sql.append(" inner join ");
+            sql.append(" full outer join ");
             sql.append(" tbNivel ");
-            sql.append(" on (tbNivel.id = tbExerciciosTags.nivel_id) ");
+            sql.append(" on (tbNivel.id = tbExercicios.nivel_id) ");
             sql.append(";");
             return executarConsulta(sql.toString());
         }
@@ -267,6 +265,7 @@ public class ExercicioDAO extends AbstractJdbcDAO{
                                     nivel.setId(rs.getInt("nivel_id"));
                                     nivel.setDescricao(rs.getString("descricao"));
                                     nivel.setPeso(rs.getFloat("peso"));
+                                    exercicio.setNivel(nivel);
                                 }else{
                                     exercicio = mapaExercicios.get(id);
                                     exercicio.setId(id);

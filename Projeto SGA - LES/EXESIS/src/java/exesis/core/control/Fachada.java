@@ -56,13 +56,13 @@ public class Fachada implements IFachada {
 	@Override
 	public Resultado consultar(EntidadeDominio entidade) {
 		Resultado resultado = Resultado.getResultado();
-
+                resultado.zerar();
 		String nmClasse = entidade.getClass().getName();
 		
 		if(resultado.getMsgs().isEmpty()){
 			IDAO dao = (IDAO) context.getBean(nmClasse);
                         resultado = dao.consultar(entidade);
-                        if(!resultado.getEntidades().isEmpty()){
+                        if(!resultado.getEntidades().isEmpty() && resultado.getEntidades().size() == 1){
                             entidade = resultado.getEntidades().get(0);
                             resultado = executarRegras(entidade, "CONSULTAR");
                         }
@@ -78,7 +78,7 @@ public class Fachada implements IFachada {
                     List<IStrategy> regras = estrategias.getStrategies(operacao);
                     if(regras != null){
                             for(IStrategy s: regras){			
-                                    resultado = s.processar(entidade);		
+                                        resultado = s.processar(entidade);		
                             }	
                     }		
                 }

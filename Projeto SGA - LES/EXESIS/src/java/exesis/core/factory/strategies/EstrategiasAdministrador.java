@@ -17,20 +17,21 @@ public class EstrategiasAdministrador extends FactoryStrategy{
     @Override
     public List<IStrategy> getStrategies(String operacao) {
             estrategias = new ArrayList<IStrategy>();
-                 switch(operacao.toUpperCase()){
-            case "SALVAR":
-                estrategias.add(new ComplementarDtCadastro());
-                estrategias.add(new DefinirNivelAcesso());
-                estrategias.add(new ValidarSenha());
-            case "ALTERAR":
-                estrategias.add(new ValidarNullAdministrador());
-                estrategias.add(new ValidarData());
-                estrategias.add(new ValidarEmail());
-                estrategias.add(new ValidarNomeUsuario());
-                break;
-            case "EXCLUIR":
-                break;
-            case "CONSULTAR":
+                 
+            switch(operacao.toUpperCase()){
+                case "SALVAR":
+                    estrategias.add(new ComplementarDtCadastro());
+                    estrategias.add(new DefinirNivelAcesso());
+                    estrategias.add(new ValidarSenha());
+                case "ALTERAR":
+                    estrategias.add(new ValidarNullAdministrador());
+                    estrategias.add(new ValidarData());
+                    estrategias.add(new ValidarEmail());
+                    estrategias.add(new ValidarNomeUsuario());
+                    break;
+                case "EXCLUIR":
+                    break;
+                case "CONSULTAR":
         }
    
             

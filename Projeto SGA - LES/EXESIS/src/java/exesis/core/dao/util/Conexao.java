@@ -1,5 +1,4 @@
-
-package exesis.core.util;
+package exesis.core.dao.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,7 +7,6 @@ import java.sql.SQLException;
 
 
 public class Conexao {
-	
 	public static Connection getConnection() 
 			throws ClassNotFoundException, 
 		SQLException{

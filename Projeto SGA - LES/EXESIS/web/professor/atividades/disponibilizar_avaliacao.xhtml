@@ -10,16 +10,16 @@
     <h:body>
 <h:form>  
         <p:menubar>
-        <p:menuitem action="/professor.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+        <p:menuitem action="/professor.xhtml?faces-redirect=true" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
         <p:submenu label="Usuários" icon="ui-icon-person">
             <p:submenu label="Consultar" icon="ui-icon-search">
-                <p:menuitem value="Aluno" action="/professor/usuarios/consultar/consultar_aluno.xhtml" icon="ui-icon-person" ajax="false" immediate="true" />
-                <p:menuitem value="Responsável do Aluno" action="/professor/usuarios/consultar/consultar_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                <p:menuitem value="Aluno" action="/professor/usuarios/consultar/consultar_aluno.xhtml?faces-redirect=true" icon="ui-icon-person" ajax="false" immediate="true" />
+                <p:menuitem value="Responsável do Aluno" action="/professor/usuarios/consultar/consultar_responsavel.xhtml?faces-redirect=true" icon="ui-icon-person" ajax="false" immediate="true"/>
             </p:submenu>
         </p:submenu>
         <p:submenu label="Atividades" icon="ui-icon-pencil">
             <p:submenu label="Novo" icon="ui-icon-contact">
-                <p:menuitem value="Exercício" action="/professor/atividades/novo/novo_exercicio.xhtml" ajax="false" immediate="true" />
+                <p:menuitem value="Exercício" action="/professor/atividades/novo/novo_exercicio.xhtml?faces-redirect=true" ajax="false" immediate="true" />
                 <p:menuitem value="Avaliação" url="#" />
             </p:submenu>
             <p:submenu label="Consultar" icon="ui-icon-contact">
@@ -27,18 +27,18 @@
                 <p:menuitem value="Avaliação" url="#" />
             </p:submenu>
             <p:separator/>
-            <p:menuitem value="Gerar avaliação" action="/professor/atividades/gerar_avaliacao.xhtml" ajax="false" immediate="true" />
-            <p:menuitem value="Disponibilizar avaliação" action="/professor/atividades/disponibilizar_avaliacao.xhtml" ajax="false" immediate="true" />
+            <p:menuitem value="Gerar avaliação" action="/professor/atividades/gerar_avaliacao.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+            <p:menuitem value="Disponibilizar avaliação" action="/professor/atividades/disponibilizar_avaliacao.xhtml?faces-redirect=true" ajax="false" immediate="true" />
         </p:submenu> 
         <p:submenu label="Relatórios" icon="ui-icon-signal">
-                <p:menuitem value="Disciplina por turmas" action="/professor/relatorios/disciplinas_por_turma.xhtml" ajax="false" />
-                <p:menuitem value="Desempenho por conteúdo" action="/professor/relatorios/desempenho_por_conteudo.xhtml" ajax="false" />
-                <p:menuitem value="Turma X Aluno" action="/professor/relatorios/comparacao_turma_aluno.xhtml" ajax="false" />
-                <p:menuitem value="Desempenho dos alunos" action="/professor/relatorios/desempenho_alunos.xhtml" ajax="false" />
+                <p:menuitem value="Disciplina por turmas" action="/professor/relatorios/disciplinas_por_turma.xhtml?faces-redirect=true" ajax="false" />
+                <p:menuitem value="Desempenho por conteúdo" action="/professor/relatorios/desempenho_por_conteudo.xhtml?faces-redirect=true" ajax="false" />
+                <p:menuitem value="Turma X Aluno" action="/professor/relatorios/comparacao_turma_aluno.xhtml?faces-redirect=true" ajax="false" />
+                <p:menuitem value="Desempenho dos alunos" action="/professor/relatorios/desempenho_alunos.xhtml?faces-redirect=true" ajax="false" />
             </p:submenu>
         <p:submenu label="Configurações" icon="ui-icon-gear">
-            <p:menuitem value="Notificações" action="/professor/configuracoes/notificacoes.xhtml" ajax="false" />
-            <p:menuitem value="Método de Avaliação" action="/professor/configuracoes/metodos_avaliacao.xhtml" ajax="false" />
+            <p:menuitem value="Notificações" action="/professor/configuracoes/notificacoes.xhtml?faces-redirect=true" ajax="false" />
+            <p:menuitem value="Método de Avaliação" action="/professor/configuracoes/metodos_avaliacao.xhtml?faces-redirect=true" ajax="false" />
         </p:submenu>
         <f:facet name="options">
             <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false"/>
@@ -46,43 +46,53 @@
     </p:menubar>
 </h:form>
 <h:form>
+    <p:growl id="messages" autoUpdate="true" showDetail="true" showSummary="true" />
     <p:panel header="Disponibilizar avaliação" >
          <h:panelGrid  columns="6" cellpadding="10">
+             <h:outputText value="Disciplina: " />  
+             <p:selectOneMenu id="disciplina" value="#{disponibilizarAvaliacaoBean.disciplina}">
+                <f:selectItem itemLabel="Selecione a disciplina" noSelectionOption="true" />
+                <f:selectItems value="#{disponibilizarAvaliacaoBean.listaDisciplinas}" var="disciplina" itemLabel="#{disciplina}" itemValue="#{disciplina}"/>
+            </p:selectOneMenu>
              <h:outputText value="Turma: " />  
-             <p:selectOneMenu id="turma" value="#{avaliacaoBean.avaliacao.turma}">
+             <p:selectOneMenu id="turma" value="#{disponibilizarAvaliacaoBean.turma}">
                 <f:selectItem itemLabel="Selecione a turma" noSelectionOption="true" />
-                <f:selectItems value="#{avaliacaoBean.turmas}" />
+                <f:selectItems value="#{disponibilizarAvaliacaoBean.listaTurmas}" var="turma" itemLabel="#{turma}" itemValue="#{turma}"/>
             </p:selectOneMenu>
              <h:outputText value="Avaliação: " />  
-             <p:selectOneMenu id="periodo" value="#{avaliacaoBean.avaliacao.nome}">
+             <p:selectOneMenu id="periodo" value="#{disponibilizarAvaliacaoBean.lista}">
                 <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"></f:selectItem>                        
-                <f:selectItems value="#{disponibilizarAvaliacaoBean.listasCriadas}" />
+                <f:selectItems value="#{disponibilizarAvaliacaoBean.listasCriadas}" var="lista" itemLabel="#{lista}" itemValue="#{lista}" />
              </p:selectOneMenu>
             <h:outputText value="Prazo: " />  
-            <p:calendar id="datetime" value="#{avaliacaoBean.avaliacao.prazo}" pattern="MM/dd/yyyy HH:mm:ss" />
-             <p:commandButton id="btn_add" value="Adicionar" update="tabela @parent" action="#{avaliacaoBean.reinit}" >
-                <p:collector value="#{avaliacaoBean.avaliacao}" addTo="#{avaliacaoBean.avaliacoes}" unique="true"/>
-            </p:commandButton>
+            <p:calendar id="datetime" locale="pt_BR" beforeShowDay="false"  value="#{disponibilizarAvaliacaoBean.avaliacao.prazo}" pattern="dd/MM/yyyy HH:mm:ss" />
+             
          </h:panelGrid>
+        <p:commandButton id="btn_add" value="Adicionar" update="tabela @parent" action="#{disponibilizarAvaliacaoBean.salvar}" style="position: relative; display: inline-block; ">
+            </p:commandButton>
     </p:panel>
     <p:outputPanel id="disciplinas">
-        <p:dataTable value="#{avaliacaoBean.avaliacoes}" var="valor" id="tabela" >
- 
-            <p:column headerText="Prazo">
-                <p:calendar readonlyInput="true" disabled="true" readonly="true" id="prazo" value="#{valor.prazo}" pattern="MM/dd/yyyy HH:mm:ss" />
+        <p:dataTable value="#{disponibilizarAvaliacaoBean.listaAvaliacoes}" var="valor" id="tabela" emptyMessage="Nenhuma avaliação disponibilizada" >
+            <p:column headerText="ID" >
+                <h:outputText  id="id" value="#{valor.id}"  />
+            </p:column>
+            
+            <p:column headerText="Prazo" >
+                <h:outputText value="#{valor.prazo}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"  timeZone="GMT-02:00" />
+                </h:outputText>
             </p:column>
  
             <p:column headerText="Turma">
-                <h:outputText value="#{valor.turma}" />
+                <h:outputText value="#{valor.turma.descricao}" />
             </p:column>
  
             <p:column headerText="Avaliação">
-                <h:outputText value="#{valor.nome}" />
+                <h:outputText value="#{valor.listaCriada.nome}" />
             </p:column>
  
             <p:column headerText="Ação">
-                <p:commandLink value="Remove" update="tabela" process="tabela">
-                    <p:collector value="#{valor}" removeFrom="#{avaliacaoBean.avaliacoes}" unique="true"/>
+                <p:commandLink value="Remove" update="tabela" process="tabela" action="#{disponibilizarAvaliacaoBean.remover(valor.id)}">
                 </p:commandLink>
             </p:column>
             

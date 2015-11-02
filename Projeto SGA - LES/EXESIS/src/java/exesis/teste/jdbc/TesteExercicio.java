@@ -6,16 +6,14 @@ import exesis.core.control.IFachada;
 import exesis.model.Alternativa;
 import exesis.model.EntidadeDominio;
 import exesis.model.Exercicio;
+import exesis.model.Nivel;
 import exesis.model.Tag;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 public class TesteExercicio {
     
     public static IFachada fachada;    
     public static void main(String[] args) {
-        cadastrarExercicios("TESTE ENUNCIADO");
-        alterarExercicios();
         consultarExercicios();
     }
     
@@ -25,6 +23,7 @@ public class TesteExercicio {
         exercicio.setId(1);
         exercicio.setEnunciado(exe);
         exercicio.setTipo(exercicio.MULTIPLAESCOLHA);
+        exercicio.setNivel(new Nivel(1));
         exercicio.setTags(new ArrayList<Tag>());
         exercicio.getTags().add(new Tag(exe+"1"));
         exercicio.getTags().add(new Tag("tag1"));

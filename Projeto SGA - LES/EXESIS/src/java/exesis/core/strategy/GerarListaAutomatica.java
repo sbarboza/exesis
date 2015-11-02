@@ -5,6 +5,7 @@ import exesis.core.dao.jdbc.ExercicioDAO;
 import exesis.model.EntidadeDominio;
 import exesis.model.Exercicio;
 import exesis.model.ListaCriada;
+import exesis.model.Nivel;
 import exesis.model.Tag;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,22 +19,28 @@ public class GerarListaAutomatica implements IStrategy{
         Resultado resultado = Resultado.getResultado();
         ListaCriada lista = (ListaCriada) entidade;
         List<String> tags = new ArrayList<String>();
-        for(Tag t: lista.getTags()){
-            tags.add(t.getNome());
+        if(lista.getTags() != null){
+            for(Tag t: lista.getTags()){
+                tags.add(t.getNome());
+            }
+        
+            resultado.zerar();
+            if(!lista.getExercicios().isEmpty())
+            resultado = classificarPorRelevancia(tags, lista.getExercicios());
+            lista.setExercicios(new ArrayList<Exercicio>());
+            for(EntidadeDominio e: resultado.getEntidades()){
+                Exercicio exercicio = (Exercicio) e;
+                lista.getExercicios().add(exercicio);
+            }
+           if(lista.getExercicios().size() > lista.getQuantidade()) // Se a quantidade de exercicios for maior que a pedida
+                   lista.setExercicios(lista.getExercicios().subList(0, lista.getQuantidade())); // retire o restante que não foi pedido
+            lista = adicionarContador(lista);
+            resultado.zerar();
+            resultado.setEntidade(lista);
+        }else{
+            resultado.zerar();
+            resultado.setEntidade(lista);
         }
-        resultado.zerar();
-        if(!lista.getExercicios().isEmpty())
-        resultado = classificarPorRelevancia(tags, lista.getExercicios());
-        lista.setExercicios(new ArrayList<Exercicio>());
-        for(EntidadeDominio e: resultado.getEntidades()){
-            Exercicio exercicio = (Exercicio) e;
-            lista.getExercicios().add(exercicio);
-        }
-       if(lista.getExercicios().size() > lista.getQuantidade()) // Se a quantidade de exercicios for maior que a pedida
-               lista.setExercicios(lista.getExercicios().subList(0, lista.getQuantidade())); // retire o restante que não foi pedido
-        lista = adicionarContador(lista);
-        resultado.zerar();
-        resultado.setEntidade(lista);
         return resultado;
     }
     private Resultado classificarPorRelevancia(List<String> tags, List<Exercicio> lista){
@@ -98,6 +105,7 @@ public class GerarListaAutomatica implements IStrategy{
             Exercicio e = new Exercicio();
             e.setId(exercicio.getId());
             e.setEnunciado(exercicio.getEnunciado());
+            e.setNivel(new Nivel(exercicio.getNivel().getId()));
             e.setContador(exercicio.getContador()+1);
             dao.alterar(e);
         }

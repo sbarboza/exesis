@@ -2,7 +2,6 @@ package exesis.view.beans;
 
 import exesis.core.aplicacao.Resultado;
 import exesis.core.control.Fachada;
-import exesis.core.control.IFachada;
 import exesis.model.Alternativa;
 import exesis.model.EntidadeDominio;
 import exesis.model.Exercicio;
@@ -11,7 +10,6 @@ import exesis.model.ListaRealizada;
 import exesis.model.Nivel;
 import exesis.model.Tag;
 import exesis.model.TipoLista;
-import exesis.model.Usuario;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,36 +29,27 @@ public class AvaliacaoBean extends AbstractBean{
     private List<String> keywords;
     private List<String> palavrasChaves;
     private String nome;
-    private int quantidade;
     private TipoLista tipo;
     private List<TipoLista> listatipo;
     private Map<Integer,TipoLista> mapatipo;
     private String turma;
     private String lista;
-    private Map<String, String> listas;
-    private Map<String, String> turmas;
-    private List<Nivel> listaNivel;
     private List<Exercicio> exercicios;
     private List<Alternativa> alternativas;
     
+    private List<Nivel> listaNivel;
+    private int quantidade;
+    private int idNivel;
+    private int disponivel;
     
     @PostConstruct
     public void init(){
         resultado = Resultado.getResultado();
         fachada = new Fachada();
-        quantidade = 1;
-        listas = new HashMap<String, String>();
-        turmas = new HashMap<String, String>();
+        quantidade = 10;
+        disponivel = 10;
         tipo = new TipoLista();
-        listas.put("Avaliação Geometria", "Avaliação Geometria");
-        listas.put("Avaliação Aritmética", "Avaliação Aritmética");
-        listas.put("Lista de Treino - Equação", "Lista de Treino - Equação");
-        listas.put("Prova Final", "Prova Final");
-        
-        turmas.put("1A - Manhã", "1A - Manhã");
-        turmas.put("2C - Manhã", "2C - Manhã");
-        turmas.put("4B - Tarde", "4B - Tarde");
-        turmas.put("1E - Noite", "1E - Noite");
+
         
         resultado = fachada.consultar(new Nivel());
         listaNivel = new ArrayList<Nivel>();
@@ -145,6 +134,59 @@ public class AvaliacaoBean extends AbstractBean{
         return null;
     }
     
+    
+    public List<String> completeKeywors(String query) {
+        List<String> allKeys = keywords;
+        List<String> filteredKeys = new ArrayList<String>();
+         
+        for (int i = 0; i < allKeys.size(); i++) {
+            String key = allKeys.get(i);
+            if(key.toLowerCase().startsWith(query) && !filteredKeys.contains(key)) {
+                filteredKeys.add(key);
+            }
+        }
+        if(filteredKeys.isEmpty())  
+            filteredKeys.add(query);
+        
+        return filteredKeys;
+    }
+
+    public void calcDisponivel(){
+        disponivel = quantidade;
+    }
+    
+    public ListaRealizada getRealizada() {
+        return realizada;
+    }
+
+    public void setRealizada(ListaRealizada realizada) {
+        this.realizada = realizada;
+    }
+
+    public ListaCriada getListaCriada() {
+        return listaCriada;
+    }
+
+    public void setListaCriada(ListaCriada listaCriada) {
+        this.listaCriada = listaCriada;
+    }
+
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
+    }
+
+    public List<String> getPalavrasChaves() {
+        return palavrasChaves;
+    }
+
+    public void setPalavrasChaves(List<String> palavrasChaves) {
+        this.palavrasChaves = palavrasChaves;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -169,7 +211,21 @@ public class AvaliacaoBean extends AbstractBean{
         this.tipo = tipo;
     }
 
-    
+    public List<TipoLista> getListatipo() {
+        return listatipo;
+    }
+
+    public void setListatipo(List<TipoLista> listatipo) {
+        this.listatipo = listatipo;
+    }
+
+    public Map<Integer, TipoLista> getMapatipo() {
+        return mapatipo;
+    }
+
+    public void setMapatipo(Map<Integer, TipoLista> mapatipo) {
+        this.mapatipo = mapatipo;
+    }
 
     public String getTurma() {
         return turma;
@@ -187,123 +243,46 @@ public class AvaliacaoBean extends AbstractBean{
         this.lista = lista;
     }
 
-    public Map<String, String> getListas() {
-        return listas;
+    public List<Nivel> getListaNivel() {
+        return listaNivel;
     }
 
-    public void setListas(Map<String, String> listas) {
-        this.listas = listas;
+    public void setListaNivel(List<Nivel> listaNivel) {
+        this.listaNivel = listaNivel;
     }
 
-    public Map<String, String> getTurmas() {
-        return turmas;
-    }
-
-    public void setTurmas(Map<String, String> turmas) {
-        this.turmas = turmas;
-    }
-
-
-    /**
-     * @return the exercicios
-     */
     public List<Exercicio> getExercicios() {
         return exercicios;
     }
 
-    /**
-     * @param exercicios the exercicios to set
-     */
     public void setExercicios(List<Exercicio> exercicios) {
         this.exercicios = exercicios;
     }
 
-    /**
-     * @return the alternativas
-     */
     public List<Alternativa> getAlternativas() {
         return alternativas;
     }
 
-    /**
-     * @param alternativas the alternativas to set
-     */
     public void setAlternativas(List<Alternativa> alternativas) {
         this.alternativas = alternativas;
-        
-    }    
-    
-
-    public Usuario getUsuario() {
-        return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public int getIdNivel() {
+        return idNivel;
     }
 
-    public ListaRealizada getRealizada() {
-        return realizada;
+    public void setIdNivel(int idNivel) {
+        this.idNivel = idNivel;
     }
 
-    public void setRealizada(ListaRealizada realizada) {
-        this.realizada = realizada;
+    public int getDisponivel() {
+        return disponivel;
     }
 
-    public List<String> getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywords(List<String> keywords) {
-        this.keywords = keywords;
-    }
-
-    public List<String> getKeywordsSelected() {
-        return palavrasChaves;
-    }
-
-    public void setKeywordsSelected(List<String> keywordsSelected) {
-        this.palavrasChaves = keywordsSelected;
+    public void setDisponivel(int disponivel) {
+        this.disponivel = disponivel;
     }
     
-    public List<String> completeKeywors(String query) {
-        List<String> allKeys = keywords;
-        List<String> filteredKeys = new ArrayList<String>();
-         
-        for (int i = 0; i < allKeys.size(); i++) {
-            String key = allKeys.get(i);
-            if(key.toLowerCase().startsWith(query) && !filteredKeys.contains(key)) {
-                filteredKeys.add(key);
-            }
-        }
-        if(filteredKeys.isEmpty())  
-            filteredKeys.add(query);
-        
-        return filteredKeys;
-    }
-
-    public ListaCriada getListaCriada() {
-        return listaCriada;
-    }
-
-    public void setListaCriada(ListaCriada listaCriada) {
-        this.listaCriada = listaCriada;
-    }
-
-    public List<String> getPalavrasChaves() {
-        return palavrasChaves;
-    }
-
-    public void setPalavrasChaves(List<String> palavrasChaves) {
-        this.palavrasChaves = palavrasChaves;
-    }
-
-    public List<TipoLista> getListatipo() {
-        return listatipo;
-    }
-
-    public void setListatipo(List<TipoLista> listatipo) {
-        this.listatipo = listatipo;
-    }
+    
     
 }

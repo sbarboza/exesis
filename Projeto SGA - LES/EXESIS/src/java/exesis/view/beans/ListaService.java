@@ -14,10 +14,7 @@ import java.util.UUID;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
-/**
- *
- * @author Vinicius Oliveira
- */
+
 @ManagedBean(name = "listaService")
 @ApplicationScoped
 public class ListaService {

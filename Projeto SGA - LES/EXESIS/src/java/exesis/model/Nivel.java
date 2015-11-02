@@ -9,6 +9,9 @@ public class Nivel extends EntidadeDominio{
     public Nivel(int id){
     this.id = id;
     }
+    public Nivel(String descricao){
+    this.descricao = descricao;
+    }
     public String getDescricao() {
         return descricao;
     }

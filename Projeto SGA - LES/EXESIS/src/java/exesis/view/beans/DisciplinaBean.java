@@ -59,7 +59,7 @@ public class DisciplinaBean extends AbstractBean{
     public void redirecionar(){
             FacesContext context = FacesContext.getCurrentInstance();
             NavigationHandler navHandler = context.getApplication().getNavigationHandler();
-            navHandler.handleNavigation(context, null , "/admin/instituicao/consultar/editar_disciplina.xhtml");
+            navHandler.handleNavigation(context, null , "/admin/instituicao/consultar/editar_disciplina.xhtml?faces-redirect=true");
     }
     
     public void editar(Disciplina disciplina){

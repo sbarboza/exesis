@@ -4,10 +4,8 @@ import exesis.core.aplicacao.Resultado;
 import exesis.core.dao.IDAO;
 import exesis.model.Disciplina;
 import exesis.model.EntidadeDominio;
-import exesis.model.Exercicio;
-import exesis.model.ListaCriada;
 import exesis.model.Professor;
-import exesis.model.Tag;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,9 +13,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import javax.swing.JOptionPane;
 import org.springframework.stereotype.Component;
 
 @Component(value = "exesis.model.Disciplina")
@@ -25,6 +21,9 @@ public class DisciplinaDAO extends AbstractJdbcDAO{
 
     public DisciplinaDAO() {
         super("tbDisciplina", "id");
+    }
+    public DisciplinaDAO(Connection connection) {
+        super(connection, "tbDisciplina", "id");
     }
 
     public Resultado salvar(EntidadeDominio entidade){
@@ -37,7 +36,7 @@ public class DisciplinaDAO extends AbstractJdbcDAO{
 		sql.append(table);
 		sql.append("(nome, dtcadastro)");
                 sql.append(" VALUES(?, ?)");
-                try {
+                try {                    
                     ctrlTransaction = false; // FALSE - PARA NÃO FECHAR A CONEXÃO ANTES QUE SE TENHA SALVO TUDO
                     openConnection();
                     pst = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS); // PREPARA O SQL PARA RETORNAR A CHAVE GERADA

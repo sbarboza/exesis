@@ -171,20 +171,19 @@ public class ProfessorDAO extends AbstractJdbcDAO{
                 sql.append("FROM ");                
                 sql.append("tbprofessores, ");
                 sql.append("tbusuarios ");
+                sql.append(" WHERE ");
+                sql.append(" usuario_id ");
+                sql.append(" = ");
+                sql.append(" tbusuarios.id");
                 if(professor.getId() != 0){
-                    sql.append(" WHERE ");
+                    sql.append(" AND ");
                     sql.append("tbprofessores.id");
                     sql.append(" = ");
                     sql.append(professor.getId());
-                    sql.append(" AND ");
-                    sql.append(" usuario_id ");
-                    sql.append(" = ");
-                    sql.append(" tbusuarios.id");
                     sql.append(";");
                 }else if(professor.getUsuario() != null && 
                         professor.getUsuario().getLogin() != null &&
-                        !professor.getUsuario().getLogin().isEmpty()){
-                    sql.append(" WHERE ");
+                        !professor.getUsuario().getLogin().isEmpty()){      
                     sql.append(" login = '");
                     sql.append(professor.getUsuario().getLogin());
                     sql.append("'; ");

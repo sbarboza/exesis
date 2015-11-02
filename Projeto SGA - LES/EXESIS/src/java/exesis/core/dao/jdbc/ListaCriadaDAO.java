@@ -12,6 +12,7 @@ import exesis.model.Exercicio;
 import exesis.model.ListaCriada;
 import exesis.model.Tag;
 import exesis.model.TipoLista;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,6 +34,9 @@ public class ListaCriadaDAO extends AbstractJdbcDAO{
 
     public ListaCriadaDAO() {
         super("tbListasCriadas", "id");
+    }
+    public ListaCriadaDAO(Connection connection) {
+        super(connection, "tbListasCriadas", "id");
     }
 
     	public Resultado salvar(EntidadeDominio entidade){
@@ -125,7 +129,7 @@ public class ListaCriadaDAO extends AbstractJdbcDAO{
             ListaCriada listaCriada = null;
             if(entidade instanceof ListaCriada){
                 listaCriada = (ListaCriada) entidade;
-                if(!listaCriada.getTags().isEmpty())
+                if(listaCriada.getTags() != null && !listaCriada.getTags().isEmpty())
                     return consultarPorTags(listaCriada);
                 if(listaCriada.getId() != 0) // TEM ID
                     return consultarPorId(listaCriada);
@@ -141,7 +145,7 @@ public class ListaCriadaDAO extends AbstractJdbcDAO{
         private Resultado consultarPorId(ListaCriada listaCriada){
             StringBuilder sql = new StringBuilder();
             sql.append(" SELECT ");
-            sql.append(" descricao, tbtiposlistas.peso, tipolista_id, nome, dtcadastro, tblistascriadas.id, tblistascriadasexercicios.peso, tblistascriadasexercicios.exercicio_id ");
+            sql.append(" descricao, tbtiposlistas.peso as pesolista, tipolista_id, nome, dtcadastro, tblistascriadas.id, tblistascriadasexercicios.peso as pesoexercicio, tblistascriadasexercicios.exercicio_id ");
             sql.append(" FROM ");
             sql.append(" tbListasCriadas, tbListasCriadasExercicios, tbTiposListas ");
             sql.append(" WHERE ");
@@ -159,6 +163,9 @@ public class ListaCriadaDAO extends AbstractJdbcDAO{
             sql.append(" descricao, tbtiposlistas.peso as pesolista, tipolista_id, nome, dtcadastro, tblistascriadas.id, tblistascriadasexercicios.peso as pesoexercicio, tblistascriadasexercicios.exercicio_id ");
             sql.append(" FROM ");
             sql.append(" tbListasCriadas, tbListasCriadasExercicios, tbTiposListas ");
+            sql.append(" WHERE ");
+            sql.append(" tblistascriadas.tipolista_id = tbtiposlistas.id AND ");
+            sql.append(" tblistascriadas.id = tblistascriadasexercicios.listacriada_id");
             sql.append(";");
             return executarConsulta(sql.toString());
         }
@@ -219,7 +226,7 @@ public class ListaCriadaDAO extends AbstractJdbcDAO{
             Resultado resultado = Resultado.getResultado();
             PreparedStatement pst = null;
             ListaCriada listaCriada = null;
-            IDAO dao;
+            IDAO dao = new ExercicioDAO();
             try {
 			openConnection();
 			pst = connection.prepareStatement(sql.toString());
@@ -232,27 +239,19 @@ public class ListaCriadaDAO extends AbstractJdbcDAO{
                                     listaCriada.setId(id);
                                     listaCriada.setExercicios(new ArrayList<Exercicio>());
                                     listaCriada.setTipo(new TipoLista(rs.getInt("tipolista_id"), rs.getString("descricao"), rs.getFloat("pesoexercicio")));
-                                    listaCriada.setDtCadastro(rs.getDate("dtCadatro"));
+                                    listaCriada.setDtCadastro(rs.getDate("dtcadastro"));
                                     listaCriada.setNome(rs.getString("nome"));
                                 }else{
                                     listaCriada = mapaListas.get(id);
                                 }
-                            
-                            listaCriada.getExercicios().add(new Exercicio(rs.getInt("exercicio_id")));
+                            resultado.zerar();
+                            resultado = dao.consultar(new Exercicio(rs.getInt("exercicio_id")));
+                            listaCriada.getExercicios().add((Exercicio) resultado.getEntidades().get(0));
                             mapaListas.put(id, listaCriada);
-                        }
-                        dao = new ExercicioDAO();
-                        List<Exercicio> exercicios = new ArrayList<Exercicio>();
-                        for(int i = 0; i < mapaListas.size(); i++){
-                            for(Exercicio e: mapaListas.get(i).getExercicios()){
-                                resultado = dao.consultar(e);
-                                exercicios.add((Exercicio) resultado.getEntidades().get(0));
-                            }
-                            mapaListas.get(i).setExercicios(exercicios);
                         }
                         resultado.zerar();
                         for(ListaCriada lista: mapaListas.values()){
-                        resultado.setEntidade(lista);
+                            resultado.setEntidade(lista);
                         }
                 }catch(SQLException e){
 			e.printStackTrace();                    

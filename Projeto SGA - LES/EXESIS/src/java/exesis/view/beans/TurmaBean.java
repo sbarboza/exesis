@@ -1,10 +1,13 @@
 package exesis.view.beans;
 
+import exesis.core.aplicacao.Resultado;
+import exesis.core.control.Fachada;
 import exesis.model.Disciplina;
 import exesis.model.DisciplinaProfessor;
+import exesis.model.EntidadeDominio;
 import exesis.model.Professor;
+import exesis.model.Serie;
 import exesis.model.Turma;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +20,7 @@ import javax.faces.bean.ViewScoped;
 
 @ManagedBean(name = "turmaBean")
 @ViewScoped
-public class  TurmaBean extends AbstractBean implements Serializable{
+public class  TurmaBean extends AbstractBean{
     private List<Disciplina> disciplinas;
     private List<Professor> professores;
     
@@ -33,84 +36,62 @@ public class  TurmaBean extends AbstractBean implements Serializable{
     Map<String, Map<String, String>> dados;
     Map<String, String> mapaProfessores;
     Map<String, String> mapaDisciplinas;
-    Map<String, String> mapSeries;
+    Map<String, Serie> mapSeries;
     @PostConstruct
     public void init(){ 
-        mapSeries = new HashMap<String, String>();
-        mapSeries.put("1ª - FUNDAMENTAL", "1ª - FUNDAMENTAL");
-        mapSeries.put("2ª - FUNDAMENTAL", "2ª - FUNDAMENTAL");
-        mapSeries.put("3ª - FUNDAMENTAL", "3ª - FUNDAMENTAL");
-        mapSeries.put("4ª - FUNDAMENTAL", "4ª - FUNDAMENTAL");
-        mapSeries.put("5ª - FUNDAMENTAL", "5ª - FUNDAMENTAL");
-        mapSeries.put("6ª - FUNDAMENTAL", "6ª - FUNDAMENTAL");
-        mapSeries.put("7ª - FUNDAMENTAL", "7ª - FUNDAMENTAL");
-        mapSeries.put("8ª - FUNDAMENTAL", "8ª - FUNDAMENTAL");
-        mapSeries.put("1ª - MÉDIO", "1ª - MÉDIO");
-        mapSeries.put("2ª - MÉDIO", "2ª - MÉDIO");
-        mapSeries.put("3ª - MÉDIO", "3ª - MÉDIO");
-        
-        
+        resultado = Resultado.getResultado();
+        fachada = new Fachada();
+        mapSeries = new HashMap<String, Serie>();
+        resultado.zerar();
+        resultado = fachada.consultar(new Serie());
+        if(!resultado.getEntidades().isEmpty()){
+            for(EntidadeDominio e: resultado.getEntidades()){
+                mapSeries.put(((Serie)e).getNome(), (Serie)e);
+            }
+        }
         lista = new ArrayList<DisciplinaProfessor>();
-        
+        turma = new Turma();
         disciplinaProfessor = new DisciplinaProfessor();
         dados = new HashMap<String, Map<String, String>>();
         
-        mapaDisciplinas = new HashMap<String, String>();
-        mapaDisciplinas.put("MATEMATICA","MATEMATICA");
-        mapaDisciplinas.put("PORTUGUES","PORTUGUES");
-        mapaDisciplinas.put("BIOLOGIA","BIOLOGIA");
-        mapaDisciplinas.put("HISTORIA","HISTORIA");
-        mapaDisciplinas.put("GEOGRAFIA","GEOGRAFIA");
-        
-        mapaProfessores = new HashMap<String, String>();
-        mapaProfessores.put("MARCOS","MARCOS");
-        mapaProfessores.put("EDMILSON", "EDMILSON");
-        dados.put("MATEMATICA",mapaProfessores);
-        
-        mapaProfessores = new HashMap<String, String>();
-        mapaProfessores.put("MARCOS","MARCOS");
-        mapaProfessores.put("ALMIR", "ALMIR");
-        dados.put("BIOLOGIA",mapaProfessores);
-        
-        mapaProfessores = new HashMap<String, String>();
-        mapaProfessores.put("MARIANGELA","MARIANGELA");
-        mapaProfessores.put("ALMIR", "ALMIR");
-        dados.put("HISTORIA",mapaProfessores);
-        
-        mapaProfessores = new HashMap<String, String>();
-        mapaProfessores.put("MARCOS","MARCOS");
-        mapaProfessores.put("MARIANGELA", "MARIANGELA");
-        dados.put("GEOGRAFIA",mapaProfessores);
-        
-        mapaProfessores = new HashMap<String, String>();
-        mapaProfessores.put("MARIANGELA","MARIANGELA");
-        mapaProfessores.put("ALMIR", "ALMIR");
-        dados.put("PORTUGUES",mapaProfessores);
-        
+        resultado.zerar();
+        resultado = fachada.consultar(new Disciplina());
         disciplinas = new ArrayList<Disciplina>();
-        disciplinas.add(new Disciplina("Matemática"));
-        disciplinas.add(new Disciplina("Português"));
-        disciplinas.add(new Disciplina("Biologia"));
-        disciplinas.add(new Disciplina("História"));
-        disciplinas.add(new Disciplina("Geografia"));
-        
+        if(!resultado.getEntidades().isEmpty()){
+            for(EntidadeDominio e: resultado.getEntidades()){
+                disciplinas.add((Disciplina)e);
+            }
+        }
+        if(!disciplinas.isEmpty()){
+            mapaDisciplinas = new HashMap<String, String>();
+            for(Disciplina d: disciplinas){
+                mapaProfessores = new HashMap<String, String>();
+                if(d.getProfessores() != null && !d.getProfessores().isEmpty()){
+                    for(Professor p: d.getProfessores()){
+                        mapaProfessores.put(p.getNome(), p.getNome());
+                    }
+                }
+                dados.put(d.getNome(),mapaProfessores);        
+                mapaDisciplinas.put(d.getNome(), d.getNome());                
+            }
+        }
         
     }
     
     public List<String> completeText(String procura){
         List<String> lista = new ArrayList<String>();
-        for(String s: mapSeries.values()){
-            if(s.toUpperCase().contains(procura.toUpperCase()))
-                lista.add(s);
+        for(Serie s: mapSeries.values()){
+            if(s.getNome().toUpperCase().contains(procura.toUpperCase()))
+                lista.add(s.getNome());
         }
         return lista;
     }
     
     public void onChange(){
-       if(mapaDisciplinas !=null && !mapaDisciplinas.equals(""))
+       if(mapaDisciplinas !=null && !mapaDisciplinas.isEmpty()){
             mapaProfessores = dados.get(disciplinaProfessor.getDisciplina());
+        }
         else
-           
             mapaProfessores = new HashMap<String, String>();
     }
     
@@ -125,26 +106,47 @@ public class  TurmaBean extends AbstractBean implements Serializable{
             lista.add(disciplinaProfessor);
         }
     }
+    public void salvar(){
+        for(Serie s: mapSeries.values()){
+            System.out.println(s.getNome() +"=="+serie);
+            if(s.getNome().equals(serie)){
+                turma.setSerie(s);
+            }
+        }
+        turma.setMapaDisciplinaProfessor(new HashMap<Disciplina, Professor>());
+        for(DisciplinaProfessor discProf: lista){
+            for(Disciplina d: disciplinas){
+                if(d.getNome().equals(discProf.getDisciplina())){
+                    for(Professor p: d.getProfessores()){
+                        if(p.getNome().equals(discProf.getProfessor()))
+                            turma.getMapaDisciplinaProfessor().put(d, p);
+                    }
+                }
+            }
+        }
+        resultado = fachada.salvar(turma);
+        if(!resultado.getMsgs().isEmpty()){
+            Mensagem(FacesMessage.SEVERITY_INFO, "Erro ao salvar", resultado.getMsgs());
+        }else{
+            Mensagem(FacesMessage.SEVERITY_INFO, "Salvo", "");
+        }
+        
+    }
      
     public String reinit() {
         disciplinaProfessor = new DisciplinaProfessor();  
         return null;
     }
-    
-    public void salvar(){
-    }
-    
-    public void limpar(){
-        lista = new ArrayList<DisciplinaProfessor>();
-    }
 
-    public Map<String, String> getSeries() {
+    public Map<String, Serie> getMapSeries() {
         return mapSeries;
     }
 
-    public void setSeries(Map<String, String> series) {
-        this.mapSeries = series;
+    public void setMapSeries(Map<String, Serie> mapSeries) {
+        this.mapSeries = mapSeries;
     }
+    
+
 
     
     

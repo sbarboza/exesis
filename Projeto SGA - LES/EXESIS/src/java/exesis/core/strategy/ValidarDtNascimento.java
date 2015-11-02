@@ -13,7 +13,7 @@ import java.util.Calendar;
 
 /**
  *
- * @author Vinicius Oliveira
+ * @author  
  */
 public class ValidarDtNascimento implements IStrategy {
 

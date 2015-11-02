@@ -4,35 +4,35 @@ package exesis.core.dao.jdbc;
 import exesis.core.aplicacao.Resultado;
 import exesis.model.EntidadeDominio;
 import exesis.model.Nivel;
+import exesis.model.Serie;
 import exesis.model.TipoLista;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.stereotype.Component;
 
-@Component(value = "exesis.model.Nivel")
-public class NivelDAO extends AbstractJdbcDAO{
+@Component(value = "exesis.model.Serie")
+public class SerieDAO extends AbstractJdbcDAO{
 
-    public NivelDAO() {
-        super("tbNivel", "id");
+    public SerieDAO() {
+        super("tbSeries", "id");
     }
     	public Resultado salvar(EntidadeDominio entidade){
 		Resultado resultado = Resultado.getResultado();
 		PreparedStatement pst=null;
                 StringBuilder sql = null;
-                Nivel nivel = (Nivel) entidade; // RECEBE A INSTÂNCIA DA ENTIDADE FAZENDO O CAST PARA A CLASSE
+                Serie serie = (Serie) entidade; // RECEBE A INSTÂNCIA DA ENTIDADE FAZENDO O CAST PARA A CLASSE
                 ctrlTransaction = false; // FALSE - PARA NÃO FECHAR A CONEXÃO ANTES QUE SE TENHA SALVO TUDO
                 
 		sql = new StringBuilder();
 		sql.append("INSERT INTO ");
 		sql.append(table);
-		sql.append("(descricao, peso)");
-                sql.append(" VALUES(?, ?);");
+		sql.append("(serie)");
+                sql.append(" VALUES(?);");
                 try {
                     openConnection();
                     pst = connection.prepareStatement(sql.toString()); // PREPARA O SQL PARA RETORNAR A CHAVE GERADA
-                    pst.setString(1, nivel.getDescricao());
-                    pst.setFloat(2, nivel.getPeso());
+                    pst.setString(1, serie.getNome());
                     executarSQL(pst); // EXECUTA O SQL
                     ctrlTransaction=true; // AFIRMA QUE A CONEXÃO PODE SER FECHADA, POIS A TRANSAÇÃO TERMINOU
                 } catch (SQLException ex) {
@@ -55,20 +55,19 @@ public class NivelDAO extends AbstractJdbcDAO{
 		Resultado resultado = Resultado.getResultado();
 		PreparedStatement pst= null;
                 StringBuilder sql = null;
-		Nivel nivel = (Nivel) entidade; // RECEBE A INSTÂNCIA DA ENTIDADE FAZENDO O CAST PARA A CLASSE
+		Serie serie = (Serie) entidade; // RECEBE A INSTÂNCIA DA ENTIDADE FAZENDO O CAST PARA A CLASSE
                 try {
                         openConnection();
 			sql = new StringBuilder();
 			sql.append("UPDATE ");
 			sql.append(table);
-			sql.append(" SET descricao=?, peso=? WHERE ");
+			sql.append(" SET serie=? WHERE ");
 			sql.append(idTable);
 			sql.append(" = ");
 			sql.append(entidade.getId());
 			sql.append(";");                        
 			pst = connection.prepareStatement(sql.toString()); // PREPARA O SQL PARA RETORNAR A CHAVE GERADA
-			pst.setString(1, nivel.getDescricao());
-			pst.setFloat(2, nivel.getPeso());
+			pst.setString(1, serie.getNome());
                         executarSQL(pst);
 			return resultado;
 		} catch (SQLException e) {
@@ -80,24 +79,24 @@ public class NivelDAO extends AbstractJdbcDAO{
 	@Override
 	public Resultado consultar(EntidadeDominio entidade){
             // DECLARAÇÃO DAS VARIÁVEIS
-            Nivel nivel = null;
+            Serie serie = null;
             if(entidade instanceof TipoLista){
-                nivel = (Nivel) entidade;
-                if(nivel.getId() != 0) // TEM ID
-                    return consultarPorId(nivel);
+                serie = (Serie) entidade;
+                if(serie.getId() != 0) // TEM ID
+                    return consultarPorId(serie);
             }
             return consultarTodos();
         }
 
-        private Resultado consultarPorId(Nivel nivel){
+        private Resultado consultarPorId(Serie serie){
             StringBuilder sql = new StringBuilder();
             sql.append(" SELECT ");
-            sql.append(" id, descricao, peso ");
+            sql.append(" id, serie ");
             sql.append(" FROM ");
             sql.append(table);
             sql.append(" WHERE ");
             sql.append(" id =  ");
-            sql.append(nivel.getId());
+            sql.append(serie.getId());
             sql.append(";");
             return executarConsulta(sql.toString());
         }
@@ -105,7 +104,7 @@ public class NivelDAO extends AbstractJdbcDAO{
         private Resultado consultarTodos(){
             StringBuilder sql = new StringBuilder();
             sql.append(" SELECT ");
-            sql.append(" id, descricao, peso ");
+            sql.append(" id, serie ");
             sql.append(" FROM ");
             sql.append(table);
             sql.append(";");
@@ -115,18 +114,17 @@ public class NivelDAO extends AbstractJdbcDAO{
         private Resultado executarConsulta(String  sql){
             Resultado resultado = Resultado.getResultado();
             PreparedStatement pst = null;
-            Nivel nivel = null;
+            Serie serie = null;
             try {
 			openConnection();
 			pst = connection.prepareStatement(sql.toString());
 			ResultSet rs = pst.executeQuery();
                         resultado.zerar();
 			while (rs.next()) {
-                            nivel = new Nivel();
-                            nivel.setId(rs.getInt(idTable));
-                            nivel.setDescricao(rs.getString("descricao"));
-                            nivel.setPeso(rs.getFloat("peso"));
-                            resultado.setEntidade(nivel);
+                            serie = new Serie();
+                            serie.setId(rs.getInt(idTable));
+                            serie.setNome(rs.getString("serie"));
+                            resultado.setEntidade(serie);
                         }
                 }catch(SQLException e){
 			e.printStackTrace();                    

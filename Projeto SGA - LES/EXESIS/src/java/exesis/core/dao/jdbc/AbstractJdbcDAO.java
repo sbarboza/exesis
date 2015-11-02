@@ -3,15 +3,13 @@ package exesis.core.dao.jdbc;
 
 import exesis.core.aplicacao.Resultado;
 import exesis.core.dao.IDAO;
-import exesis.core.util.Conexao;
+import exesis.core.dao.util.Conexao;
 import exesis.model.EntidadeDominio;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public abstract class AbstractJdbcDAO implements IDAO{
@@ -20,6 +18,7 @@ public abstract class AbstractJdbcDAO implements IDAO{
 	protected String table;
 	protected String idTable;
 	protected boolean ctrlTransaction=true;
+        private int count = 0;
 	
 	public AbstractJdbcDAO( Connection connection, String table, String idTable){
 		this.table = table;
@@ -71,10 +70,12 @@ public abstract class AbstractJdbcDAO implements IDAO{
 	}	
         
 	protected void openConnection(){
-		try {
+            try {
+                       
 			if(connection == null || connection.isClosed()){
 				connection = Conexao.getConnection();				
-                            System.out.println("CONEXÃO COM BANCO DE DADOS EFETUADA COM SUCESSO!");
+                                count++;
+                            System.out.println("CONEXÃO COM BANCO DE DADOS EFETUADA COM SUCESSO: "+count);
                         }
 		} catch (ClassNotFoundException e) {
 			System.out.println("CONEXÃO COM BANCO DE DADOS NÃO EFETUADA!");

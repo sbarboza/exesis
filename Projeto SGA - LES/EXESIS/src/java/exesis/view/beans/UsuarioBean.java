@@ -7,7 +7,7 @@ import exesis.model.Pessoa;
 import exesis.model.Professor;
 import exesis.model.ResponsavelAluno;
 import exesis.model.Usuario;
-import exesis.teste.popularBanco.PopularBancoHibernate;
+import exesis.teste.popularBanco.PopularBanco;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.bean.ManagedBean;
@@ -21,7 +21,7 @@ public class UsuarioBean extends AbstractBean{
     private String nomeUsuario;
     private String senhaUsuario;
     private Usuario usuario;
-    private PopularBancoHibernate popular;
+    private PopularBanco popular;
     private Pessoa pessoa;
     
     public UsuarioBean(){     
@@ -70,10 +70,10 @@ public class UsuarioBean extends AbstractBean{
                 default:
                     pagina = "login";
             }
-//            resultado =  fachada.consultar(pessoa);
-//            if(resultado.getEntidades().get(0) != null)
-//                pessoa = (Pessoa) resultado.getEntidades().get(0);
-//            session.setAttribute("pessoa", pessoa);
+            resultado =  fachada.consultar(pessoa);
+            if(resultado.getEntidades().get(0) != null)
+                pessoa = (Pessoa) resultado.getEntidades().get(0);
+            session.setAttribute("pessoa", pessoa);
             FacesContext context = FacesContext.getCurrentInstance();
             NavigationHandler navHandler = context.getApplication().getNavigationHandler();
             navHandler.handleNavigation(context, null , pagina);
@@ -93,7 +93,7 @@ public class UsuarioBean extends AbstractBean{
     }
     
     public void teste(){
-        popular = new PopularBancoHibernate();
+        popular = new PopularBanco();
         popular.popular(10);
         Mensagem(FacesMessage.SEVERITY_INFO, "Populado Banco", "Realizado o cadastro dos testes no banco");
     }
@@ -111,11 +111,11 @@ public class UsuarioBean extends AbstractBean{
     }
 
     
-    public PopularBancoHibernate getPopular() {
+    public PopularBanco getPopular() {
         return popular;
     }
 
-    public void setPopular(PopularBancoHibernate popular) {
+    public void setPopular(PopularBanco popular) {
         this.popular = popular;
     }
     public void setSenhaUsuario(String senhaUsuario) {

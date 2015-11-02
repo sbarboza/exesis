@@ -10,7 +10,7 @@ import exesis.model.EntidadeDominio;
 
 /**
  *
- * @author Vinicius Oliveira
+ * @author  
  */
 public class ValidarNullAluno implements IStrategy {
 

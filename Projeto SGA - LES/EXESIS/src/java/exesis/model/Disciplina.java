@@ -12,6 +12,9 @@ public class Disciplina extends EntidadeDominio{
     public Disciplina(String nome){
         this.nome = nome;
     }
+    public Disciplina(int id){
+        this.id = id;
+    }
     public String getNome() {
         return nome;
     }

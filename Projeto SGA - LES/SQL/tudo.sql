@@ -15,6 +15,9 @@ DROP TABLE IF EXISTS tblistascriadasturmas CASCADE;
 DROP TABLE IF EXISTS tbdisciplina CASCADE;
 DROP TABLE IF EXISTS tbdisciplinasprofessores CASCADE;
 DROP TABLE IF EXISTS tbNivel CASCADE;
+DROP TABLE IF EXISTS tbSeries CASCADE;
+DROP TABLE IF EXISTS tbturmas CASCADE;
+DROP TABLE IF EXISTS tbavaliacoes CASCADE;
 
 CREATE TABLE IF NOT EXISTS tbNivel
 (
@@ -192,6 +195,7 @@ CREATE TABLE IF NOT EXISTS tbdisciplina
 
 CREATE TABLE IF NOT EXISTS tbdisciplinasprofessores
 (
+  turma_id integer,
   disciplina_id integer,
   professor_id integer,
   CONSTRAINT fk_disciplina FOREIGN KEY (disciplina_id)
@@ -202,19 +206,32 @@ CREATE TABLE IF NOT EXISTS tbdisciplinasprofessores
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
+CREATE TABLE IF NOT EXISTS tbseries
+(
+ id serial,
+ serie character varying,
+ CONSTRAINT pk_serie PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS tbturmas
 (
  id serial,
  serie_id integer,
  prefixo char,
- periodo character varying,
- disciplinaprofessor_id integer,
+ periodo int,
  CONSTRAINT pk_turma PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS tbseries
+CREATE TABLE IF NOT EXISTS tbavaliacoes
 (
- id serial
- serie character varying,
- CONSTRAINT pk_serie PRIMARY KEY (id)
+ id serial,
+ dtcadastro date,
+ turma_id integer,
+ listaCriada_id integer,
+ disciplina_id integer,
+ professor_id integer,
+ prazo timestamp without time zone,
+ ativo boolean,
+ CONSTRAINT pk_avaliacao PRIMARY KEY (id)
 );
+

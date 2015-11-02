@@ -2,6 +2,7 @@ package exesis.core.factory;
 
 import exesis.core.factory.strategies.EstrategiasAdministrador;
 import exesis.core.factory.strategies.EstrategiasAluno;
+import exesis.core.factory.strategies.EstrategiasAvaliacao;
 import exesis.core.factory.strategies.EstrategiasExercicio;
 import exesis.core.factory.strategies.EstrategiasListaCriada;
 import exesis.core.factory.strategies.EstrategiasProfessor;
@@ -10,6 +11,7 @@ import exesis.core.strategy.IStrategy;
 import exesis.model.Administrador;
 import exesis.model.Alternativa;
 import exesis.model.Aluno;
+import exesis.model.Avaliacao;
 import exesis.model.Dissertativo;
 import exesis.model.Exercicio;
 import exesis.model.ListaCriada;
@@ -34,6 +36,7 @@ public abstract class FactoryStrategy {
         factories.put(Alternativa.class.getCanonicalName(), new EstrategiasExercicio());
         factories.put(Tag.class.getCanonicalName(), new EstrategiasExercicio());
         factories.put(ListaCriada.class.getCanonicalName(), new EstrategiasListaCriada());
+        factories.put(Avaliacao.class.getCanonicalName(), new EstrategiasAvaliacao());
         return factories.get(nmClasse);
     }
     public abstract List<IStrategy> getStrategies(String operacao);

@@ -11,37 +11,38 @@
     <h:body>
 <h:form>  
        <p:menubar>
-            <p:menuitem action="/admin.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+            <p:menuitem action="/admin.xhtml?faces-redirect=true" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
             <p:submenu label="Usuários" icon="ui-icon-person">
                 <p:submenu label="Novo" icon="ui-icon-plus">
-                    <p:menuitem value="Administrador" action="/admin/usuarios/novo/novo_admin.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
-                    <p:menuitem value="Aluno" action="/admin/usuarios/novo/novo_aluno.xhtml" icon="ui-icon-person"  ajax="false" immediate="true" />
-                    <p:menuitem value="Professor" action="/admin/usuarios/novo/novo_professor.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
-                    <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/novo/novo_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Administrador" action="/admin/usuarios/novo/novo_admin.xhtml?faces-redirect=true" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Aluno" action="/admin/usuarios/novo/novo_aluno.xhtml?faces-redirect=true" icon="ui-icon-person"  ajax="false" immediate="true" />
+                    <p:menuitem value="Professor" action="/admin/usuarios/novo/novo_professor.xhtml?faces-redirect=true" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/novo/novo_responsavel.xhtml?faces-redirect=true" icon="ui-icon-person" ajax="false" immediate="true"/>
                 </p:submenu>
                 <p:submenu label="Consultar" icon="ui-icon-search">
-                    <p:menuitem value="Administrador" action="/admin/usuarios/consultar/consultar_admin.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
-                    <p:menuitem value="Aluno" action="/admin/usuarios/consultar/consultar_aluno.xhtml" icon="ui-icon-person" ajax="false" immediate="true" />
-                    <p:menuitem value="Professor" action="/admin/usuarios/consultar/consultar_professor.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
-                    <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/consultar/consultar_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Administrador" action="/admin/usuarios/consultar/consultar_admin.xhtml?faces-redirect=true" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Aluno" action="/admin/usuarios/consultar/consultar_aluno.xhtml?faces-redirect=true" icon="ui-icon-person" ajax="false" immediate="true" />
+                    <p:menuitem value="Professor" action="/admin/usuarios/consultar/consultar_professor.xhtml?faces-redirect=true" icon="ui-icon-person" ajax="false" immediate="true"/>
+                    <p:menuitem value="Responsável do Aluno" action="/admin/usuarios/consultar/consultar_responsavel.xhtml?faces-redirect=true" icon="ui-icon-person" ajax="false" immediate="true"/>
                 </p:submenu>
             </p:submenu>
             <p:submenu label="Instituição" icon="ui-icon-pencil">
                 <p:submenu label="Novo" icon="ui-icon-contact">
-                    <p:menuitem value="Disciplina" action="/admin/instituicao/novo/nova_disciplina.xhtml" ajax="false" immediate="true"/>
-                    <p:menuitem value="Turma" action="/admin/instituicao/novo/nova_turma.xhtml" ajax="false" immediate="true"  />
+                    <p:menuitem value="Disciplina" action="/admin/instituicao/novo/nova_disciplina.xhtml?faces-redirect=true" ajax="false" immediate="true"/>
+                    <p:menuitem value="Turma" action="/admin/instituicao/novo/nova_turma.xhtml?faces-redirect=true" ajax="false" immediate="true"  />
                 </p:submenu>
                 <p:submenu label="Consultar" icon="ui-icon-contact">
-                    <p:menuitem value="Disciplina" action="/admin/instituicao/consultar/consultar_disciplina.xhtml" ajax="false" immediate="true"/>
-                    <p:menuitem value="Turma" action="/admin/instituicao/consultar/consultar_turma.xhtml" ajax="false" immediate="true"  />
+                    <p:menuitem value="Disciplina" action="/admin/instituicao/consultar/consultar_disciplina.xhtml?faces-redirect=true" ajax="false" immediate="true"/>
+                    <p:menuitem value="Turma" action="/admin/instituicao/consultar/consultar_turma.xhtml?faces-redirect=true" ajax="false" immediate="true"  />
                 </p:submenu>
             </p:submenu>
             <p:submenu label="Relatórios" icon="ui-icon-signal">
-                <p:menuitem value="Turma por disciplinas" action="/admin/relatorios/turmas_por_disciplina.xhtml" ajax="false" />
-                <p:menuitem value="Disciplina por turmas" action="/admin/relatorios/disciplinas_por_turma.xhtml" ajax="false" />
+                <p:menuitem value="Turma por disciplinas" action="/admin/relatorios/turmas_por_disciplina.xhtml?faces-redirect=true" ajax="false" />
+                <p:menuitem value="Disciplina por turmas" action="/admin/relatorios/disciplinas_por_turma.xhtml?faces-redirect=true" ajax="false" />
             </p:submenu>
             <p:submenu label="Configurações" icon="ui-icon-gear">
-                <p:menuitem value="Notificações" icon="ui-icon-contact" action="/admin/configuracoes/notificacoes.xhtml" ajax="false" />
+                <p:menuitem value="Notificações" icon="ui-icon-contact" action="/admin/configuracoes/notificacoes.xhtml?faces-redirect=true" ajax="false" />
+                <p:menuitem value="Séries" icon="ui-icon-contact" action="/admin/configuracoes/series.xhtml?faces-redirect=true" ajax="false" />
             </p:submenu>
             <f:facet name="options">
                 <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false" immediate="true"/>
@@ -96,7 +97,7 @@
                     <p:message for="informacoes" display="text"/>                    
         </h:panelGrid>
     <p:commandButton value="Salvar" update="grid" action="#{administradorBean.salvar}" ajax="false"/>
-    <p:commandButton value="Cancelar" actionListener="#{administradorBean.limpar}" action="/admin.xhtml"  ajax="false" immediate="true"/>
+    <p:commandButton value="Cancelar" actionListener="#{administradorBean.limpar}" action="/admin.xhtml?faces-redirect=true"  ajax="false" immediate="true"/>
     
    </h:form>
 </h:body>

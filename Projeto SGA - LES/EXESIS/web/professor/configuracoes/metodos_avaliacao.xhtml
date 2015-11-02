@@ -10,16 +10,16 @@
     <h:body>
 <h:form>  
     <p:menubar>
-        <p:menuitem action="/professor.xhtml" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+        <p:menuitem action="/professor.xhtml?faces-redirect=true" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
         <p:submenu label="Usuários" icon="ui-icon-person">
             <p:submenu label="Consultar" icon="ui-icon-search">
-                <p:menuitem value="Aluno" action="/professor/usuarios/consultar/consultar_aluno.xhtml" icon="ui-icon-person" ajax="false" immediate="true" />
-                <p:menuitem value="Responsável do Aluno" action="/professor/usuarios/consultar/consultar_responsavel.xhtml" icon="ui-icon-person" ajax="false" immediate="true"/>
+                <p:menuitem value="Aluno" action="/professor/usuarios/consultar/consultar_aluno.xhtml?faces-redirect=true" icon="ui-icon-person" ajax="false" immediate="true" />
+                <p:menuitem value="Responsável do Aluno" action="/professor/usuarios/consultar/consultar_responsavel.xhtml?faces-redirect=true" icon="ui-icon-person" ajax="false" immediate="true"/>
             </p:submenu>
         </p:submenu>
         <p:submenu label="Atividades" icon="ui-icon-pencil">
             <p:submenu label="Novo" icon="ui-icon-contact">
-                <p:menuitem value="Exercício" action="/professor/atividades/novo/novo_exercicio.xhtml" ajax="false" immediate="true" />
+                <p:menuitem value="Exercício" action="/professor/atividades/novo/novo_exercicio.xhtml?faces-redirect=true" ajax="false" immediate="true" />
                 <p:menuitem value="Avaliação" url="#" />
             </p:submenu>
             <p:submenu label="Consultar" icon="ui-icon-contact">
@@ -27,18 +27,18 @@
                 <p:menuitem value="Avaliação" url="#" />
             </p:submenu>
             <p:separator/>
-            <p:menuitem value="Gerar avaliação" action="/professor/atividades/gerar_avaliacao.xhtml" ajax="false" immediate="true" />
-            <p:menuitem value="Disponibilizar avaliação" action="/professor/atividades/disponibilizar_avaliacao.xhtml" ajax="false" immediate="true" />
+            <p:menuitem value="Gerar avaliação" action="/professor/atividades/gerar_avaliacao.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+            <p:menuitem value="Disponibilizar avaliação" action="/professor/atividades/disponibilizar_avaliacao.xhtml?faces-redirect=true" ajax="false" immediate="true" />
         </p:submenu> 
         <p:submenu label="Relatórios" icon="ui-icon-signal">
-                <p:menuitem value="Disciplina por turmas" action="/professor/relatorios/disciplinas_por_turma.xhtml" ajax="false" />
-                <p:menuitem value="Desempenho por conteúdo" action="/professor/relatorios/desempenho_por_conteudo.xhtml" ajax="false" />
-                <p:menuitem value="Turma X Aluno" action="/professor/relatorios/comparacao_turma_aluno.xhtml" ajax="false" />
-                <p:menuitem value="Desempenho dos alunos" action="/professor/relatorios/desempenho_alunos.xhtml" ajax="false" />
+                <p:menuitem value="Disciplina por turmas" action="/professor/relatorios/disciplinas_por_turma.xhtml?faces-redirect=true" ajax="false" />
+                <p:menuitem value="Desempenho por conteúdo" action="/professor/relatorios/desempenho_por_conteudo.xhtml?faces-redirect=true" ajax="false" />
+                <p:menuitem value="Turma X Aluno" action="/professor/relatorios/comparacao_turma_aluno.xhtml?faces-redirect=true" ajax="false" />
+                <p:menuitem value="Desempenho dos alunos" action="/professor/relatorios/desempenho_alunos.xhtml?faces-redirect=true" ajax="false" />
         </p:submenu>
         <p:submenu label="Configurações" icon="ui-icon-gear">
-            <p:menuitem value="Notificações" action="/professor/configuracoes/notificacoes.xhtml" ajax="false" />
-            <p:menuitem value="Método de Avaliação" action="/professor/configuracoes/metodos_avaliacao.xhtml" ajax="false" />
+            <p:menuitem value="Notificações" action="/professor/configuracoes/notificacoes.xhtml?faces-redirect=true" ajax="false" />
+            <p:menuitem value="Método de Avaliação" action="/professor/configuracoes/metodos_avaliacao.xhtml?faces-redirect=true" ajax="false" />
         </p:submenu>
         <f:facet name="options">
             <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false"/>

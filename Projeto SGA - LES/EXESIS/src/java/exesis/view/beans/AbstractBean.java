@@ -3,6 +3,8 @@ package exesis.view.beans;
 
 import exesis.core.aplicacao.Resultado;
 import exesis.core.control.IFachada;
+import exesis.model.Pessoa;
+import exesis.model.Professor;
 import exesis.model.Usuario;
 import java.io.Serializable;
 import java.util.List;
@@ -18,21 +20,26 @@ public class AbstractBean implements Serializable{
 
     protected IFachada fachada;
     protected boolean renderizarCampos;
-    protected Usuario usuario;
+    protected static Usuario usuario;
     
     public AbstractBean() {
         renderizarCampos = Boolean.FALSE;
         verificarNivelAcesso();
     }
     
-    public void verificarNivelAcesso(){
-        HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        usuario = (Usuario) session.getAttribute("usuario");
+    public static void verificarNivelAcesso(){
+        boolean possuiAcesso = true;    
         // verificar se o usuário pode acessar a URL solicitada
         HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    //        HttpServletResponse response = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        HttpSession session = request.getSession();
+        if(session == null)
+            possuiAcesso = false;
+        else
+            usuario = (Usuario) session.getAttribute("usuario");
+        
         String url = request.getRequestURL().toString();
-        boolean possuiAcesso = true;
-        if(usuario != null)
+        if(usuario != null){
             switch(usuario.getPerfilAcesso()){
                 case Usuario.ADMINISTRADOR:
                     if(!url.contains("admin"))
@@ -44,24 +51,25 @@ public class AbstractBean implements Serializable{
                     break;
                 case Usuario.PROFESSOR:
                     if(!url.contains("professor"))
-                        possuiAcesso = false;
-                    
+                        possuiAcesso = false; 
                     break;
                 case Usuario.RESPONSAVEL_ALUNO:
                     if(!url.contains("responsavel"))
                         possuiAcesso = false;
-                    
                     break;
                 default:
                         possuiAcesso = false;
             }
-            
-            if(!possuiAcesso){
-                FacesContext context = FacesContext.getCurrentInstance();
-                NavigationHandler navHandler = context.getApplication().getNavigationHandler();
-                navHandler.handleNavigation(context, null , "login");
-            }
+//            if(!possuiAcesso){
+//                FacesContext context = FacesContext.getCurrentInstance();
+//                NavigationHandler navHandler = context.getApplication().getNavigationHandler();
+//                navHandler.handleNavigation(context, null , "login");
+//            }
+        }
+        
+
     }
+    
     
     protected void Mensagem(FacesMessage.Severity tipo, String title, String body){
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(tipo, title, body));
@@ -71,6 +79,21 @@ public class AbstractBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(tipo, title, ""));
         for(String msg: lista)
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(tipo, "", msg));
+    }
+    
+    protected Professor getProfessorSession(){
+        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        HttpSession session = request.getSession();
+        Professor professor = null;
+        if(session != null){
+            if(session.getAttribute("pessoa") != null){
+               Pessoa pessoa = (Pessoa) session.getAttribute("pessoa");
+               if(pessoa instanceof Professor){
+                   professor = (Professor) pessoa;
+               }
+            }
+        }
+        return professor;
     }
 
     public Resultado getResultado() {
