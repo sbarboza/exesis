@@ -4,16 +4,10 @@ import java.util.List;
 
 public class ListaRealizada extends EntidadeDominio{
     private Aluno aluno; 
-    private ListaCriada listaCriada;
+    private Avaliacao avaliacao;
     private List<Resposta> listaRespostas;
-
-    public ListaCriada getListaCriada() {
-        return listaCriada;
-    }
-
-    public void setListaCriada(ListaCriada listaCriada) {
-        this.listaCriada = listaCriada;
-    }
+    private float notaParcial;
+    private float notaFinal;
 
     public Aluno getAluno() {
         return aluno;
@@ -21,6 +15,14 @@ public class ListaRealizada extends EntidadeDominio{
 
     public void setAluno(Aluno aluno) {
         this.aluno = aluno;
+    }
+
+    public Avaliacao getAvaliacao() {
+        return avaliacao;
+    }
+
+    public void setAvaliacao(Avaliacao avaliacao) {
+        this.avaliacao = avaliacao;
     }
 
     public List<Resposta> getListaRespostas() {
@@ -31,5 +33,22 @@ public class ListaRealizada extends EntidadeDominio{
         this.listaRespostas = listaRespostas;
     }
 
+    public float getNotaParcial() {
+        return notaParcial;
+    }
+
+    public void setNotaParcial(float notaParcial) {
+        this.notaParcial = notaParcial;
+    }
+
+    public float getNotaFinal() {
+        return notaFinal;
+    }
+
+    public void setNotaFinal(float notaFinal) {
+        this.notaFinal = notaFinal;
+    }
+    
+    
     
 }

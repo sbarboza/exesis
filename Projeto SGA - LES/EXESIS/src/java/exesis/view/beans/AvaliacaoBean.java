@@ -38,24 +38,32 @@ public class AvaliacaoBean extends AbstractBean{
     private List<Alternativa> alternativas;
     
     private List<Nivel> listaNivel;
+    private List<Nivel> listaNivelSelecionado;
+    private Map<Integer, Nivel> mapNivel;
     private int quantidade;
-    private int idNivel;
+    private Nivel nivelSelecionado;
     private int disponivel;
+    private int peso;
     
     @PostConstruct
     public void init(){
         resultado = Resultado.getResultado();
         fachada = new Fachada();
-        quantidade = 10;
-        disponivel = 10;
+        quantidade = 0;
+        peso = 1;
         tipo = new TipoLista();
-
-        
+        nivelSelecionado = new Nivel();
+        mapNivel = new HashMap<Integer, Nivel>();
+        listaNivelSelecionado = new ArrayList<Nivel>();
         resultado = fachada.consultar(new Nivel());
         listaNivel = new ArrayList<Nivel>();
         if(!resultado.getEntidades().isEmpty()){
-            for(int i = 0; i < resultado.getEntidades().size(); i++)
-                listaNivel.add((Nivel) resultado.getEntidades().get(i));
+            for(int i = 0; i < resultado.getEntidades().size(); i++){
+                Nivel nivel = (Nivel) resultado.getEntidades().get(i);
+                listaNivel.add(nivel);
+                mapNivel.put(nivel.getId(), nivel);
+                System.out.println(mapNivel.size());
+            }
         }
         
         palavrasChaves =new ArrayList<String>();
@@ -77,12 +85,16 @@ public class AvaliacaoBean extends AbstractBean{
                 mapatipo.put(((TipoLista)e).getId(), (TipoLista)e);
             }
         }
+        
+        listaCriada = new ListaCriada();
+        listaCriada.setListaNivel(new ArrayList<Nivel>());
         HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if(session.getAttribute("listaCriada") != null){
             listaCriada = (ListaCriada) session.getAttribute("listaCriada");
             nome = listaCriada.getNome();
             tipo = listaCriada.getTipo();
         }
+        listaCriada.setListaNivel(new ArrayList<Nivel>());
     }
     
     
@@ -92,8 +104,6 @@ public class AvaliacaoBean extends AbstractBean{
     }
 
      public void getListaExercicios(){
-        fachada = new Fachada();
-        listaCriada = new ListaCriada();
         listaCriada.setTags(new ArrayList<Tag>());
         listaCriada.setQuantidade(quantidade);
         if(!palavrasChaves.isEmpty()){
@@ -134,7 +144,17 @@ public class AvaliacaoBean extends AbstractBean{
         return null;
     }
     
-    
+    public void adicionar(){
+        Nivel nivel = mapNivel.get(nivelSelecionado.getId());
+        if(listaCriada.getListaNivel().contains(nivel)){
+            Mensagem(FacesMessage.SEVERITY_WARN, "Já foi adicionado esse nivel", "");
+        }else{
+            listaCriada.getListaNivel().add(nivel);
+            nivel.setQuantidade(peso);
+            atualizarQtde();
+        }
+    }
+        
     public List<String> completeKeywors(String query) {
         List<String> allKeys = keywords;
         List<String> filteredKeys = new ArrayList<String>();
@@ -151,10 +171,17 @@ public class AvaliacaoBean extends AbstractBean{
         return filteredKeys;
     }
 
-    public void calcDisponivel(){
-        disponivel = quantidade;
+    public void apagar(Nivel nivel){
+        atualizarQtde();
+        listaCriada.getListaNivel().remove(nivel);
     }
     
+    private void atualizarQtde(){
+        quantidade = 0;
+        for(Nivel n: listaCriada.getListaNivel()){
+            quantidade += n.getQuantidade();
+        }
+    }
     public ListaRealizada getRealizada() {
         return realizada;
     }
@@ -267,14 +294,6 @@ public class AvaliacaoBean extends AbstractBean{
         this.alternativas = alternativas;
     }
 
-    public int getIdNivel() {
-        return idNivel;
-    }
-
-    public void setIdNivel(int idNivel) {
-        this.idNivel = idNivel;
-    }
-
     public int getDisponivel() {
         return disponivel;
     }
@@ -282,7 +301,39 @@ public class AvaliacaoBean extends AbstractBean{
     public void setDisponivel(int disponivel) {
         this.disponivel = disponivel;
     }
+
+    public int getPeso() {
+        return peso;
+    }
+
+    public void setPeso(int peso) {
+        this.peso = peso;
+    }
+
+    public List<Nivel> getListaNivelSelecionado() {
+        return listaNivelSelecionado;
+    }
+
+    public void setListaNivelSelecionado(List<Nivel> listaNivelSelecionado) {
+        this.listaNivelSelecionado = listaNivelSelecionado;
+    }
+
+    public Map<Integer, Nivel> getMapNivel() {
+        return mapNivel;
+    }
+
+    public void setMapNivel(Map<Integer, Nivel> mapNivel) {
+        this.mapNivel = mapNivel;
+    }
+
+    public Nivel getNivelSelecionado() {
+        return nivelSelecionado;
+    }
+
+    public void setNivelSelecionado(Nivel nivelSelecionado) {
+        this.nivelSelecionado = nivelSelecionado;
+    }
     
-    
+     
     
 }

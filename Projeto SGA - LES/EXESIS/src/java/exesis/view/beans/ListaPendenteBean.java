@@ -1,15 +1,28 @@
 package exesis.view.beans;
 
+import exesis.core.aplicacao.Resultado;
+import exesis.core.control.Fachada;
+import exesis.model.Aluno;
+import exesis.model.Avaliacao;
+import exesis.model.Disciplina;
+import exesis.model.EntidadeDominio;
+import exesis.model.Exercicio;
 import exesis.model.Lista;
+import exesis.model.ListaCriada;
+import exesis.model.ListaRealizada;
+import exesis.model.Professor;
+import exesis.model.Resposta;
+import exesis.model.Turma;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
+import javax.servlet.http.HttpSession;
 
 @ManagedBean(name="listaPendenteBean")
 @ViewScoped
@@ -18,82 +31,91 @@ public class ListaPendenteBean extends AbstractBean{
     private Integer progress;
     private boolean exibir = false;
     
-    private List<Lista> lista1;
-    private List<Lista> lista2;
-    private List<Lista> lista3;
-    private List<Lista> lista4;
-    private List<Lista> lista5;
-    private List<Lista> lista6;
-    private Lista selectedLista;
-    private List<Lista> selectedListas;
+    private List<Avaliacao> listaAvaliacao;
+    private Avaliacao selectedLista;
     
-    @ManagedProperty("#{listaService}")
-    private ListaService service;
+    private Map<Integer, Disciplina> mapDisciplina;
+    private Map<Integer, Professor> mapProfessor;
+    private Map<Integer, ListaCriada> mapLista;
+    
+    private ListaRealizada listaRealizada;
      
     @PostConstruct
     public void init() {
-        lista1 = service.createListas(10);
-        lista2 = service.createListas(10);
-        lista3 = service.createListas(10);
-        lista4 = service.createListas(10);
-        lista5 = service.createListas(10);
-        lista6 = service.createListas(10);
+        fachada = new Fachada();
+        resultado = Resultado.getResultado();
+        
+        mapDisciplina = new HashMap<Integer, Disciplina>();
+        resultado = fachada.consultar(new Disciplina());
+        if(!resultado.getEntidades().isEmpty()){
+            for(EntidadeDominio e: resultado.getEntidades()){
+                Disciplina d = (Disciplina) e;
+                mapDisciplina.put(d.getId(), d);
+            }
+        }
+        
+        mapProfessor = new HashMap<Integer, Professor>();
+        resultado = fachada.consultar(new Professor());
+        if(!resultado.getEntidades().isEmpty()){
+            for(EntidadeDominio e: resultado.getEntidades()){
+                Professor p = (Professor) e;
+                mapProfessor.put(p.getId(), p);
+            }
+        }
+        
+        mapLista = new HashMap<Integer, ListaCriada>();
+        resultado = fachada.consultar(new ListaCriada());
+        if(!resultado.getEntidades().isEmpty()){
+            for(EntidadeDominio e: resultado.getEntidades()){
+                ListaCriada l = (ListaCriada) e;
+                mapLista.put(l.getId(), l);
+            }
+        }
+        
+        listaAvaliacao = new ArrayList<Avaliacao>();
+        resultado = fachada.consultar(new Avaliacao(new Turma(1)));
+        if(!resultado.getEntidades().isEmpty()){
+            for(EntidadeDominio e: resultado.getEntidades()){
+                Avaliacao avaliacao = (Avaliacao)e;
+                avaliacao.setDisciplina(mapDisciplina.get(avaliacao.getDisciplina().getId()));
+                if(avaliacao.getProfessor() != null && avaliacao.getProfessor().getId() != 0 ){
+                     avaliacao.setProfessor(mapProfessor.get(avaliacao.getProfessor().getId()));
+                }
+                avaliacao.setListaCriada(mapLista.get(avaliacao.getListaCriada().getId()));
+                listaAvaliacao.add(avaliacao);
+            }
+        }
+        
+         HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        if(session.getAttribute("listaRealizada") != null){
+            listaRealizada = (ListaRealizada) session.getAttribute("listaRealizada");
+        }
+        
     }
  
-    public List<Lista> getListas1() {
-        return lista1;
-    }
  
-    public List<Lista> getListas2() {
-        return lista2;
-    }
- 
-    public List<Lista> getListas3() {
-        return lista3;
-    }
- 
-    public List<Lista> getListas4() {
-        return lista4;
-    }
- 
-    public List<Lista> getListas5() {
-        return lista5;
-    }
- 
-    public List<Lista> getListas6() {
-        return lista6;
-    }
-     
-    public void setService(ListaService service) {
-        this.service = service;
-    }
- 
-    public Lista getSelectedLista() {
-        return selectedLista;
-    }
- 
-    public void setSelectedLista(Lista selectedLista) {
-        this.selectedLista = selectedLista;
-    }
- 
-    public List<Lista> getSelectedListas() {
-        return selectedListas;
-    }
- 
-    public void setSelectedListas(List<Lista> selectedListas) {
-        this.selectedListas = selectedListas;
-    }
-     
-    public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Lista Selected", ((Lista) event.getObject()).getId());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
- 
-    public void onRowUnselect(UnselectEvent event) {
-        FacesMessage msg = new FacesMessage("Lista Unselected", ((Lista) event.getObject()).getId());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+    public void realizarAvaliacao(){
+        listaRealizada = new ListaRealizada();
+        listaRealizada.setAluno(new Aluno(1));
+        listaRealizada.setAvaliacao(selectedLista);
+        listaRealizada.setListaRespostas(new ArrayList<Resposta>());
+        List<Exercicio> listaExercicio = listaRealizada.getAvaliacao().getListaCriada().getExercicios();
+        for(Exercicio exe: listaExercicio){
+            listaRealizada.getListaRespostas().add(new Resposta(exe, exe.getAlternativas()));
+        }
+        HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        session.setAttribute("listaRealizada", listaRealizada);
+        FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null , "realizarLista");
     }
     
+    public void enviar(ListaRealizada listaRealizada){
+        resultado = fachada.salvar(listaRealizada);
+        if(resultado.getMsgs().isEmpty()){
+            Mensagem(FacesMessage.SEVERITY_INFO, "Enviar com sucesso", "");
+        }else{
+            Mensagem(FacesMessage.SEVERITY_WARN, "Erro ao enviar", resultado.getMsgs());
+        }
+    }
     
     //PROGRESS BAR
     public Integer getProgress() {
@@ -142,6 +164,56 @@ public class ListaPendenteBean extends AbstractBean{
     public void setExibir(boolean exibir) {
         this.exibir = exibir;
     }
+
+    public List<Avaliacao> getListaAvaliacao() {
+        return listaAvaliacao;
+    }
+
+    public void setListaAvaliacao(List<Avaliacao> listaAvaliacao) {
+        this.listaAvaliacao = listaAvaliacao;
+    }
+
+    public Map<Integer, Disciplina> getMapDisciplina() {
+        return mapDisciplina;
+    }
+
+    public void setMapDisciplina(Map<Integer, Disciplina> mapDisciplina) {
+        this.mapDisciplina = mapDisciplina;
+    }
+
+    public Map<Integer, Professor> getMapProfessor() {
+        return mapProfessor;
+    }
+
+    public void setMapProfessor(Map<Integer, Professor> mapProfessor) {
+        this.mapProfessor = mapProfessor;
+    }
+
+    public Map<Integer, ListaCriada> getMapLista() {
+        return mapLista;
+    }
+
+    public void setMapLista(Map<Integer, ListaCriada> mapLista) {
+        this.mapLista = mapLista;
+    }
+
+    public ListaRealizada getListaRealizada() {
+        return listaRealizada;
+    }
+
+    public void setListaRealizada(ListaRealizada listaRealizada) {
+        this.listaRealizada = listaRealizada;
+    }
+
+    public Avaliacao getSelectedLista() {
+        return selectedLista;
+    }
+
+    public void setSelectedLista(Avaliacao selectedLista) {
+        this.selectedLista = selectedLista;
+    }
+    
+    
 }
 
 

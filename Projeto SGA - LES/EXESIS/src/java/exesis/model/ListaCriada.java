@@ -1,8 +1,8 @@
 package exesis.model;
 
-
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class ListaCriada extends EntidadeDominio{
     private String nome;
@@ -11,6 +11,7 @@ public class ListaCriada extends EntidadeDominio{
     private int quantidade;
     private List<Tag> tags;
     private List<Exercicio> exercicios;
+    private List<Nivel> listaNivel;
     public ListaCriada(){}
     public ListaCriada(int id){
         this.id = id;
@@ -64,6 +65,15 @@ public class ListaCriada extends EntidadeDominio{
     public void setPrazo(Date prazo) {
         this.prazo = prazo;
     }
+
+    public List<Nivel> getListaNivel() {
+        return listaNivel;
+    }
+
+    public void setListaNivel(List<Nivel> listaNivel) {
+        this.listaNivel = listaNivel;
+    }
+
     
     
 }

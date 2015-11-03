@@ -18,6 +18,10 @@ DROP TABLE IF EXISTS tbNivel CASCADE;
 DROP TABLE IF EXISTS tbSeries CASCADE;
 DROP TABLE IF EXISTS tbturmas CASCADE;
 DROP TABLE IF EXISTS tbavaliacoes CASCADE;
+DROP TABLE IF EXISTS tblistasRealizadas CASCADE;
+DROP TABLE IF EXISTS tblistasRealizadasNotas CASCADE;
+DROP TABLE IF EXISTS tbRespostasDissertativas CASCADE;
+DROP TABLE IF EXISTS tbRespostasAlternativas CASCADE;
 
 CREATE TABLE IF NOT EXISTS tbNivel
 (
@@ -233,5 +237,37 @@ CREATE TABLE IF NOT EXISTS tbavaliacoes
  prazo timestamp without time zone,
  ativo boolean,
  CONSTRAINT pk_avaliacao PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS tblistasRealizadas 
+(
+ id serial,
+ dtrealizacao date,
+ aluno_id integer,
+ avaliacao_id integer,
+ CONSTRAINT pk_listarealizada PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS tblistasRealizadasNotas 
+(
+ exercicio_id integer,
+ listaRealizada_id integer,
+ correcao double precision,
+ nota double precision
+);
+
+CREATE TABLE IF NOT EXISTS tbRespostasAlternativas 
+(
+ listaRealizada_id integer,
+ exercicio_id integer,
+ alternativa_id integer,
+ resposta boolean
+);
+
+CREATE TABLE IF NOT EXISTS tbRespostasDissertativas 
+(
+ listaRealizada_id integer,
+ exercicio_id integer,
+ resposta character varying
 );
 

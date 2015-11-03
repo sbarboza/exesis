@@ -15,6 +15,10 @@ public class Avaliacao extends EntidadeDominio{
         this.id = id;
     }
     
+    public Avaliacao(Turma turma){
+        this.turma = turma;
+    }
+    
     public Disciplina getDisciplina() {
         return disciplina;
     }

@@ -4,7 +4,7 @@ package exesis.model;
 public class Nivel extends EntidadeDominio{
     private String descricao;
     private float peso;
-    
+    private int quantidade;
     public Nivel(){}
     public Nivel(int id){
     this.id = id;
@@ -26,6 +26,14 @@ public class Nivel extends EntidadeDominio{
 
     public void setPeso(float peso) {
         this.peso = peso;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
     
     

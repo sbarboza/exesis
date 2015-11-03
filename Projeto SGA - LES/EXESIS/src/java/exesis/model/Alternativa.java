@@ -15,6 +15,11 @@ public class Alternativa extends EntidadeDominio{
         this.descricao = descricao;
         this.resposta = resposta;
     }
+    public Alternativa(int id, boolean resposta, String descricao){
+        this.id = id;
+        this.descricao = descricao;
+        this.resposta = resposta;
+    }
     public boolean getResposta() {
         return resposta;
     }

@@ -13,6 +13,7 @@ import exesis.model.Exercicio;
 import exesis.model.ListaCriada;
 import exesis.model.Nivel;
 import exesis.model.Tag;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,11 +28,17 @@ public class ExercicioDAO extends AbstractJdbcDAO{
 	public ExercicioDAO() {
                 // CONTRUTOR COM NOME DA TABELA E NOME DA COLUNA DE IDENTIFICAÇÃO
 		super("tbExercicios", "id");
+	}
+        
+	public ExercicioDAO(Connection connection) {
+                // CONTRUTOR COM NOME DA TABELA E NOME DA COLUNA DE IDENTIFICAÇÃO
+		super(connection,"tbExercicios", "id");
                 
 	}
 
 	public Resultado salvar(EntidadeDominio entidade){
-		Resultado resultado = Resultado.getResultado();
+		openConnection();
+                Resultado resultado = Resultado.getResultado();
 		PreparedStatement pst=null;
                 StringBuilder sql = null;
                 IDAO tagDao = new TagDAO();
@@ -44,7 +51,7 @@ public class ExercicioDAO extends AbstractJdbcDAO{
 		sql.append("(dtCadastro, enunciado, tipo, contador, nivel_id)");
                 sql.append(" VALUES(?, ?, ?, ?, ?)");
                 try {
-                    openConnection();
+                    
                     pst = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS); // PREPARA O SQL PARA RETORNAR A CHAVE GERADA
                     Timestamp time = new Timestamp(exercicio.getDtCadastro().getTime());
                     pst.setTimestamp(1, time);
@@ -280,7 +287,7 @@ public class ExercicioDAO extends AbstractJdbcDAO{
                         for(Exercicio e: mapaExercicios.values()){
                             exercicio = e;
                             if(exercicio.getTipo() == exercicio.MULTIPLAESCOLHA){
-                                dao = new AlternativaDAO();
+                                dao = new AlternativaDAO(connection);
                                 dao.consultar(exercicio);
                                 for(EntidadeDominio exe: resultado.getEntidades()){
                                     if(exercicio.getId() == exe.getId())

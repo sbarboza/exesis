@@ -1,18 +1,19 @@
 package exesis.core.dao.jdbc;
 
 import exesis.core.aplicacao.Resultado;
+import exesis.model.Aluno;
 import exesis.model.Avaliacao;
 import exesis.model.Disciplina;
 import exesis.model.EntidadeDominio;
 import exesis.model.Exercicio;
 import exesis.model.ListaCriada;
 import exesis.model.Turma;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,9 @@ public class AvaliacaoDAO extends AbstractJdbcDAO{
 
     public AvaliacaoDAO() {
         super("tbavaliacoes", "id");
+    }
+    public AvaliacaoDAO(Connection connection) {
+        super(connection,"tbavaliacoes", "id");
     }
 
     public Resultado salvar(EntidadeDominio entidade){
@@ -89,6 +93,8 @@ public class AvaliacaoDAO extends AbstractJdbcDAO{
             Avaliacao avaliacao = null;
             if(entidade instanceof Exercicio){
                 avaliacao = (Avaliacao) entidade;
+                if(avaliacao.getTurma() != null && avaliacao.getTurma().getId() != 0) // TEM TURMA
+                    return consultarPorTurma(avaliacao.getTurma());
                 if(avaliacao.getId() != 0) // TEM ID
                     return consultarPorId(avaliacao);
             }
@@ -106,6 +112,34 @@ public class AvaliacaoDAO extends AbstractJdbcDAO{
             sql.append(avaliacao.getId());
             sql.append(";");
             return executarConsulta(sql.toString());
+        }
+        private Resultado consultarPorTurma(Turma turma){
+            StringBuilder sql = new StringBuilder();
+            sql.append(" SELECT ");
+            sql.append(" id, dtcadastro, turma_id, listaCriada_id, disciplina_id, prazo, ativo ");
+            sql.append(" FROM ");
+            sql.append(table);
+            sql.append(" WHERE ");
+            sql.append(" ativo = true AND ");
+            sql.append(" turma_id =  ");
+            sql.append(turma.getId());
+            sql.append(";");
+            return executarConsulta(sql.toString());
+        }
+        private Resultado consultarPorAluno(Aluno aluno){
+            Resultado resultado = new AlunoDAO().consultar(aluno);
+            if(!resultado.getEntidades().isEmpty())
+                aluno = (Aluno) resultado.getEntidades().get(0);
+            if(aluno.getTurma() != null){
+                resultado.zerar();
+                resultado = consultarPorTurma(aluno.getTurma());
+            }
+            // Buscar listas realizadas
+            // filtrar pelo ID do aluno
+            // verificar os ids de listas criadas retornados e remover do retorno da consulta
+            // retornar resultado
+            
+            return resultado;
         }
         
         private Resultado consultarTodos(){

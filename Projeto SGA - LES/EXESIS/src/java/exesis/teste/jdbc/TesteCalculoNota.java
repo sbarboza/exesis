@@ -5,6 +5,7 @@ import exesis.core.strategy.CalcularNotaListaRealizada;
 
 import exesis.model.Alternativa;
 import exesis.model.Aluno;
+import exesis.model.Avaliacao;
 import exesis.model.Exercicio;
 import exesis.model.ListaCriada;
 import exesis.model.ListaRealizada;
@@ -85,7 +86,8 @@ public class TesteCalculoNota {
         listaRealizada = new ListaRealizada();
         listaRealizada.setAluno(new Aluno("Aluno1"));
         listaRealizada.setListaRespostas(listaRespostas);
-        listaRealizada.setListaCriada(listaCriada);
+        listaRealizada.setAvaliacao(new Avaliacao());
+        listaRealizada.getAvaliacao().setListaCriada(listaCriada);
     }
     
     public static void mostrarNotasListaRealizada() {

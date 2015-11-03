@@ -39,5 +39,10 @@
             <to-view-id>/professor/atividades/avaliacao_gerada.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+         <navigation-case>
+            <from-outcome>realizarLista</from-outcome>
+            <to-view-id>/aluno/atividades/avaliacoes/realizar_avaliacao.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
 </faces-config>

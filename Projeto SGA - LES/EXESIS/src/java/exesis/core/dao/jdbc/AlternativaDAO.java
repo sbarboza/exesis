@@ -10,6 +10,7 @@ import exesis.core.aplicacao.Resultado;
 import exesis.model.Alternativa;
 import exesis.model.EntidadeDominio;
 import exesis.model.Exercicio;
+import java.sql.Connection;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,10 @@ public class AlternativaDAO extends AbstractJdbcDAO{
 
 	public AlternativaDAO() {
 		super("tbAlternativas", "id");
+		// TODO Auto-generated constructor stub
+	}
+	public AlternativaDAO(Connection connection) {
+		super(connection, "tbAlternativas", "id");
 		// TODO Auto-generated constructor stub
 	}
 	@Override

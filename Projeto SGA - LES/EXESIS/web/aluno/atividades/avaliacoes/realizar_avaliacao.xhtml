@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Realizar avaliação</title>
+    </h:head>
+    <h:body>
+<h:form>  
+    <p:menubar>
+        <p:menuitem action="/aluno.xhtml?faces-redirect=true" value="Início" icon="ui-icon-home" immediate="true" ajax="false"></p:menuitem>
+        <p:menuitem value="Consultar Conteúdo" icon="ui-icon-search" action="/aluno/conteudo/consultar_conteudo.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+        <p:submenu label="Atividades" icon="ui-icon-pencil">
+            <p:submenu label="Avaliações" icon="ui-icon-pencil">
+                <p:menuitem value="Pendentes" icon="ui-icon-alert" action="/aluno/atividades/avaliacoes/avaliacoes_pendentes.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+                <p:menuitem value="Realizadas" icon="ui-icon-circle-check" action="/aluno/atividades/avaliacoes/avaliacoes_realizadas.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+            </p:submenu>
+            <p:separator/>
+            <p:menuitem value="Listas de treino" icon="ui-icon-clipboard" action="/aluno/atividades/avaliacoes_pendentes.xhtml?faces-redirect=true" ajax="false" immediate="true" />
+        </p:submenu> 
+        <p:submenu label="Relatórios" icon="ui-icon-signal">
+            <p:menuitem value="Desempenho nas disciplinas" action="/aluno/relatorios/desempenho_aluno_disciplina.xhtml?faces-redirect=true" ajax="false" immediate="true"/>
+        </p:submenu>
+        <p:submenu label="Configurações" icon="ui-icon-gear">
+            <p:menuitem value="Notificações" icon="ui-icon-contact" action="/aluno/configuracoes/notificacoes.xhtml?faces-redirect=true" ajax="false" immediate="true"/>
+        </p:submenu>
+        <f:facet name="options">
+            <p:commandButton value="Sair" icon="ui-icon-arrowthickstop-1-e" action="#{usuarioBean.sair}" ajax="false"/>
+        </f:facet>
+    </p:menubar>
+</h:form>
+<p:growl id="grownl" showDetail="true" autoUpdate="true"  />
+<h:form id="form"  >
+      <h:panelGrid  columns="1" cellpadding="5" id="grid" style="position: relative; width: 70%; left: 15%" >
+          <p:fieldset>
+              <p:panelGrid columns="2" style="width: 100%">
+                  <h:outputLabel value="#{listaPendenteBean.listaRealizada.avaliacao.listaCriada.nome}" />
+                  <h:outputLabel value="#{listaPendenteBean.listaRealizada.avaliacao.listaCriada.tipo.descricao}" />
+                  <h:outputLabel value="#{listaPendenteBean.listaRealizada.avaliacao.disciplina.nome}" />
+                  <h:outputLabel value="#{listaPendenteBean.listaRealizada.avaliacao.prazo}" >
+                      <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                  </h:outputLabel>
+              </p:panelGrid>
+          </p:fieldset>
+          <ui:repeat  id="exe" value="#{listaPendenteBean.listaRealizada.listaRespostas}" var="resposta"  >
+                    <p:fieldset>
+                        <h:outputText  value="#{resposta.exercicio.enunciado}"/>
+                        <br />
+                        <br />
+                        <p:outputPanel>
+                            <ui:repeat  id="alt" value="#{resposta.alternativas}" rendered="#{resposta.exercicio.tipo == 1}" var="alternativa" >
+                                    <h:panelGrid columns="2" cellspacing="3">
+                                        <p:selectBooleanCheckbox  value="#{alternativa.resposta}" />
+                                        <h:outputText value="#{alternativa.descricao}" />
+                                    </h:panelGrid>
+                            </ui:repeat>
+                            <p:inputTextarea style="width: 70%" value="#{resposta.dissertativa}" rendered="#{resposta.exercicio.tipo == 2}" />
+                        </p:outputPanel>
+                    </p:fieldset>
+                </ui:repeat>
+          <p:fieldset >
+          <p:commandButton value="Enviar" action="#{listaPendenteBean.enviar(listaPendenteBean.listaRealizada)}" ajax="false" />
+          </p:fieldset>
+            </h:panelGrid>
+</h:form>
+
+    </h:body>
+</html>
+

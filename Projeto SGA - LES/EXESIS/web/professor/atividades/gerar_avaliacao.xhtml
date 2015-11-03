@@ -63,29 +63,32 @@
                 <p:column>
                     <h:outputText  value="#{key}" />
                 </p:column>
-            </p:autoComplete>                
+            </p:autoComplete>      
+            <p:commandButton value="Gerar lista" action="#{avaliacaoBean.gerarLista}" ajax="false" style="width: 100%" />
          </h:panelGrid>
-         <p:commandButton value="Gerar lista" action="#{avaliacaoBean.gerarLista}" ajax="false" />
+         
     </p:panel>
-       
-    
-    <p:panel header="Novo nível de dificuldade" >
-        <h:panelGrid cellpadding="5" columns="5" >
-            <h:outputText value="Quantidade de exercícios: " />  
-            <p:spinner id="minMax" value="#{avaliacaoBean.quantidade}" onchange="#{avaliacaoBean.calcDisponivel()}" maxlength="2" min="1" max="20" size="6"  />
-    
-        <p:outputLabel for="descricao" value="Nivel: " >
-            <p:selectOneMenu id="descricao" value="#{avaliacaoBean.idNivel}"  >
-                <f:selectItems value="#{avaliacaoBean.listaNivel}" var="nivel" itemLabel="#{nivel.descricao}" itemValue="#{nivel.id}" />
-            </p:selectOneMenu>
-        </p:outputLabel>
-        <p:outputLabel for="quantidadeNivel" value="Quantidade de exercícios: " >
-            <p:spinner  id="quantidadeNivel" stepFactor="1" value="#{nivelBean.nivel.peso}" min="1" max="#{avaliacaoBean.disponivel}" maxlength="3"  size="5" />
-        </p:outputLabel>
-            <p:commandButton ajax="false" value="Adicionar" action="#{nivelBean.salvar}" />
+</h:form>
+<h:form id="form2">
+    <p:panel header="Novo nível de dificuldade" id="novoNivel" >
+        <h:panelGrid cellpadding="10" columns="5" >
+            <p:outputLabel value="Nivel: " />
+                <p:selectOneMenu id="descricao" value="#{avaliacaoBean.nivelSelecionado.id}"  >
+                    <f:selectItems value="#{avaliacaoBean.listaNivel}" var="n" itemLabel="#{n.descricao}" itemValue="#{n.id}" />
+                </p:selectOneMenu>
+            
+            <p:outputLabel for="quantidadeNivel" value="Quantidade de exercícios: " >
+                <p:spinner  id="quantidadeNivel" stepFactor="1" value="#{avaliacaoBean.peso}" min="1"  maxlength="3"  size="5" />
+            </p:outputLabel>
+            <p:commandButton ajax="false" value="Adicionar" action="#{avaliacaoBean.adicionar}" >
+                <p:ajax event="click" update="form2" />
+            </p:commandButton>
+            <p:outputLabel value="Quantidade total de exercícios: " style="position: relative; right: 0">  
+             <p:inputText id="minMax" value="#{avaliacaoBean.quantidade}" readonly="true" size="3" style="position: relative; left: 0"/>
+            </p:outputLabel>
         </h:panelGrid>
     </p:panel>
-    <p:dataTable id="cadastrados" var="nivel" emptyMessage="Aleatório" value="#{nivelBean.listaNivel}" editable="true"  style="margin-bottom:20px">
+    <p:dataTable id="cadastrados" var="nivelqtde" emptyMessage="Aleatório" value="#{avaliacaoBean.listaCriada.listaNivel}" editable="true"  style="margin-bottom:20px">
        <f:facet name="header">
            Níveis da lista de exercícios
        </f:facet>
@@ -93,21 +96,23 @@
  
        <p:column headerText="Descrição">
            <p:cellEditor>
-               <f:facet name="output"><h:outputText value="#{nivel.descricao}" /></f:facet>
-               <f:facet name="input"><p:inputText value="#{nivel.descricao}" style="width:100%" label="Descrição"/></f:facet>
+               <f:facet name="output"><h:outputText value="#{nivelqtde.descricao}" /></f:facet>
+               <f:facet name="input"><p:inputText value="#{nivelqtde.descricao}" style="width:100%" label="Descrição"/></f:facet>
            </p:cellEditor>
        </p:column>
        <p:column headerText="Quantidade de exercícios">
            <p:cellEditor>
-               <f:facet name="output"><h:outputText value="#{nivel.peso}" /></f:facet>
-               <f:facet name="input"><p:spinner id="peso" stepFactor="0.1" min="0.1" max="10.0" maxlength="3" value="#{nivel.peso}" style="width:100%" label="Peso"/></f:facet>
+               <f:facet name="output"><h:outputText value="#{nivelqtde.quantidade}" /></f:facet>
+               <f:facet name="input"><p:spinner id="peso" stepFactor="1" min="1"  maxlength="3" value="#{nivelqtde.quantidade}" style="width:100%" label="Peso"/></f:facet>
            </p:cellEditor>
        </p:column>
        <p:column style="width:32px">
            <p:rowEditor />
        </p:column>
        <p:column style="width:60px">
-           <p:commandLink value="Apagar" ajax="false" action="#{nivelBean.apagar(nivel.id)}" />
+           <p:commandLink value="Apagar" ajax="false" action="#{avaliacaoBean.apagar(nivelqtde)}" >
+                <p:ajax event="click" update="cadastrados" />
+           </p:commandLink>
        </p:column>
    </p:dataTable>
     

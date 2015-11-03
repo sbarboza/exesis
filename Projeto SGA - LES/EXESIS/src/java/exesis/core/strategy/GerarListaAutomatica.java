@@ -9,8 +9,10 @@ import exesis.model.Nivel;
 import exesis.model.Tag;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class GerarListaAutomatica implements IStrategy{
 
@@ -32,8 +34,7 @@ public class GerarListaAutomatica implements IStrategy{
                 Exercicio exercicio = (Exercicio) e;
                 lista.getExercicios().add(exercicio);
             }
-           if(lista.getExercicios().size() > lista.getQuantidade()) // Se a quantidade de exercicios for maior que a pedida
-                   lista.setExercicios(lista.getExercicios().subList(0, lista.getQuantidade())); // retire o restante que não foi pedido
+           lista = filtroDificuldades(lista); 
             lista = adicionarContador(lista);
             resultado.zerar();
             resultado.setEntidade(lista);
@@ -111,4 +112,27 @@ public class GerarListaAutomatica implements IStrategy{
         }
         return lista;
     }
+    
+    private ListaCriada filtroDificuldades(ListaCriada lista){
+        Map<Nivel, List<Exercicio>> mapaNivelExercicio = new HashMap<Nivel, List<Exercicio>>();
+        for(Nivel n: lista.getListaNivel()){
+            List<Exercicio> listaExercicio = new ArrayList<Exercicio>();
+            for(Exercicio e: lista.getExercicios()){
+                if(e.getNivel().getId() == n.getId() && listaExercicio.size() < n.getQuantidade()){
+                    listaExercicio.add(e);
+                }
+            }
+            mapaNivelExercicio.put(n, listaExercicio);
+        }
+        lista.setExercicios(new ArrayList<Exercicio>());
+        for(List<Exercicio> listaExercicio: mapaNivelExercicio.values()){
+            for(Exercicio exe: listaExercicio){
+                lista.getExercicios().add(exe);
+            }
+        }
+        if(lista.getExercicios().size() > lista.getQuantidade()) // Se a quantidade de exercicios for maior que a pedida
+            lista.setExercicios(lista.getExercicios().subList(0, lista.getQuantidade())); // retire o restante que não foi pedido
+        return lista;
+    }
+        
 }

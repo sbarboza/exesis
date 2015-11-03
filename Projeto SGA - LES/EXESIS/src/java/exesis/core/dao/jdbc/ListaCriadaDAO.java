@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package exesis.core.dao.jdbc;
 
 import exesis.core.aplicacao.Resultado;
@@ -10,7 +5,6 @@ import exesis.core.dao.IDAO;
 import exesis.model.EntidadeDominio;
 import exesis.model.Exercicio;
 import exesis.model.ListaCriada;
-import exesis.model.Tag;
 import exesis.model.TipoLista;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,9 +14,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import javax.swing.JOptionPane;
 import org.springframework.stereotype.Component;
 
 /**

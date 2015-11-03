@@ -6,7 +6,7 @@ import exesis.model.EntidadeDominio;
 import exesis.model.Aluno;
 import exesis.model.Pessoa;
 import exesis.model.Usuario;
-import exesis.teste.jdbc.TesteProfessor;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +18,9 @@ public class AlunoDAO extends AbstractJdbcDAO{
 
     public AlunoDAO() {
         super("tbAlunos", "id");
+    }
+    public AlunoDAO(Connection connection) {
+        super(connection, "tbAlunos", "id");
     }
 
     @Override

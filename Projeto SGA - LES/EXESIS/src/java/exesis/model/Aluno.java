@@ -2,13 +2,15 @@ package exesis.model;
 
 
 public class Aluno extends Pessoa{
-
     private String matricula;
     private ResponsavelAluno responsavel;
-
+    private Turma turma;
     public Aluno(){}
     public Aluno(String nome){
         this.nome = nome;
+    }
+    public Aluno(int id){
+        this.id = id;
     }
     
     public ResponsavelAluno getResponsavel() {
@@ -26,5 +28,14 @@ public class Aluno extends Pessoa{
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
+
+    public Turma getTurma() {
+        return turma;
+    }
+
+    public void setTurma(Turma turma) {
+        this.turma = turma;
+    }
         
+    
 }

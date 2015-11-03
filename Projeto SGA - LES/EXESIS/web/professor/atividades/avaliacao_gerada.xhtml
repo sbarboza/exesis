@@ -66,6 +66,7 @@
           <ui:repeat  id="exe" value="#{avaliacaoBean.listaCriada.exercicios}" var="exercicio"  >
                     <p:fieldset>
                         <h:outputText  value="#{exercicio.enunciado}"/><br />    
+                        <h:outputText  value="#{exercicio.nivel.descricao}"/><br />    
                         <ui:repeat  id="tag" value="#{exercicio.tags}" var="chaves"  >
                           <div style="border: 2px solid; border-radius: 5px; text-align: center; padding: 2px; margin: 0; display: inline-block">
                               <h:outputText value="#{chaves.nome}" />

@@ -64,25 +64,28 @@
 </h:form>
 <p:growl id="grownl" showDetail="true" autoUpdate="true"  />
 <h:form id="form">
-    <p:dataTable id="singleDT" var="lista" value="#{listaPendenteBean.listas2}" selectionMode="single" selection="#{listaPendenteBean.selectedLista}" rowKey="#{lista.id}">
+    <p:dataTable id="singleDT" var="lista" value="#{listaPendenteBean.listaAvaliacao}" rows="10" 
+                 paginator="true" selectionMode="single" selection="#{listaPendenteBean.selectedLista}" rowKey="#{lista.id}" lazy="true">
         <f:facet name="header">
             Avaliações/listas pendentes
         </f:facet>
-        <p:column headerText="Descrição">
-            <h:outputText value="#{lista.descricao}" />
+        <p:column headerText="Descrição" filterBy="#{lista.listaCriada.nome}">
+            <h:outputText value="#{lista.listaCriada.nome}" />
         </p:column>
-        <p:column headerText="Disciplina">
-            <h:outputText value="#{lista.disciplina}" />
+        <p:column headerText="Disciplina" filterBy="#{lista.disciplina.nome}">
+            <h:outputText value="#{lista.disciplina.nome}" />
         </p:column>
-        <p:column headerText="Professor">
-            <h:outputText value="#{lista.professor}" />
-        </p:column>
-        <p:column headerText="Data">
-            <h:outputText value="#{lista.data}" />
+<!--        <p:column headerText="Professor" filterBy="{lista.professor.nome}">
+            <h:outputText value="{lista.professor.nome}" />
+        </p:column>-->
+        <p:column headerText="Data"  filterBy="#{lista.prazo}">
+            <h:outputText value="#{lista.prazo}" >
+                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+            </h:outputText>
         </p:column>
         
         <f:facet name="footer">
-            <p:commandButton process="singleDT"  icon="ui-icon-search" value="Iniciar Avaliação" style="height: 50px;" />
+            <p:commandButton process="singleDT"  icon="ui-icon-search" value="Iniciar Avaliação" action="#{listaPendenteBean.realizarAvaliacao()}" style="height: 50px;"  />
             <p:commandButton process="singleDT"  icon="ui-icon-search" value="Simular Desempenho" style="margin: 10px; height: 50px;" 
             oncomplete="PF('listaDialog').show()" onclick="PF('pbAjax').start();PF('startButton2').disable();" widgetVar="startButton2" />
         </f:facet>
